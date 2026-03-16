@@ -72,6 +72,7 @@ import {
   parseInteractiveSupplementalFederalDraft,
   serializeInteractiveSupplementalFederalDraft,
 } from "./interactive-supplemental-federal-editor";
+import { ShortcutFooter } from "./shortcut-footer";
 
 const stepIds = [
   "session",
@@ -2206,11 +2207,7 @@ export function InteractiveHome(props: {
         </box>
       </box>
 
-      <box border padding={1} flexDirection="column" backgroundColor="#0b1e18">
-        <text>`ctrl+n` new  `ctrl+o` open  `ctrl+s` save</text>
-        <text>`a` add form or payment  `backspace` remove list item  `ctrl+r` run  `ctrl+e` export</text>
-        <text>`pageup` `pagedown` step  `tab` field  `escape` quit</text>
-      </box>
+      <ShortcutFooter />
     </box>
   );
 }
@@ -2611,7 +2608,7 @@ function renderStep(options: {
 
 function StepList(props: { readonly activeStep: StepId }) {
   return (
-    <box border padding={1} flexDirection="column">
+    <box border padding={1} flexDirection="column" gap={1}>
       <text>Workflow</text>
       {stepIds.map((stepId, index) => (
         <text key={stepId}>
@@ -2694,11 +2691,17 @@ function SessionStep(props: {
 
       <box border padding={1} flexDirection="column" gap={1}>
         <text>New-session filing status</text>
+        {/* Keep filing status in sync whether the select emits browse or confirm events. */}
         <select
-          options={filingStatusOptions}
+          options={filingStatusOptions.slice()}
           height={5}
           selectedIndex={filingStatusIndex(props.createFilingStatus)}
           onChange={(_, option) => {
+            if (typeof option?.value === "string") {
+              props.setCreateFilingStatus(option.value as SupportedFilingStatus);
+            }
+          }}
+          onSelect={(_, option) => {
             if (typeof option?.value === "string") {
               props.setCreateFilingStatus(option.value as SupportedFilingStatus);
             }
@@ -2774,11 +2777,17 @@ function HouseholdStep(props: {
 
       <box border padding={1} flexDirection="column" gap={1}>
         <text>Filing status</text>
+        {/* Keep filing status in sync whether the select emits browse or confirm events. */}
         <select
-          options={filingStatusOptions}
+          options={filingStatusOptions.slice()}
           height={5}
           selectedIndex={filingStatusIndex(props.householdDraft.filingStatus)}
           onChange={(_, option) => {
+            if (typeof option?.value === "string") {
+              updateDraft("filingStatus", option.value as SupportedFilingStatus);
+            }
+          }}
+          onSelect={(_, option) => {
             if (typeof option?.value === "string") {
               updateDraft("filingStatus", option.value as SupportedFilingStatus);
             }
@@ -6199,6 +6208,11 @@ function SelectFieldRow<T extends string>(props: {
         height={Math.min(Math.max(props.options.length, 2), 4)}
         selectedIndex={selectedIndex}
         onChange={(_, option) => {
+          if (option != null) {
+            props.onChange(option.value);
+          }
+        }}
+        onSelect={(_, option) => {
           if (option != null) {
             props.onChange(option.value);
           }
