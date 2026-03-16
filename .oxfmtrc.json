@@ -1,0 +1,9 @@
+{
+  "ignorePatterns": [
+    "**/.output/**",
+    "**/.source/**",
+    "**/node_modules/**",
+    "**/routeTree.gen.ts",
+    "convex/_generated/**"
+  ]
+}
