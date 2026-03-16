@@ -1,6 +1,6 @@
 {
   "name": "@taxzilla/tax-engine",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "private": false,
   "description": "TY2025 tax engine and blueprint bundle used by TaxZilla CLI.",
   "type": "module",

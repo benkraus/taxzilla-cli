@@ -1,6 +1,6 @@
 {
   "name": "@taxzilla/cli",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "private": false,
   "description": "Bun-powered local-first CLI for the TaxZilla TY2025 federal tax engine.",
   "type": "module",
@@ -41,7 +41,7 @@
   "dependencies": {
     "@opentui/core": "^0.1.87",
     "@opentui/react": "^0.1.87",
-    "@taxzilla/tax-engine": "^0.1.0",
+    "@taxzilla/tax-engine": "^0.2.0",
     "effect": "^3.19.19",
     "react": "^19.2.4"
   },
