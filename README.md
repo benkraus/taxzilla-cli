@@ -1,49 +1,28 @@
+![TaxZilla logo](./logo.jpeg)
+
 # TaxZilla CLI
 
 Local-first terminal interface and public workspace for the TaxZilla TY2025 tax engine.
 
-## WARNING. READ THIS FIRST.
+## Important
 
-- THIS SOFTWARE HAS NOT BEEN REVIEWED, APPROVED, OR VETTED BY CPAS, EAS, TAX ATTORNEYS, OR ANY OTHER TAX PROFESSIONALS.
-- THIS SOFTWARE IS EXPERIMENTAL.
-- THIS SOFTWARE IS NOT TAX ADVICE.
-- THIS SOFTWARE IS NOT LEGAL ADVICE.
-- THIS SOFTWARE IS NOT AN IRS PRODUCT.
-- THIS SOFTWARE IS NOT A CERTIFIED E-FILE SYSTEM.
-- THIS SOFTWARE IS NOT AUTHORIZED TO SUBMIT RETURNS ON YOUR BEHALF.
-- USE THIS SOFTWARE AT YOUR OWN RISK.
-- YOU ARE RESPONSIBLE FOR REVIEWING EVERY INPUT, EVERY OUTPUT, EVERY LINE, EVERY FORM, EVERY CREDIT, EVERY PAYMENT, EVERY ELECTION, AND EVERY FILING DECISION.
-- DO NOT ASSUME A PASSING TEST SUITE MEANS A REAL RETURN IS CORRECT.
-- DO NOT ASSUME A GENERATED NUMBER IS CORRECT JUST BECAUSE THE ENGINE PRODUCED IT.
-- DO NOT USE THIS REPOSITORY AS A SUBSTITUTE FOR PROFESSIONAL TAX REVIEW.
-- NO WARRANTY. NO GUARANTEE OF ACCURACY. NO GUARANTEE OF COMPLETENESS. NO GUARANTEE OF FITNESS FOR ANY PURPOSE. NO GUARANTEE OF COMPLIANCE WITH FEDERAL, STATE, OR LOCAL TAX LAW.
+- This project has not been reviewed, approved, or vetted by CPAs, EAs, tax attorneys, or other tax professionals.
+- Treat it as experimental software and use it at your own risk.
+- It is not tax advice, legal advice, or an IRS product.
+- The CLI does not submit returns and does not connect to IRS or state e-file systems.
+- A passing test suite does not mean a real return is correct or ready to file.
 
-If you use this repository with real taxpayer data or for a real filing decision, that is your responsibility.
+If you use this with real taxpayer data or for a real filing decision, you are responsible for reviewing every input and every output yourself.
 
-## LOCAL DATA, PRIVACY, AND OPERATIONAL RISK
+## Local Data And Storage
 
-- THIS CLI STORES RETURN DATA LOCALLY.
-- By default, sessions live under `.taxzilla/returns/<returnId>/`.
-- The source of truth is `canonical-return.json`.
-- The TUI rewrites that file on save.
-- `run` and `export` can also write or overwrite local artifacts in the session directory.
-- Generated artifacts can include tax return data, line-by-line values, payment context, signer context, and local paths to generated files.
-- If you enter names, dates of birth, email addresses, phone numbers, tax ID tokens, last-4 values, bank information, signature information, or prior-year AGI, those values are stored in local JSON files on your machine.
-- THIS CLI DOES NOT PROVIDE CLOUD SYNC.
-- THIS CLI DOES NOT PROVIDE HOSTED STORAGE.
-- THIS CLI DOES NOT PROVIDE ENCRYPTION OR SECRET MANAGEMENT FOR YOUR LOCAL FILES.
-- THIS CLI DOES NOT PROVIDE A REMOTE BACKUP SERVICE.
-- If your machine, shell history, backups, synced folders, screenshots, logs, or repo checkout are compromised, your tax data may be exposed.
-- DO NOT COMMIT REAL TAXPAYER DATA.
-- DO NOT DROP REAL TAXPAYER DATA INTO A SHARED REPO, SHARED FOLDER, OR CLOUD-SYNCED WORKSPACE UNLESS YOU FULLY UNDERSTAND THE CONSEQUENCES.
-- The TUI is not autosave-on-every-keystroke. `Ctrl+S` saves, and `Ctrl+R` / `Ctrl+E` save before compute or export, but `Esc` or `Ctrl+C` exits without a save prompt.
-
-## What This Repo Contains
-
-- `apps/cli`: the Bun/OpenTUI terminal application.
-- `packages/tax-engine`: the TY2025 tax engine library.
-- `packages/tax-engine/docs/tax_engine_blueprint_ty2025`: the package-local blueprint bundle, schemas, examples, and reference docs that the engine imports and publishes with.
-- `docs/tax-engine-cli-plan.md`: CLI planning notes.
+- Session data is stored locally on disk.
+- By default, sessions live under `.taxzilla/returns/<return-id>/`.
+- `canonical-return.json` is the source of truth.
+- The TUI edits in memory and writes back to `canonical-return.json` on save.
+- `run` and `export` write local artifacts next to the canonical return.
+- This repo does not provide cloud sync, hosted storage, encryption, secret management, or remote backups for your local files.
+- Do not commit real taxpayer data.
 
 ## Quick Start
 
@@ -53,158 +32,108 @@ bun run dev
 bun run cli -- help
 ```
 
-Common examples:
+Common commands:
 
 ```bash
-bun run cli -- init --session-dir ./.taxzilla/returns/demo
+bun run cli -- init --session-dir ./.taxzilla/returns/demo --state CA
 bun run cli -- validate --input ./.taxzilla/returns/demo
 bun run cli -- run --input ./.taxzilla/returns/demo
 bun run cli -- export --input ./.taxzilla/returns/demo
 ```
 
-## CLI Surface
+## How It Works
 
-Supported commands:
+The runtime pipeline is:
 
-- `tui`
-- `help`
-- `init`
-- `validate`
-- `run`
-- `export`
+```text
+canonical-return.json -> core engine graph -> return IR -> local artifacts
+```
 
-Important command behavior:
+### 1. Canonical return
 
-- `init` creates a starter TY2025 federal canonical return.
-- `init` accepts either `--session-dir` or `--output`, not both.
-- `validate --input <path>` accepts either a canonical JSON file or a session directory.
-- `run --input <path>` evaluates the local engine and writes `summary-json`, `line-csv`, and `return-ir-json` by default.
-- `export --input <path>` writes `canonical-json`, `summary-json`, `line-csv`, `return-ir-json`, and `package-json` by default.
-- If your input is a standalone canonical JSON file instead of a session directory, `run` and `export` need `--output-dir` when multiple formats are requested.
-- `export` defaults include `canonical-json`, so exporting into a session directory rewrites `canonical-return.json`.
+The CLI starts from a canonical JSON envelope. That file holds the household, source documents, requested jurisdictions, elections, payments, e-file context, and any state return payloads.
 
-CLI export artifacts:
+The TUI does not keep a separate database. It loads `canonical-return.json` into draft objects, lets you edit those drafts, and writes the canonical JSON back to disk when you save.
 
-- `tax-summary.json`
-- `tax-lines.csv`
-- `canonical-return.json`
-- `return-ir.json`
-- `submission-package.json`
-- `export-manifest.json`
+### 2. Core engine graph
 
-`submission-package.json` is a locally generated JSON artifact. It is NOT a network submission. The CLI does not transmit it anywhere.
+The tax engine evaluates the canonical return into a deterministic forms graph.
 
-## HARD BOUNDARIES OF THE CURRENT CLI
+- Modules are the smallest calculation units, such as federal Form 1040, schedules, credits, and state plugin layers.
+- Nodes are typed values in the graph, including input nodes, calculation nodes, line nodes, summary nodes, bridge nodes, and validation results.
+- Edges describe why one node depends on another.
 
-- FEDERAL AND STATE-AWARE TY2025 SESSIONS ONLY.
-- TY2025 ONLY.
-- `init` accepts repeated or comma-separated `--state` USPS codes to seed requested state payloads.
-- `validate` reports requested states and state return payload counts.
-- `run` and `export` include state-aware summaries and graph artifacts when state returns are present.
-- There is no `submit`, `upload`, `efile`, or `transmit` command.
-- There is no outbound HTTP or cloud transport path in the CLI execution path.
-- There is no PDF OCR or scan ingestion command in the public CLI.
-- This is a local computation and artifact-generation tool, not a hosted tax platform.
+In practice, the engine does three important things:
 
-Supported federal filing statuses in the CLI:
+1. Activates the right federal modules and state plugins for the current return.
+2. Materializes input nodes that point back to the canonical return through JSON pointers.
+3. Computes derived values, final line values, summaries, and validation messages as graph outputs.
 
-- `single`
-- `married_filing_jointly`
-- `married_filing_separately`
-- `head_of_household`
-- `qualifying_surviving_spouse`
+That graph-first approach makes the output easier to explain and inspect. `tax-lines.csv` is essentially a flattened view of graph nodes, including jurisdiction, module, form code, line code, node ID, and source JSON pointers.
 
-## What The Tax Engine Currently Covers
+### 3. Federal and state layering
 
-### Tax year
+Federal logic and state logic are year-scoped and jurisdiction-aware.
+
+- Federal TY2025 logic lives under `packages/tax-engine/src/core-engine/federal/ty2025`.
+- State logic lives under `packages/tax-engine/src/core-engine/states/<state>/ty2025`.
+- State returns are built from explicit state modules, with federal-to-state bridge nodes where a state starts from a computed federal line instead of raw facts.
+
+The engine currently includes state artifact builders for all 50 U.S. states. District of Columbia and U.S. territories are not included in that list.
+
+### 4. Return IR and artifacts
+
+After graph evaluation, the engine builds a return-oriented intermediate representation.
+
+- `return-ir.json` contains filing-shaped data for federal and state returns.
+- `submission-package.json` contains a local submission package artifact derived from that IR.
+- The public CLI generates these as local files only. It does not transmit them anywhere.
+
+## Files On Disk
+
+Typical session layout:
+
+```text
+.taxzilla/
+  returns/
+    <return-id>/
+      canonical-return.json
+      tax-summary.json
+      tax-lines.csv
+      return-ir.json
+      submission-package.json
+      export-manifest.json
+```
+
+Notes:
+
+- `canonical-return.json` exists as soon as you run `init` or create a session in the TUI.
+- `tax-summary.json`, `tax-lines.csv`, `return-ir.json`, and `export-manifest.json` are written by `run` or `export`.
+- `submission-package.json` is written by `export`, or by `run` if that format is included in the requested export set.
+- If you pass a standalone canonical JSON file instead of a session directory, `run` and `export` can write to a separate `--output-dir`.
+
+## What This Repo Contains
+
+- `apps/cli`: the Bun + OpenTUI terminal application.
+- `packages/tax-engine`: the TY2025 graph-based tax engine library.
+- `packages/tax-engine/docs/tax_engine_blueprint_ty2025`: package-local blueprint docs, schemas, and examples that describe the engine contracts.
+- `docs/tax-engine-cli-plan.md`: CLI planning notes.
+
+## Current Scope
 
 - TY2025 only.
+- Commands: `tui`, `help`, `init`, `validate`, `run`, `export`.
+- Filing statuses: `single`, `married_filing_jointly`, `married_filing_separately`, `head_of_household`, `qualifying_surviving_spouse`.
+- `init` accepts repeated or comma-separated `--state` USPS codes.
+- `validate` reports requested states and state return payload counts.
+- `run` and `export` include state-aware summaries and graph artifacts when state returns are present.
 
-### Federal modules in the current codebase
-
-Core-labeled modules in the TY2025 federal module catalog:
-
-- Form 1040
-- Schedule 1
-- Schedule 3
-- Schedule A
-- Schedule B
-- Schedule C
-- Schedule D
-- Schedule SE
-- Form 2441
-- Form 8812
-- Form 8863
-- Form 8889
-- Form 8949
-- Form 8962
-
-Phase-2-labeled modules that are also present in the current codebase:
-
-- Schedule 2
-- Schedule E
-- Form 5695
-- Form 8959
-- Form 8960
-- Form 8995
-
-The engine also exposes:
-
-- a forms graph snapshot,
-- a federal summary object,
-- state summary objects when used as a library with state returns enabled,
-- a return IR bundle,
-- a local submission-package IR artifact.
-
-### Federal calculations visible in the current summary surface
-
-The federal summary type currently includes logic and outputs for:
-
-- wages,
-- taxable interest,
-- tax-exempt interest,
-- ordinary dividends,
-- qualified dividends,
-- IRA distributions,
-- pension and annuity distributions,
-- Social Security benefits,
-- capital gain or loss,
-- other income,
-- total income,
-- adjustments,
-- AGI,
-- standard deduction vs itemized deduction selection,
-- taxable income,
-- regular income tax,
-- other taxes,
-- total tax,
-- federal withholding,
-- estimated and extension payments,
-- earned income credit,
-- child tax credit / credit for other dependents,
-- additional child tax credit,
-- child and dependent care credit,
-- education credits,
-- premium tax credit reconciliation,
-- self-employment tax,
-- self-employment tax deduction,
-- Additional Medicare Tax,
-- Net Investment Income Tax,
-- Schedule D special-rate gain handling,
-- refund amount,
-- amount owed.
-
-### Input forms and document types in the current CLI path
-
-Dedicated editors in the public CLI:
+Current CLI document editors include:
 
 - W-2
 - 1099-INT
 - 1099-DIV
 - 1099-R
-
-Supplemental editors in the public CLI:
-
 - 1099-B
 - 1099-G
 - SSA-1099
@@ -215,92 +144,27 @@ Supplemental editors in the public CLI:
 - 1099-NEC
 - 1099-MISC
 
-The supplemental JSON path also supports:
+The engine also covers a broader TY2025 federal module set, including Form 1040, Schedules 1/2/3/A/B/C/D/E/SE, Forms 2441, 5695, 8812, 8863, 8889, 8949, 8959, 8960, 8962, and 8995.
 
-- household supplement editing,
-- additional source document records,
-- supplemental income facts,
-- supplemental federal withholding rows,
-- adjustments,
-- itemized deductions,
-- credits,
-- health coverage data,
-- federal override bags,
-- election data.
+## What This Repo Does Not Promise
 
-### State support in the engine library
+- No professional tax review.
+- No legal review.
+- No guarantee of accuracy, completeness, or filing readiness.
+- No guarantee of IRS or state acceptance.
+- No electronic filing transmission.
+- No hosted API or cloud storage.
+- No OCR or document-ingestion pipeline in the public CLI.
 
-The engine library contains state artifact builders for all 50 states:
+## Recommended Usage
 
-- `AL`, `AK`, `AZ`, `AR`, `CA`, `CO`, `CT`, `DE`, `FL`, `GA`, `HI`, `ID`, `IL`, `IN`, `IA`, `KS`, `KY`, `LA`, `ME`, `MD`, `MA`, `MI`, `MN`, `MS`, `MO`, `MT`, `NE`, `NV`, `NH`, `NJ`, `NM`, `NY`, `NC`, `ND`, `OH`, `OK`, `OR`, `PA`, `RI`, `SC`, `SD`, `TN`, `TX`, `UT`, `VT`, `VA`, `WA`, `WV`, `WI`, `WY`
+- Start with scrubbed or synthetic data.
+- Read `canonical-return.json` directly if you want to inspect the source of truth.
+- Review `tax-summary.json`, `tax-lines.csv`, and `return-ir.json` before trusting any result.
+- Treat validation failures and warnings as blockers.
+- Plan on independent review before relying on output for a real person or a real filing.
 
-Important caveat:
-
-- THE PUBLIC CLI CAN SEED, VALIDATE, RUN, AND EXPORT STATE-AWARE TY2025 SESSIONS, BUT IT IS STILL A LOCAL COMPUTATION TOOL.
-- The presence of state builders in the library is NOT a representation of professional review, legal sign-off, production readiness, or filing readiness.
-- District of Columbia and U.S. territories are not part of that state builder list.
-
-## What Is Present In Schemas Or Blueprint Docs But NOT Claimed As End-To-End CLI Support
-
-The blueprint bundle and canonical schema reference additional federal document types such as:
-
-- W-2G
-- 1099-K
-- 1099-SA
-- 5498-SA
-- 1099-Q
-- Schedule K-1
-- `OTHER_FEDERAL_DOCUMENT`
-
-This README does NOT claim that those are all wired through the public CLI as polished, end-to-end, production-safe workflows. Some are typed in schema or design docs without a corresponding public CLI editing or export story.
-
-## Known Sharp Edges And Explicit Non-Guarantees
-
-- Some 1099-MISC categories still need explicit classification overrides or future dedicated modules. When they are unsupported, the engine can exclude them from Schedule 1 and Schedule C outputs.
-- Some 1099-MISC rents and royalties need a unique Schedule E match or explicit overrides before you should trust Schedule E totals.
-- Some 1099-NEC rows may be inferred onto a sole Schedule C business when an explicit link is missing.
-- Some unlinked 1099-NEC rows can be routed to Schedule 1 line 8j instead of Schedule C.
-- Some retirement distributions can fall back to treating gross amounts as taxable when an explicit taxable amount is missing.
-- Some Schedule E losses require explicit limitation overrides before you should rely on the result.
-- Some Schedule D special cases require explicit extension values before you should rely on the output.
-- The blueprint bundle itself says it is a strong starting point, NOT a production certification package.
-- Tests exercise a lot of behavior, but tests are not legal review, compliance review, or tax professional sign-off.
-
-## Publishing
-
-- `packages/tax-engine` publishes as `@taxzilla/tax-engine`.
-- `apps/cli` publishes as `@taxzilla/cli`.
-- Bump package versions in both workspace `package.json` files before a release.
-- Push `main`, then run `.github/workflows/publish.yml` from GitHub Actions.
-- Configure npm trusted publishing for this repo and this exact workflow file, or add an `NPM_TOKEN` GitHub Actions secret as a fallback.
-
-## What This Repo Does NOT Promise
-
-- NO TAX PROFESSIONAL REVIEW.
-- NO LEGAL REVIEW.
-- NO CPA SIGN-OFF.
-- NO EA SIGN-OFF.
-- NO GUARANTEE OF IRS ACCEPTANCE.
-- NO GUARANTEE OF STATE ACCEPTANCE.
-- NO GUARANTEE THAT A GENERATED RETURN IS READY TO FILE.
-- NO GUARANTEE THAT EVERY EDGE CASE, EXCEPTION, OR JURISDICTION RULE IS HANDLED.
-- NO GUARANTEE THAT THE CLI COVERS EVERY FORM NAMED IN THE BLUEPRINT.
-- NO GUARANTEE THAT THE LIBRARY'S STATE CODE SHOULD BE USED FOR A LIVE FILING WORKFLOW WITHOUT INDEPENDENT REVIEW.
-- NO ELECTRONIC FILING TRANSMISSION.
-- NO HOSTED API.
-- NO CLOUD STORAGE.
-- NO MULTI-USER SAFETY MODEL.
-
-## Recommended Safe Usage
-
-- Use scrubbed or synthetic data first.
-- Keep this checkout on a machine and disk you trust.
-- Read `canonical-return.json` directly.
-- Review `tax-summary.json`, `tax-lines.csv`, and `return-ir.json` before trusting anything.
-- Treat warnings and failed validation messages as blockers, not decoration.
-- Assume you need independent review before relying on any output for a real person or a real filing.
-
-## Dev Commands
+## Development
 
 ```bash
 bun run build
@@ -309,3 +173,11 @@ bun run lint
 bun run test
 bun run test:coverage
 ```
+
+## Publishing
+
+- `packages/tax-engine` publishes as `@taxzilla/tax-engine`.
+- `apps/cli` publishes as `@taxzilla/cli`.
+- Bump package versions in both workspace package manifests before a release.
+- Push `main`, then run `.github/workflows/publish.yml` from GitHub Actions.
+- npm trusted publishing is configured for this repo.
