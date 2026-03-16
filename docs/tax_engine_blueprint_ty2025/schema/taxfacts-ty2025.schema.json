@@ -1,0 +1,6994 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.com/schemas/taxfacts-ty2025.schema.json",
+  "title": "Canonical Tax Facts and Evidence Log Schema - Tax Year 2025",
+  "description": "Canonical self-prep return model for a TY2025 consumer tax engine that performs its own calculations, supports federal plus all 50 states as plugin-scaffold jurisdictions, and hands compiled filings to a filing-only partner.",
+  "type": "object",
+  "required": [
+    "schema_version",
+    "tax_year",
+    "processing_year",
+    "return_id",
+    "requested_jurisdictions",
+    "lifecycle",
+    "household",
+    "residency_and_nexus",
+    "source_documents",
+    "facts",
+    "elections",
+    "state_returns",
+    "efile",
+    "artifacts",
+    "provenance_index",
+    "evidence_log"
+  ],
+  "properties": {
+    "schema_version": {
+      "type": "string",
+      "const": "2025-1.0.0"
+    },
+    "tax_year": {
+      "type": "integer",
+      "const": 2025
+    },
+    "processing_year": {
+      "type": "integer",
+      "const": 2026
+    },
+    "return_id": {
+      "$ref": "#/$defs/uuid"
+    },
+    "requested_jurisdictions": {
+      "type": "object",
+      "properties": {
+        "federal": {
+          "type": "boolean",
+          "const": true
+        },
+        "states": {
+          "$ref": "#/$defs/stateCodeArray"
+        }
+      },
+      "required": [
+        "federal",
+        "states"
+      ],
+      "additionalProperties": false
+    },
+    "lifecycle": {
+      "$ref": "#/$defs/lifecycle"
+    },
+    "household": {
+      "$ref": "#/$defs/household"
+    },
+    "residency_and_nexus": {
+      "$ref": "#/$defs/residencyAndNexus"
+    },
+    "source_documents": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/sourceDocument"
+      }
+    },
+    "facts": {
+      "$ref": "#/$defs/facts"
+    },
+    "elections": {
+      "$ref": "#/$defs/elections"
+    },
+    "state_returns": {
+      "type": "object",
+      "propertyNames": {
+        "enum": [
+          "AL",
+          "AK",
+          "AZ",
+          "AR",
+          "CA",
+          "CO",
+          "CT",
+          "DE",
+          "FL",
+          "GA",
+          "HI",
+          "ID",
+          "IL",
+          "IN",
+          "IA",
+          "KS",
+          "KY",
+          "LA",
+          "ME",
+          "MD",
+          "MA",
+          "MI",
+          "MN",
+          "MS",
+          "MO",
+          "MT",
+          "NE",
+          "NV",
+          "NH",
+          "NJ",
+          "NM",
+          "NY",
+          "NC",
+          "ND",
+          "OH",
+          "OK",
+          "OR",
+          "PA",
+          "RI",
+          "SC",
+          "SD",
+          "TN",
+          "TX",
+          "UT",
+          "VT",
+          "VA",
+          "WA",
+          "WV",
+          "WI",
+          "WY"
+        ]
+      },
+      "additionalProperties": {
+        "$ref": "#/$defs/stateReturn"
+      },
+      "description": "Optional state-return records keyed by two-letter state code; any subset of the 50 states may be present."
+    },
+    "efile": {
+      "$ref": "#/$defs/efile"
+    },
+    "artifacts": {
+      "$ref": "#/$defs/artifacts"
+    },
+    "provenance_index": {
+      "$ref": "#/$defs/provenanceIndex"
+    },
+    "evidence_log": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/evidenceEvent"
+      }
+    },
+    "extensions": {
+      "type": "object",
+      "additionalProperties": true
+    }
+  },
+  "additionalProperties": false,
+  "$defs": {
+    "stateCode": {
+      "type": "string",
+      "enum": [
+        "AL",
+        "AK",
+        "AZ",
+        "AR",
+        "CA",
+        "CO",
+        "CT",
+        "DE",
+        "FL",
+        "GA",
+        "HI",
+        "ID",
+        "IL",
+        "IN",
+        "IA",
+        "KS",
+        "KY",
+        "LA",
+        "ME",
+        "MD",
+        "MA",
+        "MI",
+        "MN",
+        "MS",
+        "MO",
+        "MT",
+        "NE",
+        "NV",
+        "NH",
+        "NJ",
+        "NM",
+        "NY",
+        "NC",
+        "ND",
+        "OH",
+        "OK",
+        "OR",
+        "PA",
+        "RI",
+        "SC",
+        "SD",
+        "TN",
+        "TX",
+        "UT",
+        "VT",
+        "VA",
+        "WA",
+        "WV",
+        "WI",
+        "WY"
+      ],
+      "description": "Two-letter U.S. state code. Excludes DC because the requested blueprint was for all 50 states."
+    },
+    "stateCodeArray": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/stateCode"
+      },
+      "uniqueItems": true
+    },
+    "nonEmptyString": {
+      "type": "string",
+      "minLength": 1
+    },
+    "money": {
+      "type": "number"
+    },
+    "nonNegativeMoney": {
+      "type": "number",
+      "minimum": 0
+    },
+    "percentage": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 100
+    },
+    "isoDate": {
+      "type": "string",
+      "format": "date"
+    },
+    "dateTime": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "uuid": {
+      "type": "string",
+      "format": "uuid"
+    },
+    "jsonPointer": {
+      "type": "string",
+      "pattern": "^(/([^/~]|~0|~1)*)*$"
+    },
+    "email": {
+      "type": "string",
+      "format": "email"
+    },
+    "phone": {
+      "type": "string",
+      "minLength": 7,
+      "maxLength": 32
+    },
+    "personId": {
+      "type": "string",
+      "pattern": "^[A-Za-z0-9._:-]{1,64}$"
+    },
+    "documentId": {
+      "type": "string",
+      "pattern": "^[A-Za-z0-9._:-]{1,128}$"
+    },
+    "eventId": {
+      "type": "string",
+      "pattern": "^[A-Za-z0-9._:-]{1,128}$"
+    },
+    "artifactId": {
+      "type": "string",
+      "pattern": "^[A-Za-z0-9._:-]{1,128}$"
+    },
+    "storageUri": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Opaque storage key, vault token, object-store URI, or partner reference. Avoid storing secrets inline."
+    },
+    "ssnLike": {
+      "type": "string",
+      "pattern": "^\\d{3}-?\\d{2}-?\\d{4}$"
+    },
+    "einLike": {
+      "type": "string",
+      "pattern": "^\\d{2}-?\\d{7}$"
+    },
+    "tinLike": {
+      "type": "string",
+      "pattern": "^[A-Za-z0-9\\-]{4,20}$",
+      "description": "Generic TIN/ITIN/ATIN/EIN/SSN slot; prefer vault tokens in production."
+    },
+    "currencyCode": {
+      "type": "string",
+      "enum": [
+        "USD"
+      ]
+    },
+    "name": {
+      "type": "object",
+      "properties": {
+        "first": {
+          "type": "string",
+          "minLength": 1
+        },
+        "middle": {
+          "type": "string"
+        },
+        "last": {
+          "type": "string",
+          "minLength": 1
+        },
+        "suffix": {
+          "type": "string"
+        },
+        "full_legal_name": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "first",
+        "last"
+      ],
+      "additionalProperties": false
+    },
+    "postalAddress": {
+      "type": "object",
+      "properties": {
+        "line1": {
+          "type": "string",
+          "minLength": 1
+        },
+        "line2": {
+          "type": "string"
+        },
+        "city": {
+          "type": "string",
+          "minLength": 1
+        },
+        "state_code": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/stateCode"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "postal_code": {
+          "type": "string",
+          "minLength": 3,
+          "maxLength": 12
+        },
+        "country_code": {
+          "type": "string",
+          "minLength": 2,
+          "maxLength": 3,
+          "default": "US"
+        }
+      },
+      "required": [
+        "line1",
+        "city",
+        "postal_code"
+      ],
+      "additionalProperties": false
+    },
+    "contactInfo": {
+      "type": "object",
+      "properties": {
+        "email": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/email"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "phone": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/phone"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "additionalProperties": false
+    },
+    "boundingBox": {
+      "type": "object",
+      "properties": {
+        "x": {
+          "type": "number"
+        },
+        "y": {
+          "type": "number"
+        },
+        "width": {
+          "type": "number"
+        },
+        "height": {
+          "type": "number"
+        },
+        "page": {
+          "type": "integer",
+          "minimum": 1
+        }
+      },
+      "required": [
+        "x",
+        "y",
+        "width",
+        "height",
+        "page"
+      ],
+      "additionalProperties": false
+    },
+    "sourceFileRef": {
+      "type": "object",
+      "properties": {
+        "file_name": {
+          "type": "string",
+          "minLength": 1
+        },
+        "mime_type": {
+          "type": "string",
+          "minLength": 1
+        },
+        "storage_uri": {
+          "$ref": "#/$defs/storageUri"
+        },
+        "uploaded_at": {
+          "$ref": "#/$defs/dateTime"
+        },
+        "page_count": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "sha256": {
+          "type": "string",
+          "pattern": "^[a-fA-F0-9]{64}$"
+        },
+        "capture_method": {
+          "type": "string",
+          "enum": [
+            "web_upload",
+            "mobile_camera",
+            "scanner",
+            "partner_import",
+            "manual_entry",
+            "other"
+          ]
+        }
+      },
+      "required": [
+        "file_name",
+        "mime_type",
+        "storage_uri",
+        "uploaded_at"
+      ],
+      "additionalProperties": false
+    },
+    "reviewStatus": {
+      "type": "string",
+      "enum": [
+        "unreviewed",
+        "accepted",
+        "corrected",
+        "rejected",
+        "derived",
+        "not_applicable"
+      ]
+    },
+    "extractedField": {
+      "type": "object",
+      "properties": {
+        "field_key": {
+          "type": "string",
+          "minLength": 1
+        },
+        "label": {
+          "type": "string"
+        },
+        "raw_value": {},
+        "normalized_value": {},
+        "confidence": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        },
+        "page": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "bounding_box": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/boundingBox"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "review_status": {
+          "$ref": "#/$defs/reviewStatus"
+        },
+        "reviewed_by_person_id": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/personId"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "reviewed_at": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/dateTime"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "required": [
+        "field_key",
+        "review_status"
+      ],
+      "additionalProperties": false
+    },
+    "fieldProvenance": {
+      "type": "object",
+      "properties": {
+        "json_pointer": {
+          "$ref": "#/$defs/jsonPointer"
+        },
+        "document_id": {
+          "$ref": "#/$defs/documentId"
+        },
+        "field_key": {
+          "type": "string",
+          "minLength": 1
+        },
+        "source_page": {
+          "type": [
+            "integer",
+            "null"
+          ],
+          "minimum": 1
+        },
+        "bounding_box": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/boundingBox"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "acquisition_method": {
+          "type": "string",
+          "enum": [
+            "ocr",
+            "pdf_text",
+            "api_import",
+            "manual_entry",
+            "computed",
+            "partner_webhook"
+          ]
+        },
+        "confidence": {
+          "type": [
+            "number",
+            "null"
+          ],
+          "minimum": 0,
+          "maximum": 1
+        },
+        "confirmed_by_user": {
+          "type": "boolean"
+        },
+        "confirmed_at": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/dateTime"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "notes": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "json_pointer",
+        "document_id",
+        "field_key",
+        "acquisition_method",
+        "confirmed_by_user"
+      ],
+      "additionalProperties": false
+    },
+    "provenanceIndex": {
+      "type": "object",
+      "description": "Maps a JSON Pointer path in this document to one or more provenance records explaining where the fact came from.",
+      "propertyNames": {
+        "$ref": "#/$defs/jsonPointer"
+      },
+      "additionalProperties": {
+        "type": "array",
+        "items": {
+          "$ref": "#/$defs/fieldProvenance"
+        },
+        "minItems": 1
+      }
+    },
+    "sourceRef": {
+      "type": "object",
+      "properties": {
+        "document_id": {
+          "$ref": "#/$defs/documentId"
+        },
+        "field_key": {
+          "type": "string"
+        },
+        "json_pointer": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/jsonPointer"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "required": [
+        "document_id"
+      ],
+      "additionalProperties": false
+    },
+    "namedAmount": {
+      "type": "object",
+      "properties": {
+        "code": {
+          "type": "string"
+        },
+        "description": {
+          "type": "string",
+          "minLength": 1
+        },
+        "amount": {
+          "$ref": "#/$defs/money"
+        },
+        "currency": {
+          "$ref": "#/$defs/currencyCode"
+        },
+        "person_id": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/personId"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "source_refs": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/sourceRef"
+          }
+        }
+      },
+      "required": [
+        "description",
+        "amount"
+      ],
+      "additionalProperties": false
+    },
+    "namedCount": {
+      "type": "object",
+      "properties": {
+        "code": {
+          "type": "string"
+        },
+        "description": {
+          "type": "string",
+          "minLength": 1
+        },
+        "count": {
+          "type": "integer"
+        },
+        "source_refs": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/sourceRef"
+          }
+        }
+      },
+      "required": [
+        "description",
+        "count"
+      ],
+      "additionalProperties": false
+    },
+    "stateAllocation": {
+      "type": "object",
+      "properties": {
+        "state_code": {
+          "$ref": "#/$defs/stateCode"
+        },
+        "amount": {
+          "$ref": "#/$defs/money"
+        },
+        "category": {
+          "type": "string",
+          "enum": [
+            "resident",
+            "nonresident_source",
+            "withholding",
+            "local_source",
+            "other"
+          ]
+        },
+        "notes": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "state_code",
+        "amount",
+        "category"
+      ],
+      "additionalProperties": false
+    },
+    "stateWithholdingLine": {
+      "type": "object",
+      "properties": {
+        "state_code": {
+          "$ref": "#/$defs/stateCode"
+        },
+        "state_id_number": {
+          "type": "string"
+        },
+        "income_amount": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/money"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "withholding_amount": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/money"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "locality_name": {
+          "type": "string"
+        },
+        "local_income_amount": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/money"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "local_withholding_amount": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/money"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "required": [
+        "state_code"
+      ],
+      "additionalProperties": false
+    },
+    "person": {
+      "type": "object",
+      "properties": {
+        "person_id": {
+          "$ref": "#/$defs/personId"
+        },
+        "role": {
+          "type": "string",
+          "enum": [
+            "taxpayer",
+            "spouse",
+            "dependent",
+            "other"
+          ]
+        },
+        "name": {
+          "$ref": "#/$defs/name"
+        },
+        "date_of_birth": {
+          "$ref": "#/$defs/isoDate"
+        },
+        "tax_id_token": {
+          "$ref": "#/$defs/storageUri"
+        },
+        "last4_tax_id": {
+          "type": "string",
+          "pattern": "^\\d{4}$"
+        },
+        "citizenship_status": {
+          "type": "string",
+          "enum": [
+            "us_citizen",
+            "resident_alien",
+            "nonresident_alien",
+            "dual_status",
+            "unknown"
+          ]
+        },
+        "is_blind": {
+          "type": "boolean"
+        },
+        "is_full_time_student": {
+          "type": "boolean"
+        },
+        "occupation": {
+          "type": "string"
+        },
+        "contact": {
+          "$ref": "#/$defs/contactInfo"
+        }
+      },
+      "required": [
+        "person_id",
+        "role",
+        "name",
+        "date_of_birth"
+      ],
+      "additionalProperties": false
+    },
+    "dependent": {
+      "type": "object",
+      "properties": {
+        "person_id": {
+          "$ref": "#/$defs/personId"
+        },
+        "name": {
+          "$ref": "#/$defs/name"
+        },
+        "date_of_birth": {
+          "$ref": "#/$defs/isoDate"
+        },
+        "tax_id_token": {
+          "$ref": "#/$defs/storageUri"
+        },
+        "last4_tax_id": {
+          "type": "string",
+          "pattern": "^\\d{4}$"
+        },
+        "relationship_to_taxpayer": {
+          "type": "string",
+          "enum": [
+            "child",
+            "stepchild",
+            "foster_child",
+            "sibling",
+            "stepsibling",
+            "parent",
+            "grandchild",
+            "niece_nephew",
+            "other_relative",
+            "non_relative"
+          ]
+        },
+        "months_lived_with_taxpayer": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 12
+        },
+        "support_percentage_provided_by_taxpayer": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/percentage"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "qualifying_for_child_tax_credit": {
+          "type": "boolean"
+        },
+        "qualifying_for_credit_for_other_dependents": {
+          "type": "boolean"
+        },
+        "qualifying_for_eitc": {
+          "type": "boolean"
+        },
+        "is_disabled": {
+          "type": "boolean"
+        },
+        "is_full_time_student": {
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "person_id",
+        "name",
+        "date_of_birth",
+        "relationship_to_taxpayer"
+      ],
+      "additionalProperties": false
+    },
+    "household": {
+      "type": "object",
+      "properties": {
+        "filing_status": {
+          "type": "string",
+          "enum": [
+            "single",
+            "married_filing_jointly",
+            "married_filing_separately",
+            "head_of_household",
+            "qualifying_surviving_spouse"
+          ]
+        },
+        "taxpayer": {
+          "$ref": "#/$defs/person"
+        },
+        "spouse": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/person"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "dependents": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/dependent"
+          }
+        },
+        "can_be_claimed_as_dependent": {
+          "type": "boolean"
+        },
+        "is_amended_return": {
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "filing_status",
+        "taxpayer",
+        "dependents"
+      ],
+      "additionalProperties": false
+    },
+    "residencyPeriod": {
+      "type": "object",
+      "properties": {
+        "state_code": {
+          "$ref": "#/$defs/stateCode"
+        },
+        "residency_type": {
+          "type": "string",
+          "enum": [
+            "resident",
+            "part_year_resident",
+            "nonresident",
+            "military",
+            "dual_resident",
+            "unknown"
+          ]
+        },
+        "start_date": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/isoDate"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "end_date": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/isoDate"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "taxpayer_or_spouse": {
+          "type": "string",
+          "enum": [
+            "taxpayer",
+            "spouse",
+            "both"
+          ]
+        }
+      },
+      "required": [
+        "state_code",
+        "residency_type",
+        "taxpayer_or_spouse"
+      ],
+      "additionalProperties": false
+    },
+    "stateMove": {
+      "type": "object",
+      "properties": {
+        "date": {
+          "$ref": "#/$defs/isoDate"
+        },
+        "from_state": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/stateCode"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "to_state": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/stateCode"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "new_address": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/postalAddress"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "required": [
+        "date"
+      ],
+      "additionalProperties": false
+    },
+    "residencyAndNexus": {
+      "type": "object",
+      "properties": {
+        "primary_home_address": {
+          "$ref": "#/$defs/postalAddress"
+        },
+        "mailing_address": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/postalAddress"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "residency_periods": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/residencyPeriod"
+          }
+        },
+        "moves_during_year": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/stateMove"
+          }
+        },
+        "work_states": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/stateCode"
+          },
+          "uniqueItems": true
+        },
+        "military_service": {
+          "type": "object",
+          "properties": {
+            "is_active_duty": {
+              "type": "boolean"
+            },
+            "legal_residence_state": {
+              "anyOf": [
+                {
+                  "$ref": "#/$defs/stateCode"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "spouse_relieved_by_msra": {
+              "type": [
+                "boolean",
+                "null"
+              ]
+            }
+          },
+          "additionalProperties": false
+        },
+        "foreign_residency_days": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 366
+        }
+      },
+      "required": [
+        "primary_home_address",
+        "residency_periods",
+        "moves_during_year",
+        "work_states"
+      ],
+      "additionalProperties": false
+    },
+    "actor": {
+      "type": "object",
+      "properties": {
+        "actor_type": {
+          "type": "string",
+          "enum": [
+            "user",
+            "system",
+            "support_agent",
+            "reviewer",
+            "partner",
+            "webhook",
+            "batch_job"
+          ]
+        },
+        "actor_id": {
+          "type": "string"
+        },
+        "display_name": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "actor_type"
+      ],
+      "additionalProperties": false
+    },
+    "evidenceEvent": {
+      "type": "object",
+      "properties": {
+        "event_id": {
+          "$ref": "#/$defs/eventId"
+        },
+        "timestamp": {
+          "$ref": "#/$defs/dateTime"
+        },
+        "event_type": {
+          "type": "string",
+          "enum": [
+            "DOCUMENT_UPLOADED",
+            "DOCUMENT_CLASSIFIED",
+            "FIELD_EXTRACTED",
+            "FIELD_CONFIRMED",
+            "FACT_CREATED",
+            "FACT_UPDATED",
+            "QUESTION_ANSWERED",
+            "CALCULATION_RUN",
+            "OPTIMIZATION_SELECTED",
+            "VALIDATION_ERROR",
+            "VALIDATION_PASSED",
+            "XML_COMPILED",
+            "PACKAGE_CREATED",
+            "SUBMISSION_CREATED",
+            "ACK_RECEIVED",
+            "REJECT_RECEIVED",
+            "CORRECTION_APPLIED"
+          ]
+        },
+        "actor": {
+          "$ref": "#/$defs/actor"
+        },
+        "target_json_pointer": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/jsonPointer"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "summary": {
+          "type": "string",
+          "minLength": 1
+        },
+        "before": {},
+        "after": {},
+        "source_document_ids": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/documentId"
+          },
+          "uniqueItems": true
+        },
+        "computation_run_id": {
+          "type": "string"
+        },
+        "previous_event_hash": {
+          "type": "string",
+          "pattern": "^[a-fA-F0-9]{64}$"
+        },
+        "event_hash": {
+          "type": "string",
+          "pattern": "^[a-fA-F0-9]{64}$"
+        }
+      },
+      "required": [
+        "event_id",
+        "timestamp",
+        "event_type",
+        "actor",
+        "summary"
+      ],
+      "additionalProperties": false
+    },
+    "w2Box12Entry": {
+      "type": "object",
+      "properties": {
+        "code": {
+          "type": "string",
+          "pattern": "^[A-Z]{1,2}$"
+        },
+        "amount": {
+          "$ref": "#/$defs/money"
+        }
+      },
+      "required": [
+        "code",
+        "amount"
+      ],
+      "additionalProperties": false
+    },
+    "w2Box14Entry": {
+      "type": "object",
+      "properties": {
+        "description": {
+          "type": "string",
+          "minLength": 1
+        },
+        "amount": {
+          "$ref": "#/$defs/money"
+        }
+      },
+      "required": [
+        "description",
+        "amount"
+      ],
+      "additionalProperties": false
+    },
+    "w2Document": {
+      "type": "object",
+      "properties": {
+        "employee_ssn_last4": {
+          "type": "string",
+          "pattern": "^\\d{4}$"
+        },
+        "employee_name": {
+          "$ref": "#/$defs/name"
+        },
+        "employee_address": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/postalAddress"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "employer_name": {
+          "type": "string",
+          "minLength": 1
+        },
+        "employer_ein": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/einLike"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "employer_address": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/postalAddress"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "control_number": {
+          "type": "string"
+        },
+        "wages_tips_other_compensation": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/money"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "federal_income_tax_withheld": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/money"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "social_security_wages": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/money"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "social_security_tax_withheld": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/money"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "medicare_wages_and_tips": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/money"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "medicare_tax_withheld": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/money"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "social_security_tips": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/money"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "allocated_tips": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/money"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "dependent_care_benefits": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/money"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "nonqualified_plans": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/money"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "box12": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/w2Box12Entry"
+          }
+        },
+        "statutory_employee": {
+          "type": "boolean"
+        },
+        "retirement_plan": {
+          "type": "boolean"
+        },
+        "third_party_sick_pay": {
+          "type": "boolean"
+        },
+        "box14": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/w2Box14Entry"
+          }
+        },
+        "state_local_rows": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/stateWithholdingLine"
+          }
+        }
+      },
+      "required": [
+        "employer_name",
+        "box12",
+        "box14",
+        "state_local_rows"
+      ],
+      "additionalProperties": false
+    },
+    "w2gDocument": {
+      "type": "object",
+      "properties": {
+        "payer_name": {
+          "type": "string",
+          "minLength": 1
+        },
+        "payer_ein": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/einLike"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "winnings": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/money"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "federal_income_tax_withheld": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/money"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "date_won": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/isoDate"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "wager_type": {
+          "type": "string"
+        },
+        "wager_identifier": {
+          "type": "string"
+        },
+        "cash_winnings": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/money"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "noncash_winnings": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/money"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "cashier_desk_withholding": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/money"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "state_local_rows": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/stateWithholdingLine"
+          }
+        }
+      },
+      "required": [
+        "payer_name",
+        "state_local_rows"
+      ],
+      "additionalProperties": false
+    },
+    "form1099IntDocument": {
+      "type": "object",
+      "properties": {
+        "payer_name": {
+          "type": "string",
+          "minLength": 1
+        },
+        "payer_tin": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/einLike"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "recipient_account_number": {
+          "type": "string"
+        },
+        "interest_income": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/money"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "early_withdrawal_penalty": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/money"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "interest_on_us_savings_bonds_and_treasury_obligations": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/money"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "federal_income_tax_withheld": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/money"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "investment_expenses": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/money"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "foreign_tax_paid": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/money"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "foreign_country_or_us_possession": {
+          "type": "string"
+        },
+        "tax_exempt_interest": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/money"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "specified_private_activity_bond_interest": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/money"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "market_discount": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/money"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "bond_premium": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/money"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "bond_premium_on_treasury_obligations": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/money"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "bond_premium_on_tax_exempt_bond": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/money"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "tax_exempt_and_tax_credit_bond_cusip": {
+          "type": "string"
+        },
+        "state_local_rows": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/stateWithholdingLine"
+          }
+        }
+      },
+      "required": [
+        "payer_name",
+        "state_local_rows"
+      ],
+      "additionalProperties": false
+    },
+    "form1099DivDocument": {
+      "type": "object",
+      "properties": {
+        "payer_name": {
+          "type": "string",
+          "minLength": 1
+        },
+        "payer_tin": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/einLike"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "recipient_account_number": {
+          "type": "string"
+        },
+        "ordinary_dividends": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/money"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "qualified_dividends": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/money"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "total_capital_gain_distributions": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/money"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "unrecaptured_section_1250_gain": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/money"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "section_1202_gain": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/money"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "collectibles_28_percent_gain": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/money"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "nondividend_distributions": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/money"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "federal_income_tax_withheld": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/money"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "section_199a_dividends": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/money"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "investment_expenses": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/money"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "foreign_tax_paid": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/money"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "foreign_country_or_us_possession": {
+          "type": "string"
+        },
+        "cash_liquidation_distributions": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/money"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "noncash_liquidation_distributions": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/money"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "exempt_interest_dividends": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/money"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "specified_private_activity_bond_interest_dividends": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/money"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "state_local_rows": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/stateWithholdingLine"
+          }
+        }
+      },
+      "required": [
+        "payer_name",
+        "state_local_rows"
+      ],
+      "additionalProperties": false
+    },
+    "brokerTransaction": {
+      "type": "object",
+      "properties": {
+        "transaction_id": {
+          "type": "string"
+        },
+        "asset_description": {
+          "type": "string",
+          "minLength": 1
+        },
+        "date_acquired": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/isoDate"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "date_sold": {
+          "$ref": "#/$defs/isoDate"
+        },
+        "proceeds": {
+          "$ref": "#/$defs/money"
+        },
+        "cost_basis": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/money"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "accrued_market_discount": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/money"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "wash_sale_loss_disallowed": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/money"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "gain_or_loss": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/money"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "basis_reported_to_irs": {
+          "type": [
+            "boolean",
+            "null"
+          ]
+        },
+        "term": {
+          "type": "string",
+          "enum": [
+            "short",
+            "long",
+            "unknown"
+          ]
+        },
+        "form_8949_box": {
+          "type": "string",
+          "enum": [
+            "A",
+            "B",
+            "C",
+            "D",
+            "E",
+            "F",
+            "unknown"
+          ]
+        },
+        "country_or_issuer": {
+          "type": "string"
+        },
+        "notes": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "asset_description",
+        "date_sold",
+        "proceeds",
+        "term",
+        "form_8949_box"
+      ],
+      "additionalProperties": false
+    },
+    "brokerSalesSummary": {
+      "type": "object",
+      "properties": {
+        "summary_id": {
+          "type": "string"
+        },
+        "form_8949_box": {
+          "type": "string",
+          "enum": [
+            "A",
+            "B",
+            "C",
+            "D",
+            "E",
+            "F"
+          ]
+        },
+        "term": {
+          "type": "string",
+          "enum": [
+            "short",
+            "long"
+          ]
+        },
+        "proceeds": {
+          "$ref": "#/$defs/money"
+        },
+        "cost_basis": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/money"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "adjustments": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/money"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "gain_or_loss": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/money"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "number_of_transactions": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "statement_attachment_ref": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "form_8949_box",
+        "term",
+        "proceeds",
+        "number_of_transactions"
+      ],
+      "additionalProperties": false
+    },
+    "form1099BDocument": {
+      "type": "object",
+      "properties": {
+        "payer_name": {
+          "type": "string",
+          "minLength": 1
+        },
+        "payer_tin": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/einLike"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "recipient_account_number": {
+          "type": "string"
+        },
+        "federal_income_tax_withheld": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/money"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "profit_or_loss_realized_in_2025_on_closed_contracts": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/money"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "unrealized_profit_or_loss_on_open_contracts_12312024": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/money"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "unrealized_profit_or_loss_on_open_contracts_12312025": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/money"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "aggregate_profit_or_loss_on_contracts": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/money"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "bartering": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/money"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "transactions": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/brokerTransaction"
+          }
+        },
+        "sales_summaries": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/brokerSalesSummary"
+          }
+        },
+        "state_local_rows": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/stateWithholdingLine"
+          }
+        }
+      },
+      "required": [
+        "payer_name",
+        "transactions",
+        "sales_summaries",
+        "state_local_rows"
+      ],
+      "additionalProperties": false
+    },
+    "form1099RDocument": {
+      "type": "object",
+      "properties": {
+        "payer_name": {
+          "type": "string",
+          "minLength": 1
+        },
+        "payer_tin": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/einLike"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "recipient_account_number": {
+          "type": "string"
+        },
+        "gross_distribution": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/money"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "taxable_amount": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/money"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "taxable_amount_not_determined": {
+          "type": "boolean"
+        },
+        "total_distribution": {
+          "type": "boolean"
+        },
+        "capital_gain": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/money"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "federal_income_tax_withheld": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/money"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "employee_contributions_or_insurance_premiums": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/money"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "net_unrealized_appreciation": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/money"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "distribution_code_1": {
+          "type": "string"
+        },
+        "distribution_code_2": {
+          "type": "string"
+        },
+        "ira_sep_simple": {
+          "type": "boolean"
+        },
+        "first_year_roth_designated_account": {
+          "type": "integer",
+          "minimum": 1900,
+          "maximum": 2100
+        },
+        "state_local_rows": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/stateWithholdingLine"
+          }
+        }
+      },
+      "required": [
+        "payer_name",
+        "taxable_amount_not_determined",
+        "total_distribution",
+        "ira_sep_simple",
+        "state_local_rows"
+      ],
+      "additionalProperties": false
+    },
+    "form1099GDocument": {
+      "type": "object",
+      "properties": {
+        "payer_name": {
+          "type": "string",
+          "minLength": 1
+        },
+        "payer_state_or_id": {
+          "type": "string"
+        },
+        "unemployment_compensation": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/money"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "state_or_local_income_tax_refunds": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/money"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "market_gain": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/money"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "agricultural_payments": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/money"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "taxable_grants": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/money"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "federal_income_tax_withheld": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/money"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "trade_or_business_income_tax_credits": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/money"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "required": [
+        "payer_name"
+      ],
+      "additionalProperties": false
+    },
+    "form1099NecDocument": {
+      "type": "object",
+      "properties": {
+        "payer_name": {
+          "type": "string",
+          "minLength": 1
+        },
+        "payer_tin": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/einLike"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "nonemployee_compensation": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/money"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "federal_income_tax_withheld": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/money"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "payer_direct_sales": {
+          "type": "boolean"
+        },
+        "state_local_rows": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/stateWithholdingLine"
+          }
+        }
+      },
+      "required": [
+        "payer_name",
+        "payer_direct_sales",
+        "state_local_rows"
+      ],
+      "additionalProperties": false
+    },
+    "form1099MiscDocument": {
+      "type": "object",
+      "properties": {
+        "payer_name": {
+          "type": "string",
+          "minLength": 1
+        },
+        "payer_tin": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/einLike"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "rents": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/money"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "royalties": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/money"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "other_income": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/money"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "federal_income_tax_withheld": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/money"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "fishing_boat_proceeds": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/money"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "medical_and_health_care_payments": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/money"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "crop_insurance_proceeds": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/money"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "gross_proceeds_paid_to_attorney": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/money"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "substitute_payments_in_lieu_of_dividends_or_interest": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/money"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "section_409a_deferrals": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/money"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "nonqualified_deferred_compensation": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/money"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "state_local_rows": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/stateWithholdingLine"
+          }
+        }
+      },
+      "required": [
+        "payer_name",
+        "state_local_rows"
+      ],
+      "additionalProperties": false
+    },
+    "form1099KDocument": {
+      "type": "object",
+      "properties": {
+        "payer_name": {
+          "type": "string",
+          "minLength": 1
+        },
+        "payer_tin": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/einLike"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "gross_amount_of_payment_card_or_third_party_network_transactions": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/money"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "number_of_payment_transactions": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "card_not_present_transactions": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/money"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "monthly_amounts": {
+          "type": "object",
+          "properties": {
+            "january": {
+              "anyOf": [
+                {
+                  "$ref": "#/$defs/money"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "february": {
+              "anyOf": [
+                {
+                  "$ref": "#/$defs/money"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "march": {
+              "anyOf": [
+                {
+                  "$ref": "#/$defs/money"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "april": {
+              "anyOf": [
+                {
+                  "$ref": "#/$defs/money"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "may": {
+              "anyOf": [
+                {
+                  "$ref": "#/$defs/money"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "june": {
+              "anyOf": [
+                {
+                  "$ref": "#/$defs/money"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "july": {
+              "anyOf": [
+                {
+                  "$ref": "#/$defs/money"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "august": {
+              "anyOf": [
+                {
+                  "$ref": "#/$defs/money"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "september": {
+              "anyOf": [
+                {
+                  "$ref": "#/$defs/money"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "october": {
+              "anyOf": [
+                {
+                  "$ref": "#/$defs/money"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "november": {
+              "anyOf": [
+                {
+                  "$ref": "#/$defs/money"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "december": {
+              "anyOf": [
+                {
+                  "$ref": "#/$defs/money"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            }
+          },
+          "additionalProperties": false
+        },
+        "federal_income_tax_withheld": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/money"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "state_local_rows": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/stateWithholdingLine"
+          }
+        }
+      },
+      "required": [
+        "payer_name",
+        "monthly_amounts",
+        "state_local_rows"
+      ],
+      "additionalProperties": false
+    },
+    "form1098Document": {
+      "type": "object",
+      "properties": {
+        "lender_name": {
+          "type": "string",
+          "minLength": 1
+        },
+        "lender_tin": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/einLike"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "mortgage_interest_received": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/money"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "outstanding_mortgage_principal": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/money"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "mortgage_origination_date": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/isoDate"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "refund_of_overpaid_interest": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/money"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "mortgage_insurance_premiums": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/money"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "points_paid_on_purchase_of_principal_residence": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/money"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "property_address": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/postalAddress"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "number_of_properties_securing_mortgage": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "other_information": {
+          "type": "string"
+        },
+        "real_estate_taxes_paid": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/money"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "required": [
+        "lender_name"
+      ],
+      "additionalProperties": false
+    },
+    "form1098EDocument": {
+      "type": "object",
+      "properties": {
+        "lender_name": {
+          "type": "string",
+          "minLength": 1
+        },
+        "lender_tin": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/einLike"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "student_loan_interest_received_by_lender": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/money"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "required": [
+        "lender_name"
+      ],
+      "additionalProperties": false
+    },
+    "form1098TDocument": {
+      "type": "object",
+      "properties": {
+        "filer_name": {
+          "type": "string",
+          "minLength": 1
+        },
+        "filer_tin": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/einLike"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "student_name": {
+          "$ref": "#/$defs/name"
+        },
+        "payments_received_for_qualified_tuition_and_related_expenses": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/money"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "adjustments_made_for_a_prior_year": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/money"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "scholarships_or_grants": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/money"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "adjustments_to_scholarships_or_grants_for_a_prior_year": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/money"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "student_half_time": {
+          "type": "boolean"
+        },
+        "graduate_student": {
+          "type": "boolean"
+        },
+        "insurance_contract_reimbursement_or_refund": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/money"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "required": [
+        "filer_name",
+        "student_name",
+        "student_half_time",
+        "graduate_student"
+      ],
+      "additionalProperties": false
+    },
+    "monthlyMarketplaceRow": {
+      "type": "object",
+      "properties": {
+        "month": {
+          "type": "string",
+          "enum": [
+            "annual",
+            "january",
+            "february",
+            "march",
+            "april",
+            "may",
+            "june",
+            "july",
+            "august",
+            "september",
+            "october",
+            "november",
+            "december"
+          ]
+        },
+        "enrollment_premium": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/money"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "second_lowest_cost_silver_plan_premium": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/money"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "advance_payment_of_premium_tax_credit": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/money"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "required": [
+        "month"
+      ],
+      "additionalProperties": false
+    },
+    "form1095ADocument": {
+      "type": "object",
+      "properties": {
+        "marketplace_identifier": {
+          "type": "string",
+          "minLength": 1
+        },
+        "policy_number": {
+          "type": "string"
+        },
+        "recipient_name": {
+          "$ref": "#/$defs/name"
+        },
+        "recipient_ssn_last4": {
+          "type": "string",
+          "pattern": "^\\d{4}$"
+        },
+        "household_members": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "name": {
+                "$ref": "#/$defs/name"
+              },
+              "taxpayer_or_dependent": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "name"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "monthly_rows": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/monthlyMarketplaceRow"
+          }
+        }
+      },
+      "required": [
+        "marketplace_identifier",
+        "recipient_name",
+        "household_members",
+        "monthly_rows"
+      ],
+      "additionalProperties": false
+    },
+    "form1099SADocument": {
+      "type": "object",
+      "properties": {
+        "trustee_or_payer_name": {
+          "type": "string",
+          "minLength": 1
+        },
+        "gross_distribution": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/money"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "earnings_on_excess_contributions": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/money"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "distribution_code": {
+          "type": "string"
+        },
+        "fair_market_value_on_date_of_death": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/money"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "hsa_msa_type": {
+          "type": "string",
+          "enum": [
+            "hsa",
+            "archer_msa",
+            "ma_msa",
+            "unknown"
+          ]
+        }
+      },
+      "required": [
+        "trustee_or_payer_name",
+        "hsa_msa_type"
+      ],
+      "additionalProperties": false
+    },
+    "form5498SADocument": {
+      "type": "object",
+      "properties": {
+        "trustee_or_payer_name": {
+          "type": "string",
+          "minLength": 1
+        },
+        "employee_or_self_employed_person_contributions": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/money"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "total_contributions_made_in_2026_for_2025": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/money"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "employer_contributions": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/money"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "rollover_contributions": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/money"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "fair_market_value": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/money"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "hsa_msa_type": {
+          "type": "string",
+          "enum": [
+            "hsa",
+            "archer_msa",
+            "ma_msa",
+            "unknown"
+          ]
+        }
+      },
+      "required": [
+        "trustee_or_payer_name",
+        "hsa_msa_type"
+      ],
+      "additionalProperties": false
+    },
+    "form1099QDocument": {
+      "type": "object",
+      "properties": {
+        "payer_name": {
+          "type": "string",
+          "minLength": 1
+        },
+        "gross_distribution": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/money"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "earnings": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/money"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "basis": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/money"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "recipient_is_designated_beneficiary": {
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "payer_name",
+        "recipient_is_designated_beneficiary"
+      ],
+      "additionalProperties": false
+    },
+    "ssa1099Document": {
+      "type": "object",
+      "properties": {
+        "beneficiary_name": {
+          "$ref": "#/$defs/name"
+        },
+        "benefits_paid_in_2025": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/money"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "benefits_repaid_in_2025": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/money"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "net_benefits_for_2025": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/money"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "benefits_for_prior_years_paid_in_2025": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/money"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "medicare_part_b_premiums": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/money"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "medicare_part_d_premiums": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/money"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "required": [
+        "beneficiary_name"
+      ],
+      "additionalProperties": false
+    },
+    "k1LineAmount": {
+      "type": "object",
+      "properties": {
+        "code": {
+          "type": "string"
+        },
+        "description": {
+          "type": "string",
+          "minLength": 1
+        },
+        "amount": {
+          "$ref": "#/$defs/money"
+        }
+      },
+      "required": [
+        "description",
+        "amount"
+      ],
+      "additionalProperties": false
+    },
+    "k1Document": {
+      "type": "object",
+      "properties": {
+        "k1_type": {
+          "type": "string",
+          "enum": [
+            "1065",
+            "1120S",
+            "1041"
+          ]
+        },
+        "entity_name": {
+          "type": "string",
+          "minLength": 1
+        },
+        "entity_ein": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/einLike"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "partner_or_shareholder_or_beneficiary_name": {
+          "$ref": "#/$defs/name"
+        },
+        "ownership_beginning_percent": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/percentage"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "ownership_ending_percent": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/percentage"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "ordinary_business_income_or_loss": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/money"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "net_rental_real_estate_income_or_loss": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/money"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "other_net_rental_income_or_loss": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/money"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "interest_income": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/money"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "ordinary_dividends": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/money"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "qualified_dividends": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/money"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "royalties": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/money"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "net_short_term_capital_gain_or_loss": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/money"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "net_long_term_capital_gain_or_loss": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/money"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "section_1231_gain_or_loss": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/money"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "other_income_or_loss": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/money"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "section_179_deduction": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/money"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "self_employment_earnings_or_loss": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/money"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "credits": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/k1LineAmount"
+          }
+        },
+        "other_items": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/k1LineAmount"
+          }
+        },
+        "state_schedules_attached": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/stateCode"
+          }
+        }
+      },
+      "required": [
+        "k1_type",
+        "entity_name",
+        "partner_or_shareholder_or_beneficiary_name",
+        "credits",
+        "other_items",
+        "state_schedules_attached"
+      ],
+      "additionalProperties": false
+    },
+    "otherFederalDocument": {
+      "type": "object",
+      "properties": {
+        "form_code": {
+          "type": "string",
+          "minLength": 1
+        },
+        "issuer_name": {
+          "type": "string"
+        },
+        "key_values": {
+          "type": "object",
+          "additionalProperties": {}
+        },
+        "notes": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "form_code",
+        "key_values"
+      ],
+      "additionalProperties": false
+    },
+    "documentType": {
+      "type": "string",
+      "enum": [
+        "FORM_W2",
+        "FORM_W2G",
+        "FORM_1099_INT",
+        "FORM_1099_DIV",
+        "FORM_1099_B",
+        "FORM_1099_R",
+        "FORM_1099_G",
+        "FORM_1099_NEC",
+        "FORM_1099_MISC",
+        "FORM_1099_K",
+        "FORM_1098",
+        "FORM_1098_E",
+        "FORM_1098_T",
+        "FORM_1095_A",
+        "FORM_1099_SA",
+        "FORM_5498_SA",
+        "FORM_1099_Q",
+        "FORM_SSA_1099",
+        "SCHEDULE_K1_1065",
+        "SCHEDULE_K1_1120S",
+        "SCHEDULE_K1_1041",
+        "OTHER_FEDERAL_DOCUMENT"
+      ]
+    },
+    "sourceDocument": {
+      "type": "object",
+      "properties": {
+        "document_id": {
+          "$ref": "#/$defs/documentId"
+        },
+        "document_type": {
+          "$ref": "#/$defs/documentType"
+        },
+        "tax_year": {
+          "type": "integer",
+          "const": 2025
+        },
+        "issuer_name": {
+          "type": "string"
+        },
+        "recipient_person_ids": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/personId"
+          },
+          "uniqueItems": true
+        },
+        "source_file": {
+          "$ref": "#/$defs/sourceFileRef"
+        },
+        "parse_status": {
+          "type": "string",
+          "enum": [
+            "classified",
+            "parsed",
+            "reviewed",
+            "rejected",
+            "unreadable",
+            "manual_only"
+          ]
+        },
+        "overall_confidence": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        },
+        "extracted_fields": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/extractedField"
+          }
+        },
+        "payload": {
+          "type": "object"
+        },
+        "raw_text_excerpt": {
+          "type": "string"
+        },
+        "notes": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "document_id",
+        "document_type",
+        "tax_year",
+        "recipient_person_ids",
+        "source_file",
+        "parse_status",
+        "extracted_fields",
+        "payload"
+      ],
+      "additionalProperties": false,
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "document_type": {
+                "const": "FORM_W2"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "payload": {
+                "$ref": "#/$defs/w2Document"
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "document_type": {
+                "const": "FORM_W2G"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "payload": {
+                "$ref": "#/$defs/w2gDocument"
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "document_type": {
+                "const": "FORM_1099_INT"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "payload": {
+                "$ref": "#/$defs/form1099IntDocument"
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "document_type": {
+                "const": "FORM_1099_DIV"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "payload": {
+                "$ref": "#/$defs/form1099DivDocument"
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "document_type": {
+                "const": "FORM_1099_B"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "payload": {
+                "$ref": "#/$defs/form1099BDocument"
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "document_type": {
+                "const": "FORM_1099_R"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "payload": {
+                "$ref": "#/$defs/form1099RDocument"
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "document_type": {
+                "const": "FORM_1099_G"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "payload": {
+                "$ref": "#/$defs/form1099GDocument"
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "document_type": {
+                "const": "FORM_1099_NEC"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "payload": {
+                "$ref": "#/$defs/form1099NecDocument"
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "document_type": {
+                "const": "FORM_1099_MISC"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "payload": {
+                "$ref": "#/$defs/form1099MiscDocument"
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "document_type": {
+                "const": "FORM_1099_K"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "payload": {
+                "$ref": "#/$defs/form1099KDocument"
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "document_type": {
+                "const": "FORM_1098"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "payload": {
+                "$ref": "#/$defs/form1098Document"
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "document_type": {
+                "const": "FORM_1098_E"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "payload": {
+                "$ref": "#/$defs/form1098EDocument"
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "document_type": {
+                "const": "FORM_1098_T"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "payload": {
+                "$ref": "#/$defs/form1098TDocument"
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "document_type": {
+                "const": "FORM_1095_A"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "payload": {
+                "$ref": "#/$defs/form1095ADocument"
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "document_type": {
+                "const": "FORM_1099_SA"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "payload": {
+                "$ref": "#/$defs/form1099SADocument"
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "document_type": {
+                "const": "FORM_5498_SA"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "payload": {
+                "$ref": "#/$defs/form5498SADocument"
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "document_type": {
+                "const": "FORM_1099_Q"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "payload": {
+                "$ref": "#/$defs/form1099QDocument"
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "document_type": {
+                "const": "FORM_SSA_1099"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "payload": {
+                "$ref": "#/$defs/ssa1099Document"
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "document_type": {
+                "const": "SCHEDULE_K1_1065"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "payload": {
+                "$ref": "#/$defs/k1Document"
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "document_type": {
+                "const": "SCHEDULE_K1_1120S"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "payload": {
+                "$ref": "#/$defs/k1Document"
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "document_type": {
+                "const": "SCHEDULE_K1_1041"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "payload": {
+                "$ref": "#/$defs/k1Document"
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "document_type": {
+                "const": "OTHER_FEDERAL_DOCUMENT"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "payload": {
+                "$ref": "#/$defs/otherFederalDocument"
+              }
+            }
+          }
+        }
+      ]
+    },
+    "withholdingFact": {
+      "type": "object",
+      "properties": {
+        "withholding_id": {
+          "type": "string"
+        },
+        "person_id": {
+          "$ref": "#/$defs/personId"
+        },
+        "jurisdiction": {
+          "type": "string",
+          "enum": [
+            "federal",
+            "state",
+            "local"
+          ]
+        },
+        "state_code": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/stateCode"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "locality_name": {
+          "type": "string"
+        },
+        "source_document_id": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/documentId"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "amount": {
+          "$ref": "#/$defs/money"
+        },
+        "description": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "person_id",
+        "jurisdiction",
+        "amount"
+      ],
+      "additionalProperties": false
+    },
+    "wageFact": {
+      "type": "object",
+      "properties": {
+        "wage_id": {
+          "type": "string"
+        },
+        "person_id": {
+          "$ref": "#/$defs/personId"
+        },
+        "source_document_id": {
+          "$ref": "#/$defs/documentId"
+        },
+        "employer_name": {
+          "type": "string",
+          "minLength": 1
+        },
+        "employer_ein": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/einLike"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "wages_tips_other_compensation": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/money"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "federal_income_tax_withheld": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/money"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "social_security_wages": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/money"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "social_security_tax_withheld": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/money"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "medicare_wages_and_tips": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/money"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "medicare_tax_withheld": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/money"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "box12": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/w2Box12Entry"
+          }
+        },
+        "box14": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/w2Box14Entry"
+          }
+        },
+        "state_local_rows": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/stateWithholdingLine"
+          }
+        },
+        "is_household_employee": {
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "person_id",
+        "source_document_id",
+        "employer_name",
+        "box12",
+        "box14",
+        "state_local_rows",
+        "is_household_employee"
+      ],
+      "additionalProperties": false
+    },
+    "interestFact": {
+      "type": "object",
+      "properties": {
+        "interest_id": {
+          "type": "string"
+        },
+        "person_id": {
+          "$ref": "#/$defs/personId"
+        },
+        "source_document_id": {
+          "$ref": "#/$defs/documentId"
+        },
+        "payer_name": {
+          "type": "string",
+          "minLength": 1
+        },
+        "interest_income": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/money"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "tax_exempt_interest": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/money"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "us_savings_bonds_and_treasury_interest": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/money"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "federal_income_tax_withheld": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/money"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "foreign_tax_paid": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/money"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "state_local_rows": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/stateWithholdingLine"
+          }
+        }
+      },
+      "required": [
+        "person_id",
+        "source_document_id",
+        "payer_name",
+        "state_local_rows"
+      ],
+      "additionalProperties": false
+    },
+    "dividendFact": {
+      "type": "object",
+      "properties": {
+        "dividend_id": {
+          "type": "string"
+        },
+        "person_id": {
+          "$ref": "#/$defs/personId"
+        },
+        "source_document_id": {
+          "$ref": "#/$defs/documentId"
+        },
+        "payer_name": {
+          "type": "string",
+          "minLength": 1
+        },
+        "ordinary_dividends": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/money"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "qualified_dividends": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/money"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "capital_gain_distributions": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/money"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "section_199a_dividends": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/money"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "federal_income_tax_withheld": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/money"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "foreign_tax_paid": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/money"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "exempt_interest_dividends": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/money"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "state_local_rows": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/stateWithholdingLine"
+          }
+        }
+      },
+      "required": [
+        "person_id",
+        "source_document_id",
+        "payer_name",
+        "state_local_rows"
+      ],
+      "additionalProperties": false
+    },
+    "capitalTransaction": {
+      "type": "object",
+      "properties": {
+        "capital_transaction_id": {
+          "type": "string"
+        },
+        "person_id": {
+          "$ref": "#/$defs/personId"
+        },
+        "source_document_id": {
+          "$ref": "#/$defs/documentId"
+        },
+        "asset_description": {
+          "type": "string",
+          "minLength": 1
+        },
+        "date_acquired": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/isoDate"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "date_sold": {
+          "$ref": "#/$defs/isoDate"
+        },
+        "proceeds": {
+          "$ref": "#/$defs/money"
+        },
+        "cost_basis": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/money"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "adjustments": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/money"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "adjustment_description": {
+          "type": "string"
+        },
+        "gain_or_loss": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/money"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "term": {
+          "type": "string",
+          "enum": [
+            "short",
+            "long",
+            "unknown"
+          ]
+        },
+        "form_8949_box": {
+          "type": "string",
+          "enum": [
+            "A",
+            "B",
+            "C",
+            "D",
+            "E",
+            "F",
+            "summary"
+          ]
+        },
+        "basis_reported_to_irs": {
+          "type": [
+            "boolean",
+            "null"
+          ]
+        },
+        "statement_attachment_ref": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "person_id",
+        "source_document_id",
+        "asset_description",
+        "date_sold",
+        "proceeds",
+        "term",
+        "form_8949_box"
+      ],
+      "additionalProperties": false
+    },
+    "retirementDistributionFact": {
+      "type": "object",
+      "properties": {
+        "distribution_id": {
+          "type": "string"
+        },
+        "person_id": {
+          "$ref": "#/$defs/personId"
+        },
+        "source_document_id": {
+          "$ref": "#/$defs/documentId"
+        },
+        "payer_name": {
+          "type": "string",
+          "minLength": 1
+        },
+        "gross_distribution": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/money"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "taxable_amount": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/money"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "federal_income_tax_withheld": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/money"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "distribution_codes": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "ira_sep_simple": {
+          "type": "boolean"
+        },
+        "state_local_rows": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/stateWithholdingLine"
+          }
+        }
+      },
+      "required": [
+        "person_id",
+        "source_document_id",
+        "payer_name",
+        "distribution_codes",
+        "ira_sep_simple",
+        "state_local_rows"
+      ],
+      "additionalProperties": false
+    },
+    "unemploymentFact": {
+      "type": "object",
+      "properties": {
+        "unemployment_id": {
+          "type": "string"
+        },
+        "person_id": {
+          "$ref": "#/$defs/personId"
+        },
+        "source_document_id": {
+          "$ref": "#/$defs/documentId"
+        },
+        "payer_name": {
+          "type": "string",
+          "minLength": 1
+        },
+        "unemployment_compensation": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/money"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "federal_income_tax_withheld": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/money"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "state_code": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/stateCode"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "required": [
+        "person_id",
+        "source_document_id",
+        "payer_name"
+      ],
+      "additionalProperties": false
+    },
+    "socialSecurityFact": {
+      "type": "object",
+      "properties": {
+        "social_security_id": {
+          "type": "string"
+        },
+        "person_id": {
+          "$ref": "#/$defs/personId"
+        },
+        "source_document_id": {
+          "$ref": "#/$defs/documentId"
+        },
+        "benefits_paid": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/money"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "benefits_repaid": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/money"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "net_benefits": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/money"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "medicare_part_b_premiums": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/money"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "medicare_part_d_premiums": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/money"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "required": [
+        "person_id",
+        "source_document_id"
+      ],
+      "additionalProperties": false
+    },
+    "nonemployeeCompensationFact": {
+      "type": "object",
+      "properties": {
+        "nec_id": {
+          "type": "string"
+        },
+        "person_id": {
+          "$ref": "#/$defs/personId"
+        },
+        "source_document_id": {
+          "$ref": "#/$defs/documentId"
+        },
+        "payer_name": {
+          "type": "string",
+          "minLength": 1
+        },
+        "amount": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/money"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "federal_income_tax_withheld": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/money"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "state_local_rows": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/stateWithholdingLine"
+          }
+        },
+        "linked_business_id": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "person_id",
+        "source_document_id",
+        "payer_name",
+        "state_local_rows"
+      ],
+      "additionalProperties": false
+    },
+    "misc1099IncomeFact": {
+      "type": "object",
+      "properties": {
+        "misc_income_id": {
+          "type": "string"
+        },
+        "person_id": {
+          "$ref": "#/$defs/personId"
+        },
+        "source_document_id": {
+          "$ref": "#/$defs/documentId"
+        },
+        "payer_name": {
+          "type": "string",
+          "minLength": 1
+        },
+        "income_category": {
+          "type": "string",
+          "enum": [
+            "rents",
+            "royalties",
+            "other_income",
+            "attorney_fees",
+            "crop_insurance",
+            "medical_payments",
+            "substitute_payments",
+            "payment_settlement",
+            "wagering",
+            "other"
+          ]
+        },
+        "amount": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/money"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "federal_income_tax_withheld": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/money"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "state_local_rows": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/stateWithholdingLine"
+          }
+        }
+      },
+      "required": [
+        "person_id",
+        "source_document_id",
+        "payer_name",
+        "income_category",
+        "state_local_rows"
+      ],
+      "additionalProperties": false
+    },
+    "businessExpense": {
+      "type": "object",
+      "properties": {
+        "category_code": {
+          "type": "string"
+        },
+        "description": {
+          "type": "string",
+          "minLength": 1
+        },
+        "amount": {
+          "$ref": "#/$defs/money"
+        }
+      },
+      "required": [
+        "description",
+        "amount"
+      ],
+      "additionalProperties": false
+    },
+    "scheduleCBusiness": {
+      "type": "object",
+      "properties": {
+        "business_id": {
+          "type": "string"
+        },
+        "owner_person_id": {
+          "$ref": "#/$defs/personId"
+        },
+        "business_name": {
+          "type": "string"
+        },
+        "business_ein": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/einLike"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "principal_business_code": {
+          "type": "string"
+        },
+        "accounting_method": {
+          "type": "string",
+          "enum": [
+            "cash",
+            "accrual",
+            "other"
+          ]
+        },
+        "materially_participates": {
+          "type": "boolean"
+        },
+        "gross_receipts_or_sales": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/money"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "returns_and_allowances": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/money"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "cost_of_goods_sold": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/money"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "other_business_income": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/money"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "expenses": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/businessExpense"
+          }
+        },
+        "home_office_deduction": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/money"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "vehicle_expense_method": {
+          "type": "string",
+          "enum": [
+            "standard_mileage",
+            "actual",
+            "none"
+          ]
+        },
+        "source_document_ids": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/documentId"
+          },
+          "uniqueItems": true
+        },
+        "state_allocations": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/stateAllocation"
+          }
+        }
+      },
+      "required": [
+        "owner_person_id",
+        "materially_participates",
+        "expenses",
+        "source_document_ids",
+        "state_allocations"
+      ],
+      "additionalProperties": false
+    },
+    "scheduleEActivity": {
+      "type": "object",
+      "properties": {
+        "activity_id": {
+          "type": "string"
+        },
+        "owner_person_id": {
+          "$ref": "#/$defs/personId"
+        },
+        "activity_type": {
+          "type": "string",
+          "enum": [
+            "rental_real_estate",
+            "royalty",
+            "partnership_k1",
+            "s_corp_k1",
+            "estate_or_trust_k1",
+            "farm_rental",
+            "other"
+          ]
+        },
+        "entity_name": {
+          "type": "string",
+          "minLength": 1
+        },
+        "entity_ein": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/einLike"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "materially_participates": {
+          "type": [
+            "boolean",
+            "null"
+          ]
+        },
+        "income_items": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/namedAmount"
+          }
+        },
+        "expense_items": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/namedAmount"
+          }
+        },
+        "source_document_ids": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/documentId"
+          },
+          "uniqueItems": true
+        },
+        "state_allocations": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/stateAllocation"
+          }
+        }
+      },
+      "required": [
+        "owner_person_id",
+        "activity_type",
+        "entity_name",
+        "income_items",
+        "expense_items",
+        "source_document_ids",
+        "state_allocations"
+      ],
+      "additionalProperties": false
+    },
+    "otherIncomeItem": {
+      "type": "object",
+      "properties": {
+        "other_income_id": {
+          "type": "string"
+        },
+        "person_id": {
+          "$ref": "#/$defs/personId"
+        },
+        "description": {
+          "type": "string",
+          "minLength": 1
+        },
+        "amount": {
+          "$ref": "#/$defs/money"
+        },
+        "schedule1_category": {
+          "type": "string"
+        },
+        "source_document_ids": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/documentId"
+          },
+          "uniqueItems": true
+        },
+        "state_allocations": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/stateAllocation"
+          }
+        }
+      },
+      "required": [
+        "person_id",
+        "description",
+        "amount",
+        "source_document_ids",
+        "state_allocations"
+      ],
+      "additionalProperties": false
+    },
+    "mortgageInterestFact": {
+      "type": "object",
+      "properties": {
+        "mortgage_interest_id": {
+          "type": "string"
+        },
+        "source_document_id": {
+          "$ref": "#/$defs/documentId"
+        },
+        "lender_name": {
+          "type": "string",
+          "minLength": 1
+        },
+        "mortgage_interest_received": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/money"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "points_paid": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/money"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "mortgage_insurance_premiums": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/money"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "real_estate_taxes_paid": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/money"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "property_address": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/postalAddress"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "secured_debt_used_for_home": {
+          "type": [
+            "boolean",
+            "null"
+          ]
+        }
+      },
+      "required": [
+        "source_document_id",
+        "lender_name"
+      ],
+      "additionalProperties": false
+    },
+    "careProvider": {
+      "type": "object",
+      "properties": {
+        "provider_id": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string",
+          "minLength": 1
+        },
+        "tin_token": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/storageUri"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "last4_tin": {
+          "type": "string",
+          "pattern": "^\\d{4}$"
+        },
+        "address": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/postalAddress"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "required": [
+        "name"
+      ],
+      "additionalProperties": false
+    },
+    "careExpense": {
+      "type": "object",
+      "properties": {
+        "person_id": {
+          "$ref": "#/$defs/personId"
+        },
+        "provider_id": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "amount": {
+          "$ref": "#/$defs/money"
+        },
+        "months_of_care": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 12
+        }
+      },
+      "required": [
+        "person_id",
+        "amount"
+      ],
+      "additionalProperties": false
+    },
+    "educationStudent": {
+      "type": "object",
+      "properties": {
+        "student_person_id": {
+          "$ref": "#/$defs/personId"
+        },
+        "source_document_ids": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/documentId"
+          },
+          "uniqueItems": true
+        },
+        "qualified_expenses_paid": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/money"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "tax_free_assistance": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/money"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "is_aotc_candidate": {
+          "type": "boolean"
+        },
+        "is_llc_candidate": {
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "student_person_id",
+        "source_document_ids",
+        "is_aotc_candidate",
+        "is_llc_candidate"
+      ],
+      "additionalProperties": false
+    },
+    "marketplacePolicy": {
+      "type": "object",
+      "properties": {
+        "policy_id": {
+          "type": "string"
+        },
+        "source_document_id": {
+          "$ref": "#/$defs/documentId"
+        },
+        "marketplace_identifier": {
+          "type": "string",
+          "minLength": 1
+        },
+        "policy_number": {
+          "type": "string"
+        },
+        "covered_person_ids": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/personId"
+          },
+          "uniqueItems": true
+        },
+        "monthly_rows": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/monthlyMarketplaceRow"
+          }
+        }
+      },
+      "required": [
+        "source_document_id",
+        "marketplace_identifier",
+        "covered_person_ids",
+        "monthly_rows"
+      ],
+      "additionalProperties": false
+    },
+    "energyProject": {
+      "type": "object",
+      "properties": {
+        "project_id": {
+          "type": "string"
+        },
+        "property_address": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/postalAddress"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "credit_category": {
+          "type": "string",
+          "enum": [
+            "solar_electric",
+            "solar_water_heating",
+            "small_wind",
+            "geothermal_heat_pump",
+            "battery_storage",
+            "energy_efficient_home_improvement",
+            "other"
+          ]
+        },
+        "qualified_cost": {
+          "$ref": "#/$defs/money"
+        },
+        "placed_in_service_date": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/isoDate"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "required": [
+        "credit_category",
+        "qualified_cost"
+      ],
+      "additionalProperties": false
+    },
+    "vehicleCreditClaim": {
+      "type": "object",
+      "properties": {
+        "vehicle_claim_id": {
+          "type": "string"
+        },
+        "vin_last8": {
+          "type": "string",
+          "minLength": 6,
+          "maxLength": 17
+        },
+        "clean_vehicle_type": {
+          "type": "string",
+          "enum": [
+            "new_clean_vehicle",
+            "previously_owned_clean_vehicle",
+            "qualified_commercial_clean_vehicle",
+            "other"
+          ]
+        },
+        "purchase_date": {
+          "$ref": "#/$defs/isoDate"
+        },
+        "msrp_or_sales_price": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/money"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "tentative_credit": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/money"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "required": [
+        "clean_vehicle_type",
+        "purchase_date"
+      ],
+      "additionalProperties": false
+    },
+    "estimatedPayment": {
+      "type": "object",
+      "properties": {
+        "payment_id": {
+          "type": "string"
+        },
+        "jurisdiction": {
+          "type": "string",
+          "enum": [
+            "federal",
+            "state",
+            "local"
+          ]
+        },
+        "state_code": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/stateCode"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "amount": {
+          "$ref": "#/$defs/money"
+        },
+        "paid_date": {
+          "$ref": "#/$defs/isoDate"
+        },
+        "quarter": {
+          "type": "string",
+          "enum": [
+            "Q1",
+            "Q2",
+            "Q3",
+            "Q4",
+            "other"
+          ]
+        }
+      },
+      "required": [
+        "jurisdiction",
+        "amount",
+        "paid_date"
+      ],
+      "additionalProperties": false
+    },
+    "extensionPayment": {
+      "type": "object",
+      "properties": {
+        "extension_payment_id": {
+          "type": "string"
+        },
+        "jurisdiction": {
+          "type": "string",
+          "enum": [
+            "federal",
+            "state"
+          ]
+        },
+        "state_code": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/stateCode"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "amount": {
+          "$ref": "#/$defs/money"
+        },
+        "paid_date": {
+          "$ref": "#/$defs/isoDate"
+        },
+        "form_type": {
+          "type": "string",
+          "enum": [
+            "4868",
+            "2350",
+            "state_extension",
+            "other"
+          ]
+        }
+      },
+      "required": [
+        "jurisdiction",
+        "amount",
+        "paid_date",
+        "form_type"
+      ],
+      "additionalProperties": false
+    },
+    "bankAccountInstruction": {
+      "type": "object",
+      "properties": {
+        "vault_token": {
+          "$ref": "#/$defs/storageUri"
+        },
+        "bank_name": {
+          "type": "string"
+        },
+        "account_type": {
+          "type": "string",
+          "enum": [
+            "checking",
+            "savings"
+          ]
+        },
+        "last4_account_number": {
+          "type": "string",
+          "pattern": "^\\d{4}$"
+        },
+        "last4_routing_number": {
+          "type": "string",
+          "pattern": "^\\d{4}$"
+        }
+      },
+      "required": [
+        "vault_token",
+        "account_type"
+      ],
+      "additionalProperties": false
+    },
+    "adjustments": {
+      "type": "object",
+      "properties": {
+        "educator_expenses": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/money"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "certain_business_expenses_of_reservists_performing_artists_and_fee_basis_officials": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/money"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "health_savings_account_deduction": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/money"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "moving_expenses_for_armed_forces": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/money"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "deductible_part_of_self_employment_tax": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/money"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "self_employed_sep_simple_and_qualified_plans": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/money"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "self_employed_health_insurance": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/money"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "penalty_on_early_withdrawal_of_savings": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/money"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "alimony_paid_for_pre_2019_divorce": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/money"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "ira_deduction": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/money"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "student_loan_interest_deduction": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/money"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "other_adjustments": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/namedAmount"
+          }
+        }
+      },
+      "required": [
+        "other_adjustments"
+      ],
+      "additionalProperties": false
+    },
+    "itemizedDeductions": {
+      "type": "object",
+      "properties": {
+        "medical_and_dental_expenses": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/money"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "state_and_local_income_or_sales_taxes": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/money"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "real_estate_taxes": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/money"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "personal_property_taxes": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/money"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "other_taxes": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/money"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "mortgage_interest_items": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/mortgageInterestFact"
+          }
+        },
+        "charitable_cash_contributions": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/money"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "charitable_noncash_contributions": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/money"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "casualty_and_theft_losses": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/money"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "other_itemized_deductions": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/namedAmount"
+          }
+        }
+      },
+      "required": [
+        "mortgage_interest_items",
+        "other_itemized_deductions"
+      ],
+      "additionalProperties": false
+    },
+    "credits": {
+      "type": "object",
+      "properties": {
+        "candidate_child_tax_credit_dependent_ids": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/personId"
+          },
+          "uniqueItems": true
+        },
+        "candidate_credit_for_other_dependent_ids": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/personId"
+          },
+          "uniqueItems": true
+        },
+        "candidate_eitc_child_ids": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/personId"
+          },
+          "uniqueItems": true
+        },
+        "child_and_dependent_care": {
+          "type": "object",
+          "properties": {
+            "qualifying_person_ids": {
+              "type": "array",
+              "items": {
+                "$ref": "#/$defs/personId"
+              },
+              "uniqueItems": true
+            },
+            "providers": {
+              "type": "array",
+              "items": {
+                "$ref": "#/$defs/careProvider"
+              }
+            },
+            "expenses": {
+              "type": "array",
+              "items": {
+                "$ref": "#/$defs/careExpense"
+              }
+            }
+          },
+          "required": [
+            "qualifying_person_ids",
+            "providers",
+            "expenses"
+          ],
+          "additionalProperties": false
+        },
+        "education_credits": {
+          "type": "object",
+          "properties": {
+            "students": {
+              "type": "array",
+              "items": {
+                "$ref": "#/$defs/educationStudent"
+              }
+            }
+          },
+          "required": [
+            "students"
+          ],
+          "additionalProperties": false
+        },
+        "premium_tax_credit": {
+          "type": "object",
+          "properties": {
+            "policies": {
+              "type": "array",
+              "items": {
+                "$ref": "#/$defs/marketplacePolicy"
+              }
+            }
+          },
+          "required": [
+            "policies"
+          ],
+          "additionalProperties": false
+        },
+        "residential_clean_energy": {
+          "type": "object",
+          "properties": {
+            "projects": {
+              "type": "array",
+              "items": {
+                "$ref": "#/$defs/energyProject"
+              }
+            }
+          },
+          "required": [
+            "projects"
+          ],
+          "additionalProperties": false
+        },
+        "clean_vehicle_credits": {
+          "type": "object",
+          "properties": {
+            "vehicles": {
+              "type": "array",
+              "items": {
+                "$ref": "#/$defs/vehicleCreditClaim"
+              }
+            }
+          },
+          "required": [
+            "vehicles"
+          ],
+          "additionalProperties": false
+        },
+        "retirement_savings_contributions_credit_candidate_person_ids": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/personId"
+          },
+          "uniqueItems": true
+        },
+        "other_nonrefundable_credits": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/namedAmount"
+          }
+        },
+        "other_refundable_credits": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/namedAmount"
+          }
+        }
+      },
+      "required": [
+        "candidate_child_tax_credit_dependent_ids",
+        "candidate_credit_for_other_dependent_ids",
+        "candidate_eitc_child_ids",
+        "child_and_dependent_care",
+        "education_credits",
+        "premium_tax_credit",
+        "residential_clean_energy",
+        "clean_vehicle_credits",
+        "retirement_savings_contributions_credit_candidate_person_ids",
+        "other_nonrefundable_credits",
+        "other_refundable_credits"
+      ],
+      "additionalProperties": false
+    },
+    "payments": {
+      "type": "object",
+      "properties": {
+        "withholdings": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/withholdingFact"
+          }
+        },
+        "estimated_payments": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/estimatedPayment"
+          }
+        },
+        "extension_payments": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/extensionPayment"
+          }
+        },
+        "prior_year_overpayment_applied_to_2025": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/money"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "refund_direct_deposit": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/bankAccountInstruction"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "balance_due_direct_debit": {
+          "type": [
+            "object",
+            "null"
+          ],
+          "properties": {
+            "bank_account": {
+              "$ref": "#/$defs/bankAccountInstruction"
+            },
+            "requested_debit_date": {
+              "$ref": "#/$defs/isoDate"
+            }
+          },
+          "required": [
+            "bank_account",
+            "requested_debit_date"
+          ],
+          "additionalProperties": false
+        }
+      },
+      "required": [
+        "withholdings",
+        "estimated_payments",
+        "extension_payments"
+      ],
+      "additionalProperties": false
+    },
+    "healthCoverage": {
+      "type": "object",
+      "properties": {
+        "marketplace_policies": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/marketplacePolicy"
+          }
+        },
+        "hsa_coverage_months": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "person_id": {
+                "$ref": "#/$defs/personId"
+              },
+              "month": {
+                "type": "string",
+                "enum": [
+                  "january",
+                  "february",
+                  "march",
+                  "april",
+                  "may",
+                  "june",
+                  "july",
+                  "august",
+                  "september",
+                  "october",
+                  "november",
+                  "december"
+                ]
+              },
+              "coverage_type": {
+                "type": "string",
+                "enum": [
+                  "self_only",
+                  "family",
+                  "none"
+                ]
+              }
+            },
+            "required": [
+              "person_id",
+              "month",
+              "coverage_type"
+            ],
+            "additionalProperties": false
+          }
+        }
+      },
+      "required": [
+        "marketplace_policies",
+        "hsa_coverage_months"
+      ],
+      "additionalProperties": false
+    },
+    "facts": {
+      "type": "object",
+      "properties": {
+        "income": {
+          "type": "object",
+          "properties": {
+            "wages": {
+              "type": "array",
+              "items": {
+                "$ref": "#/$defs/wageFact"
+              }
+            },
+            "taxable_interest": {
+              "type": "array",
+              "items": {
+                "$ref": "#/$defs/interestFact"
+              }
+            },
+            "dividends": {
+              "type": "array",
+              "items": {
+                "$ref": "#/$defs/dividendFact"
+              }
+            },
+            "capital_transactions": {
+              "type": "array",
+              "items": {
+                "$ref": "#/$defs/capitalTransaction"
+              }
+            },
+            "retirement_distributions": {
+              "type": "array",
+              "items": {
+                "$ref": "#/$defs/retirementDistributionFact"
+              }
+            },
+            "unemployment_compensation": {
+              "type": "array",
+              "items": {
+                "$ref": "#/$defs/unemploymentFact"
+              }
+            },
+            "social_security_benefits": {
+              "type": "array",
+              "items": {
+                "$ref": "#/$defs/socialSecurityFact"
+              }
+            },
+            "nonemployee_compensation": {
+              "type": "array",
+              "items": {
+                "$ref": "#/$defs/nonemployeeCompensationFact"
+              }
+            },
+            "miscellaneous_1099_income": {
+              "type": "array",
+              "items": {
+                "$ref": "#/$defs/misc1099IncomeFact"
+              }
+            },
+            "schedule_c_businesses": {
+              "type": "array",
+              "items": {
+                "$ref": "#/$defs/scheduleCBusiness"
+              }
+            },
+            "schedule_e_activities": {
+              "type": "array",
+              "items": {
+                "$ref": "#/$defs/scheduleEActivity"
+              }
+            },
+            "other_income_items": {
+              "type": "array",
+              "items": {
+                "$ref": "#/$defs/otherIncomeItem"
+              }
+            }
+          },
+          "required": [
+            "wages",
+            "taxable_interest",
+            "dividends",
+            "capital_transactions",
+            "retirement_distributions",
+            "unemployment_compensation",
+            "social_security_benefits",
+            "nonemployee_compensation",
+            "miscellaneous_1099_income",
+            "schedule_c_businesses",
+            "schedule_e_activities",
+            "other_income_items"
+          ],
+          "additionalProperties": false
+        },
+        "adjustments": {
+          "$ref": "#/$defs/adjustments"
+        },
+        "itemized_deductions": {
+          "$ref": "#/$defs/itemizedDeductions"
+        },
+        "credits": {
+          "$ref": "#/$defs/credits"
+        },
+        "payments": {
+          "$ref": "#/$defs/payments"
+        },
+        "health_coverage": {
+          "$ref": "#/$defs/healthCoverage"
+        },
+        "state_specific_fact_bag": {
+          "type": "object",
+          "description": "Cross-jurisdiction extension point for facts not standardized in this schema. Use namespaced keys such as CA.schedule_ca.addition_codes.",
+          "additionalProperties": true
+        }
+      },
+      "required": [
+        "income",
+        "adjustments",
+        "itemized_deductions",
+        "credits",
+        "payments",
+        "health_coverage",
+        "state_specific_fact_bag"
+      ],
+      "additionalProperties": false
+    },
+    "electionChoice": {
+      "type": "object",
+      "properties": {
+        "election_code": {
+          "type": "string",
+          "minLength": 1
+        },
+        "description": {
+          "type": "string",
+          "minLength": 1
+        },
+        "selected_value": {},
+        "selection_basis": {
+          "type": "string",
+          "enum": [
+            "user_selected",
+            "engine_optimized",
+            "required_by_rule",
+            "partner_required",
+            "defaulted"
+          ]
+        },
+        "notes": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "election_code",
+        "description",
+        "selection_basis"
+      ],
+      "additionalProperties": false
+    },
+    "elections": {
+      "type": "object",
+      "properties": {
+        "deduction_strategy_preference": {
+          "type": "string",
+          "enum": [
+            "auto",
+            "standard",
+            "itemized"
+          ]
+        },
+        "capital_loss_carryforward_imported": {
+          "type": "boolean"
+        },
+        "self_select_pin_authorized": {
+          "type": "boolean"
+        },
+        "state_filing_opt_in_states": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/stateCode"
+          },
+          "uniqueItems": true
+        },
+        "other_elections": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/electionChoice"
+          }
+        }
+      },
+      "required": [
+        "deduction_strategy_preference",
+        "capital_loss_carryforward_imported",
+        "self_select_pin_authorized",
+        "state_filing_opt_in_states",
+        "other_elections"
+      ],
+      "additionalProperties": false
+    },
+    "federalSummary": {
+      "type": "object",
+      "properties": {
+        "adjusted_gross_income": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/money"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "taxable_income": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/money"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "total_tax": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/money"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "total_payments": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/money"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "refund_amount": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/money"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "amount_owed": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/money"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "additionalProperties": false
+    },
+    "stateSummary": {
+      "type": "object",
+      "properties": {
+        "state_code": {
+          "$ref": "#/$defs/stateCode"
+        },
+        "adjusted_gross_income_or_starting_point": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/money"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "taxable_income": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/money"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "total_tax": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/money"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "total_payments": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/money"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "refund_amount": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/money"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "amount_owed": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/money"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "required": [
+        "state_code"
+      ],
+      "additionalProperties": false
+    },
+    "artifactRef": {
+      "type": "object",
+      "properties": {
+        "artifact_id": {
+          "$ref": "#/$defs/artifactId"
+        },
+        "artifact_type": {
+          "type": "string",
+          "enum": [
+            "forms_graph_snapshot",
+            "xml_package",
+            "pdf_render",
+            "transmission_manifest",
+            "acknowledgement",
+            "validation_report",
+            "other"
+          ]
+        },
+        "jurisdiction": {
+          "type": "string",
+          "enum": [
+            "federal",
+            "state",
+            "local",
+            "multi"
+          ]
+        },
+        "state_code": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/stateCode"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "storage_uri": {
+          "$ref": "#/$defs/storageUri"
+        },
+        "created_at": {
+          "$ref": "#/$defs/dateTime"
+        },
+        "content_type": {
+          "type": "string"
+        },
+        "hash_sha256": {
+          "type": "string",
+          "pattern": "^[a-fA-F0-9]{64}$"
+        }
+      },
+      "required": [
+        "artifact_id",
+        "artifact_type",
+        "jurisdiction",
+        "storage_uri",
+        "created_at"
+      ],
+      "additionalProperties": false
+    },
+    "artifacts": {
+      "type": "object",
+      "properties": {
+        "federal_summary": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/federalSummary"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "state_summaries": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/stateSummary"
+          }
+        },
+        "artifact_refs": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/artifactRef"
+          }
+        }
+      },
+      "required": [
+        "state_summaries",
+        "artifact_refs"
+      ],
+      "additionalProperties": false
+    },
+    "rejectDetail": {
+      "type": "object",
+      "properties": {
+        "code": {
+          "type": "string",
+          "minLength": 1
+        },
+        "message": {
+          "type": "string",
+          "minLength": 1
+        },
+        "jurisdiction": {
+          "type": "string",
+          "enum": [
+            "federal",
+            "state",
+            "local"
+          ]
+        },
+        "state_code": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/stateCode"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "field_pointer": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/jsonPointer"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "xml_path": {
+          "type": "string"
+        },
+        "business_rule_id": {
+          "type": "string"
+        },
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning",
+            "info"
+          ]
+        },
+        "fix_hint": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "code",
+        "message",
+        "jurisdiction",
+        "severity"
+      ],
+      "additionalProperties": false
+    },
+    "submissionRecord": {
+      "type": "object",
+      "properties": {
+        "submission_record_id": {
+          "type": "string"
+        },
+        "jurisdiction": {
+          "type": "string",
+          "enum": [
+            "federal",
+            "state",
+            "local"
+          ]
+        },
+        "state_code": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/stateCode"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "partner_submission_id": {
+          "type": "string"
+        },
+        "status": {
+          "type": "string",
+          "enum": [
+            "draft",
+            "validated",
+            "ready_to_submit",
+            "submitted",
+            "received",
+            "accepted",
+            "rejected",
+            "resubmitted",
+            "voided"
+          ]
+        },
+        "submitted_at": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/dateTime"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "last_status_at": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/dateTime"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "artifact_ref_ids": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/artifactId"
+          },
+          "uniqueItems": true
+        },
+        "reject_details": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/rejectDetail"
+          }
+        }
+      },
+      "required": [
+        "jurisdiction",
+        "status",
+        "artifact_ref_ids",
+        "reject_details"
+      ],
+      "additionalProperties": false
+    },
+    "efile": {
+      "type": "object",
+      "properties": {
+        "signature_method": {
+          "type": "string",
+          "enum": [
+            "self_select_pin",
+            "practitioner_pin",
+            "paper"
+          ]
+        },
+        "signers": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "person_id": {
+                "$ref": "#/$defs/personId"
+              },
+              "pin_token": {
+                "anyOf": [
+                  {
+                    "$ref": "#/$defs/storageUri"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "prior_year_agi": {
+                "anyOf": [
+                  {
+                    "$ref": "#/$defs/money"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "prior_year_pin_token": {
+                "anyOf": [
+                  {
+                    "$ref": "#/$defs/storageUri"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "signed_at": {
+                "anyOf": [
+                  {
+                    "$ref": "#/$defs/dateTime"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              }
+            },
+            "required": [
+              "person_id"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "partner": {
+          "type": "object",
+          "properties": {
+            "partner_name": {
+              "type": "string",
+              "minLength": 1
+            },
+            "adapter_version": {
+              "type": "string",
+              "minLength": 1
+            },
+            "environment": {
+              "type": "string",
+              "enum": [
+                "sandbox",
+                "production"
+              ]
+            },
+            "capabilities_snapshot": {
+              "type": "object",
+              "additionalProperties": true
+            }
+          },
+          "required": [
+            "partner_name",
+            "adapter_version",
+            "environment",
+            "capabilities_snapshot"
+          ],
+          "additionalProperties": false
+        },
+        "submission_records": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/submissionRecord"
+          }
+        }
+      },
+      "required": [
+        "signature_method",
+        "signers",
+        "partner",
+        "submission_records"
+      ],
+      "additionalProperties": false
+    },
+    "stateReturn": {
+      "type": "object",
+      "properties": {
+        "state_code": {
+          "$ref": "#/$defs/stateCode"
+        },
+        "enabled": {
+          "type": "boolean"
+        },
+        "return_kind": {
+          "type": "string",
+          "enum": [
+            "resident",
+            "part_year_resident",
+            "nonresident",
+            "extension_only",
+            "informational_only",
+            "no_return_required"
+          ]
+        },
+        "state_filing_status": {
+          "type": "string"
+        },
+        "starting_point_strategy": {
+          "type": "string",
+          "enum": [
+            "federal_agi",
+            "federal_taxable_income",
+            "none",
+            "custom"
+          ]
+        },
+        "federal_reference_pointer": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/jsonPointer"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "residency_periods": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/residencyPeriod"
+          }
+        },
+        "additions": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/namedAmount"
+          }
+        },
+        "subtractions": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/namedAmount"
+          }
+        },
+        "state_specific_income_items": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/namedAmount"
+          }
+        },
+        "state_specific_deductions": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/namedAmount"
+          }
+        },
+        "state_specific_credits": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/namedAmount"
+          }
+        },
+        "state_payments": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/namedAmount"
+          }
+        },
+        "local_returns": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "jurisdiction_code": {
+                "type": "string",
+                "minLength": 1
+              },
+              "jurisdiction_name": {
+                "type": "string",
+                "minLength": 1
+              },
+              "resident_status": {
+                "type": "string",
+                "enum": [
+                  "resident",
+                  "nonresident",
+                  "part_year",
+                  "unknown"
+                ]
+              },
+              "additions": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/$defs/namedAmount"
+                }
+              },
+              "subtractions": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/$defs/namedAmount"
+                }
+              },
+              "credits": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/$defs/namedAmount"
+                }
+              },
+              "payments": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/$defs/namedAmount"
+                }
+              },
+              "plugin_fact_bag": {
+                "type": "object",
+                "additionalProperties": true
+              }
+            },
+            "required": [
+              "jurisdiction_code",
+              "jurisdiction_name",
+              "resident_status",
+              "additions",
+              "subtractions",
+              "credits",
+              "payments",
+              "plugin_fact_bag"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "plugin_manifest_id": {
+          "type": "string"
+        },
+        "plugin_fact_bag": {
+          "type": "object",
+          "description": "State-specific facts that do not fit the cross-state normalized model. This is where each state plugin can stash custom fields, line mappings, and intermediate values.",
+          "additionalProperties": true
+        },
+        "prepared_summary": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/stateSummary"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "required": [
+        "state_code",
+        "enabled",
+        "return_kind",
+        "starting_point_strategy",
+        "residency_periods",
+        "additions",
+        "subtractions",
+        "state_specific_income_items",
+        "state_specific_deductions",
+        "state_specific_credits",
+        "state_payments",
+        "local_returns",
+        "plugin_fact_bag"
+      ],
+      "additionalProperties": false
+    },
+    "lifecycle": {
+      "type": "object",
+      "properties": {
+        "status": {
+          "type": "string",
+          "enum": [
+            "intake",
+            "in_review",
+            "ready_to_compute",
+            "computed",
+            "ready_to_file",
+            "filed",
+            "accepted",
+            "rejected",
+            "amending",
+            "archived"
+          ]
+        },
+        "created_at": {
+          "$ref": "#/$defs/dateTime"
+        },
+        "updated_at": {
+          "$ref": "#/$defs/dateTime"
+        },
+        "locked_for_filing": {
+          "type": "boolean"
+        },
+        "current_computation_run_id": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "status",
+        "created_at",
+        "updated_at",
+        "locked_for_filing"
+      ],
+      "additionalProperties": false
+    }
+  }
+}

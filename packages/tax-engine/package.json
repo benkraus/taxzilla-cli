@@ -1,0 +1,29 @@
+{
+  "name": "@taxzilla/tax-engine",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "main": "src/index.ts",
+  "types": "src/index.ts",
+  "exports": {
+    ".": {
+      "types": "./src/index.ts",
+      "default": "./src/index.ts"
+    },
+    "./return-ir": {
+      "types": "./src/return-ir.ts",
+      "default": "./src/return-ir.ts"
+    }
+  },
+  "scripts": {
+    "build": "tsc --noEmit -p tsconfig.json",
+    "typecheck": "tsc --noEmit -p tsconfig.json",
+    "test": "vitest run --root ../.. packages/tax-engine/src/",
+    "test:coverage": "vitest run --root ../.. packages/tax-engine/src/ --coverage.enabled --coverage.provider=v8 --coverage.reporter=text --coverage.include=\"packages/tax-engine/src/**/*.ts\"",
+    "lint": "oxlint -c ../../.oxlintrc.json --deny-warnings .",
+    "format": "oxfmt -c ../../.oxfmtrc.json ."
+  },
+  "dependencies": {
+    "effect": "^3.19.19"
+  }
+}

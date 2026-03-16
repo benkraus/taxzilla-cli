@@ -1,0 +1,247 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.com/schemas/forms-graph.snapshot.schema.json",
+  "title": "Computed Forms Graph Snapshot Schema",
+  "description": "Serialization format for a deterministic tax calculation graph snapshot spanning federal and state modules.",
+  "type": "object",
+  "required": [
+    "graph_id",
+    "tax_year",
+    "created_at",
+    "jurisdictions",
+    "modules",
+    "nodes",
+    "edges",
+    "execution_order",
+    "validation_results"
+  ],
+  "properties": {
+    "graph_id": {
+      "type": "string"
+    },
+    "tax_year": {
+      "type": "integer",
+      "const": 2025
+    },
+    "created_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "jurisdictions": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "pattern": "^(federal|[A-Z]{2})$"
+      },
+      "uniqueItems": true
+    },
+    "modules": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "module_id",
+          "jurisdiction",
+          "module_type",
+          "version",
+          "enabled"
+        ],
+        "properties": {
+          "module_id": {
+            "type": "string"
+          },
+          "jurisdiction": {
+            "type": "string",
+            "pattern": "^(federal|[A-Z]{2})$"
+          },
+          "module_type": {
+            "type": "string",
+            "enum": [
+              "form",
+              "schedule",
+              "worksheet",
+              "credit",
+              "state_plugin",
+              "supporting"
+            ]
+          },
+          "form_code": {
+            "type": "string"
+          },
+          "version": {
+            "type": "string"
+          },
+          "enabled": {
+            "type": "boolean"
+          }
+        },
+        "additionalProperties": false
+      }
+    },
+    "nodes": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "node_id",
+          "node_type",
+          "jurisdiction",
+          "data_type",
+          "label",
+          "module_id"
+        ],
+        "properties": {
+          "node_id": {
+            "type": "string"
+          },
+          "node_type": {
+            "type": "string",
+            "enum": [
+              "input",
+              "choice",
+              "calculation",
+              "line",
+              "validation",
+              "summary",
+              "attachment",
+              "bridge"
+            ]
+          },
+          "jurisdiction": {
+            "type": "string",
+            "pattern": "^(federal|[A-Z]{2})$"
+          },
+          "module_id": {
+            "type": "string"
+          },
+          "form_code": {
+            "type": "string"
+          },
+          "line_code": {
+            "type": "string"
+          },
+          "label": {
+            "type": "string"
+          },
+          "data_type": {
+            "type": "string",
+            "enum": [
+              "money",
+              "integer",
+              "string",
+              "boolean",
+              "date",
+              "enum",
+              "object",
+              "array",
+              "null"
+            ]
+          },
+          "value": {},
+          "formula_ref": {
+            "type": "string"
+          },
+          "source_json_pointers": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "pattern": "^(/([^/~]|~0|~1)*)*$"
+            }
+          },
+          "trace_notes": {
+            "type": "string"
+          }
+        },
+        "additionalProperties": false
+      }
+    },
+    "edges": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "from_node_id",
+          "to_node_id",
+          "edge_type"
+        ],
+        "properties": {
+          "from_node_id": {
+            "type": "string"
+          },
+          "to_node_id": {
+            "type": "string"
+          },
+          "edge_type": {
+            "type": "string",
+            "enum": [
+              "dependency",
+              "condition",
+              "derivation",
+              "validation",
+              "carryforward"
+            ]
+          },
+          "condition_ref": {
+            "type": "string"
+          }
+        },
+        "additionalProperties": false
+      }
+    },
+    "execution_order": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "validation_results": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "rule_id",
+          "severity",
+          "status",
+          "message"
+        ],
+        "properties": {
+          "rule_id": {
+            "type": "string"
+          },
+          "severity": {
+            "type": "string",
+            "enum": [
+              "error",
+              "warning",
+              "info"
+            ]
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "pass",
+              "fail",
+              "skip"
+            ]
+          },
+          "message": {
+            "type": "string"
+          },
+          "node_ids": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        },
+        "additionalProperties": false
+      }
+    },
+    "materialized_outputs": {
+      "type": "object",
+      "additionalProperties": true,
+      "description": "Optional export of rendered forms, XML IR, or summary tables keyed by internal artifact IDs."
+    }
+  },
+  "additionalProperties": false
+}

@@ -1,0 +1,3175 @@
+[
+  {
+    "plugin_manifest_id": "al.ty2025.stub.v1",
+    "state_code": "AL",
+    "state_name": "Alabama",
+    "tax_year": 2025,
+    "implementation_class": "income_tax_state_stub",
+    "version": "2025.stub.1",
+    "status": "stub",
+    "requires_federal_return": true,
+    "supports_return_kinds": [
+      "resident",
+      "part_year_resident",
+      "nonresident",
+      "extension_only"
+    ],
+    "starting_point_strategy": "custom",
+    "required_fact_namespaces": [
+      "AL.plugin_fact_bag"
+    ],
+    "form_catalog": [
+      {
+        "form_code": "AL_MAIN_RETURN",
+        "role": "main_return",
+        "xml_root_hint": "ALReturn",
+        "required": true
+      }
+    ],
+    "xml_package": {
+      "schema_bundle_id": "al_ty2025_placeholder",
+      "serializer_module": "states.al.serializer",
+      "attachment_naming_profile": "al_default",
+      "partner_overrides_module": "states.al.partner_overrides"
+    },
+    "validation_bundles": [
+      {
+        "bundle_id": "al.precompute.stub",
+        "phase": "precompute",
+        "engine": "json_rules",
+        "description": "Placeholder precompute validations."
+      },
+      {
+        "bundle_id": "al.prexml.stub",
+        "phase": "prexml",
+        "engine": "json_rules",
+        "description": "Placeholder XML-readiness validations."
+      }
+    ],
+    "attachments_policy": {
+      "supports_binary_attachments": true,
+      "supports_pdf_only": false,
+      "paper_followup_possible": true,
+      "notes": "Stub entry; verify state-specific attachment rules before production."
+    },
+    "capabilities": {
+      "supports_direct_file": false,
+      "supports_joint_return": true,
+      "supports_multi_state_credit": true,
+      "supports_local_jurisdictions": false
+    },
+    "notes": [
+      "Scaffold manifest only; not a production-certified state implementation.",
+      "Fill in actual schema bundle, validation bundles, and form catalog before launch."
+    ]
+  },
+  {
+    "plugin_manifest_id": "ak.ty2025.stub.v1",
+    "state_code": "AK",
+    "state_name": "Alaska",
+    "tax_year": 2025,
+    "implementation_class": "no_individual_income_tax",
+    "version": "2025.stub.1",
+    "status": "stub",
+    "requires_federal_return": false,
+    "supports_return_kinds": [
+      "no_return_required",
+      "informational_only"
+    ],
+    "starting_point_strategy": "none",
+    "required_fact_namespaces": [],
+    "form_catalog": [
+      {
+        "form_code": "NO_PIT_RETURN",
+        "role": "main_return",
+        "xml_root_hint": "none",
+        "required": false
+      }
+    ],
+    "xml_package": {
+      "schema_bundle_id": "ak_ty2025_placeholder",
+      "serializer_module": "states.ak.serializer",
+      "attachment_naming_profile": "ak_default",
+      "partner_overrides_module": "states.ak.partner_overrides"
+    },
+    "validation_bundles": [
+      {
+        "bundle_id": "ak.precompute.stub",
+        "phase": "precompute",
+        "engine": "json_rules",
+        "description": "Placeholder precompute validations."
+      },
+      {
+        "bundle_id": "ak.prexml.stub",
+        "phase": "prexml",
+        "engine": "json_rules",
+        "description": "Placeholder XML-readiness validations."
+      }
+    ],
+    "attachments_policy": {
+      "supports_binary_attachments": false,
+      "supports_pdf_only": false,
+      "paper_followup_possible": true,
+      "notes": "Stub entry; verify state-specific attachment rules before production."
+    },
+    "capabilities": {
+      "supports_direct_file": false,
+      "supports_joint_return": false,
+      "supports_multi_state_credit": false,
+      "supports_local_jurisdictions": false
+    },
+    "notes": [
+      "Scaffold manifest only; not a production-certified state implementation.",
+      "Fill in actual schema bundle, validation bundles, and form catalog before launch.",
+      "No broad state individual income tax expected for TY2025; verify local levies and special filings."
+    ]
+  },
+  {
+    "plugin_manifest_id": "az.ty2025.stub.v1",
+    "state_code": "AZ",
+    "state_name": "Arizona",
+    "tax_year": 2025,
+    "implementation_class": "income_tax_state_stub",
+    "version": "2025.stub.1",
+    "status": "stub",
+    "requires_federal_return": true,
+    "supports_return_kinds": [
+      "resident",
+      "part_year_resident",
+      "nonresident",
+      "extension_only"
+    ],
+    "starting_point_strategy": "custom",
+    "required_fact_namespaces": [
+      "AZ.plugin_fact_bag"
+    ],
+    "form_catalog": [
+      {
+        "form_code": "AZ_MAIN_RETURN",
+        "role": "main_return",
+        "xml_root_hint": "AZReturn",
+        "required": true
+      }
+    ],
+    "xml_package": {
+      "schema_bundle_id": "az_ty2025_placeholder",
+      "serializer_module": "states.az.serializer",
+      "attachment_naming_profile": "az_default",
+      "partner_overrides_module": "states.az.partner_overrides"
+    },
+    "validation_bundles": [
+      {
+        "bundle_id": "az.precompute.stub",
+        "phase": "precompute",
+        "engine": "json_rules",
+        "description": "Placeholder precompute validations."
+      },
+      {
+        "bundle_id": "az.prexml.stub",
+        "phase": "prexml",
+        "engine": "json_rules",
+        "description": "Placeholder XML-readiness validations."
+      }
+    ],
+    "attachments_policy": {
+      "supports_binary_attachments": true,
+      "supports_pdf_only": false,
+      "paper_followup_possible": true,
+      "notes": "Stub entry; verify state-specific attachment rules before production."
+    },
+    "capabilities": {
+      "supports_direct_file": false,
+      "supports_joint_return": true,
+      "supports_multi_state_credit": true,
+      "supports_local_jurisdictions": false
+    },
+    "notes": [
+      "Scaffold manifest only; not a production-certified state implementation.",
+      "Fill in actual schema bundle, validation bundles, and form catalog before launch."
+    ]
+  },
+  {
+    "plugin_manifest_id": "ar.ty2025.stub.v1",
+    "state_code": "AR",
+    "state_name": "Arkansas",
+    "tax_year": 2025,
+    "implementation_class": "income_tax_state_stub",
+    "version": "2025.stub.1",
+    "status": "stub",
+    "requires_federal_return": true,
+    "supports_return_kinds": [
+      "resident",
+      "part_year_resident",
+      "nonresident",
+      "extension_only"
+    ],
+    "starting_point_strategy": "custom",
+    "required_fact_namespaces": [
+      "AR.plugin_fact_bag"
+    ],
+    "form_catalog": [
+      {
+        "form_code": "AR_MAIN_RETURN",
+        "role": "main_return",
+        "xml_root_hint": "ARReturn",
+        "required": true
+      }
+    ],
+    "xml_package": {
+      "schema_bundle_id": "ar_ty2025_placeholder",
+      "serializer_module": "states.ar.serializer",
+      "attachment_naming_profile": "ar_default",
+      "partner_overrides_module": "states.ar.partner_overrides"
+    },
+    "validation_bundles": [
+      {
+        "bundle_id": "ar.precompute.stub",
+        "phase": "precompute",
+        "engine": "json_rules",
+        "description": "Placeholder precompute validations."
+      },
+      {
+        "bundle_id": "ar.prexml.stub",
+        "phase": "prexml",
+        "engine": "json_rules",
+        "description": "Placeholder XML-readiness validations."
+      }
+    ],
+    "attachments_policy": {
+      "supports_binary_attachments": true,
+      "supports_pdf_only": false,
+      "paper_followup_possible": true,
+      "notes": "Stub entry; verify state-specific attachment rules before production."
+    },
+    "capabilities": {
+      "supports_direct_file": false,
+      "supports_joint_return": true,
+      "supports_multi_state_credit": true,
+      "supports_local_jurisdictions": false
+    },
+    "notes": [
+      "Scaffold manifest only; not a production-certified state implementation.",
+      "Fill in actual schema bundle, validation bundles, and form catalog before launch."
+    ]
+  },
+  {
+    "plugin_manifest_id": "ca.ty2025.stub.v1",
+    "state_code": "CA",
+    "state_name": "California",
+    "tax_year": 2025,
+    "implementation_class": "income_tax_state_stub",
+    "version": "2025.stub.1",
+    "status": "stub",
+    "requires_federal_return": true,
+    "supports_return_kinds": [
+      "resident",
+      "part_year_resident",
+      "nonresident",
+      "extension_only"
+    ],
+    "starting_point_strategy": "custom",
+    "required_fact_namespaces": [
+      "CA.plugin_fact_bag"
+    ],
+    "form_catalog": [
+      {
+        "form_code": "CA_MAIN_RETURN",
+        "role": "main_return",
+        "xml_root_hint": "CAReturn",
+        "required": true
+      }
+    ],
+    "xml_package": {
+      "schema_bundle_id": "ca_ty2025_placeholder",
+      "serializer_module": "states.ca.serializer",
+      "attachment_naming_profile": "ca_default",
+      "partner_overrides_module": "states.ca.partner_overrides"
+    },
+    "validation_bundles": [
+      {
+        "bundle_id": "ca.precompute.stub",
+        "phase": "precompute",
+        "engine": "json_rules",
+        "description": "Placeholder precompute validations."
+      },
+      {
+        "bundle_id": "ca.prexml.stub",
+        "phase": "prexml",
+        "engine": "json_rules",
+        "description": "Placeholder XML-readiness validations."
+      }
+    ],
+    "attachments_policy": {
+      "supports_binary_attachments": true,
+      "supports_pdf_only": false,
+      "paper_followup_possible": true,
+      "notes": "Stub entry; verify state-specific attachment rules before production."
+    },
+    "capabilities": {
+      "supports_direct_file": false,
+      "supports_joint_return": true,
+      "supports_multi_state_credit": true,
+      "supports_local_jurisdictions": false
+    },
+    "notes": [
+      "Scaffold manifest only; not a production-certified state implementation.",
+      "Fill in actual schema bundle, validation bundles, and form catalog before launch."
+    ]
+  },
+  {
+    "plugin_manifest_id": "co.ty2025.stub.v1",
+    "state_code": "CO",
+    "state_name": "Colorado",
+    "tax_year": 2025,
+    "implementation_class": "income_tax_state_stub",
+    "version": "2025.stub.1",
+    "status": "stub",
+    "requires_federal_return": true,
+    "supports_return_kinds": [
+      "resident",
+      "part_year_resident",
+      "nonresident",
+      "extension_only"
+    ],
+    "starting_point_strategy": "custom",
+    "required_fact_namespaces": [
+      "CO.plugin_fact_bag"
+    ],
+    "form_catalog": [
+      {
+        "form_code": "CO_MAIN_RETURN",
+        "role": "main_return",
+        "xml_root_hint": "COReturn",
+        "required": true
+      }
+    ],
+    "xml_package": {
+      "schema_bundle_id": "co_ty2025_placeholder",
+      "serializer_module": "states.co.serializer",
+      "attachment_naming_profile": "co_default",
+      "partner_overrides_module": "states.co.partner_overrides"
+    },
+    "validation_bundles": [
+      {
+        "bundle_id": "co.precompute.stub",
+        "phase": "precompute",
+        "engine": "json_rules",
+        "description": "Placeholder precompute validations."
+      },
+      {
+        "bundle_id": "co.prexml.stub",
+        "phase": "prexml",
+        "engine": "json_rules",
+        "description": "Placeholder XML-readiness validations."
+      }
+    ],
+    "attachments_policy": {
+      "supports_binary_attachments": true,
+      "supports_pdf_only": false,
+      "paper_followup_possible": true,
+      "notes": "Stub entry; verify state-specific attachment rules before production."
+    },
+    "capabilities": {
+      "supports_direct_file": false,
+      "supports_joint_return": true,
+      "supports_multi_state_credit": true,
+      "supports_local_jurisdictions": false
+    },
+    "notes": [
+      "Scaffold manifest only; not a production-certified state implementation.",
+      "Fill in actual schema bundle, validation bundles, and form catalog before launch."
+    ]
+  },
+  {
+    "plugin_manifest_id": "ct.ty2025.stub.v1",
+    "state_code": "CT",
+    "state_name": "Connecticut",
+    "tax_year": 2025,
+    "implementation_class": "income_tax_state_stub",
+    "version": "2025.stub.1",
+    "status": "stub",
+    "requires_federal_return": true,
+    "supports_return_kinds": [
+      "resident",
+      "part_year_resident",
+      "nonresident",
+      "extension_only"
+    ],
+    "starting_point_strategy": "custom",
+    "required_fact_namespaces": [
+      "CT.plugin_fact_bag"
+    ],
+    "form_catalog": [
+      {
+        "form_code": "CT_MAIN_RETURN",
+        "role": "main_return",
+        "xml_root_hint": "CTReturn",
+        "required": true
+      }
+    ],
+    "xml_package": {
+      "schema_bundle_id": "ct_ty2025_placeholder",
+      "serializer_module": "states.ct.serializer",
+      "attachment_naming_profile": "ct_default",
+      "partner_overrides_module": "states.ct.partner_overrides"
+    },
+    "validation_bundles": [
+      {
+        "bundle_id": "ct.precompute.stub",
+        "phase": "precompute",
+        "engine": "json_rules",
+        "description": "Placeholder precompute validations."
+      },
+      {
+        "bundle_id": "ct.prexml.stub",
+        "phase": "prexml",
+        "engine": "json_rules",
+        "description": "Placeholder XML-readiness validations."
+      }
+    ],
+    "attachments_policy": {
+      "supports_binary_attachments": true,
+      "supports_pdf_only": false,
+      "paper_followup_possible": true,
+      "notes": "Stub entry; verify state-specific attachment rules before production."
+    },
+    "capabilities": {
+      "supports_direct_file": false,
+      "supports_joint_return": true,
+      "supports_multi_state_credit": true,
+      "supports_local_jurisdictions": false
+    },
+    "notes": [
+      "Scaffold manifest only; not a production-certified state implementation.",
+      "Fill in actual schema bundle, validation bundles, and form catalog before launch."
+    ]
+  },
+  {
+    "plugin_manifest_id": "de.ty2025.stub.v1",
+    "state_code": "DE",
+    "state_name": "Delaware",
+    "tax_year": 2025,
+    "implementation_class": "income_tax_state_stub",
+    "version": "2025.stub.1",
+    "status": "stub",
+    "requires_federal_return": true,
+    "supports_return_kinds": [
+      "resident",
+      "part_year_resident",
+      "nonresident",
+      "extension_only"
+    ],
+    "starting_point_strategy": "custom",
+    "required_fact_namespaces": [
+      "DE.plugin_fact_bag"
+    ],
+    "form_catalog": [
+      {
+        "form_code": "DE_MAIN_RETURN",
+        "role": "main_return",
+        "xml_root_hint": "DEReturn",
+        "required": true
+      }
+    ],
+    "xml_package": {
+      "schema_bundle_id": "de_ty2025_placeholder",
+      "serializer_module": "states.de.serializer",
+      "attachment_naming_profile": "de_default",
+      "partner_overrides_module": "states.de.partner_overrides"
+    },
+    "validation_bundles": [
+      {
+        "bundle_id": "de.precompute.stub",
+        "phase": "precompute",
+        "engine": "json_rules",
+        "description": "Placeholder precompute validations."
+      },
+      {
+        "bundle_id": "de.prexml.stub",
+        "phase": "prexml",
+        "engine": "json_rules",
+        "description": "Placeholder XML-readiness validations."
+      }
+    ],
+    "attachments_policy": {
+      "supports_binary_attachments": true,
+      "supports_pdf_only": false,
+      "paper_followup_possible": true,
+      "notes": "Stub entry; verify state-specific attachment rules before production."
+    },
+    "capabilities": {
+      "supports_direct_file": false,
+      "supports_joint_return": true,
+      "supports_multi_state_credit": true,
+      "supports_local_jurisdictions": false
+    },
+    "notes": [
+      "Scaffold manifest only; not a production-certified state implementation.",
+      "Fill in actual schema bundle, validation bundles, and form catalog before launch."
+    ]
+  },
+  {
+    "plugin_manifest_id": "fl.ty2025.stub.v1",
+    "state_code": "FL",
+    "state_name": "Florida",
+    "tax_year": 2025,
+    "implementation_class": "no_individual_income_tax",
+    "version": "2025.stub.1",
+    "status": "stub",
+    "requires_federal_return": false,
+    "supports_return_kinds": [
+      "no_return_required",
+      "informational_only"
+    ],
+    "starting_point_strategy": "none",
+    "required_fact_namespaces": [],
+    "form_catalog": [
+      {
+        "form_code": "NO_PIT_RETURN",
+        "role": "main_return",
+        "xml_root_hint": "none",
+        "required": false
+      }
+    ],
+    "xml_package": {
+      "schema_bundle_id": "fl_ty2025_placeholder",
+      "serializer_module": "states.fl.serializer",
+      "attachment_naming_profile": "fl_default",
+      "partner_overrides_module": "states.fl.partner_overrides"
+    },
+    "validation_bundles": [
+      {
+        "bundle_id": "fl.precompute.stub",
+        "phase": "precompute",
+        "engine": "json_rules",
+        "description": "Placeholder precompute validations."
+      },
+      {
+        "bundle_id": "fl.prexml.stub",
+        "phase": "prexml",
+        "engine": "json_rules",
+        "description": "Placeholder XML-readiness validations."
+      }
+    ],
+    "attachments_policy": {
+      "supports_binary_attachments": false,
+      "supports_pdf_only": false,
+      "paper_followup_possible": true,
+      "notes": "Stub entry; verify state-specific attachment rules before production."
+    },
+    "capabilities": {
+      "supports_direct_file": false,
+      "supports_joint_return": false,
+      "supports_multi_state_credit": false,
+      "supports_local_jurisdictions": false
+    },
+    "notes": [
+      "Scaffold manifest only; not a production-certified state implementation.",
+      "Fill in actual schema bundle, validation bundles, and form catalog before launch.",
+      "No broad state individual income tax expected for TY2025; verify local levies and special filings."
+    ]
+  },
+  {
+    "plugin_manifest_id": "ga.ty2025.stub.v1",
+    "state_code": "GA",
+    "state_name": "Georgia",
+    "tax_year": 2025,
+    "implementation_class": "income_tax_state_stub",
+    "version": "2025.stub.1",
+    "status": "stub",
+    "requires_federal_return": true,
+    "supports_return_kinds": [
+      "resident",
+      "part_year_resident",
+      "nonresident",
+      "extension_only"
+    ],
+    "starting_point_strategy": "custom",
+    "required_fact_namespaces": [
+      "GA.plugin_fact_bag"
+    ],
+    "form_catalog": [
+      {
+        "form_code": "GA_MAIN_RETURN",
+        "role": "main_return",
+        "xml_root_hint": "GAReturn",
+        "required": true
+      }
+    ],
+    "xml_package": {
+      "schema_bundle_id": "ga_ty2025_placeholder",
+      "serializer_module": "states.ga.serializer",
+      "attachment_naming_profile": "ga_default",
+      "partner_overrides_module": "states.ga.partner_overrides"
+    },
+    "validation_bundles": [
+      {
+        "bundle_id": "ga.precompute.stub",
+        "phase": "precompute",
+        "engine": "json_rules",
+        "description": "Placeholder precompute validations."
+      },
+      {
+        "bundle_id": "ga.prexml.stub",
+        "phase": "prexml",
+        "engine": "json_rules",
+        "description": "Placeholder XML-readiness validations."
+      }
+    ],
+    "attachments_policy": {
+      "supports_binary_attachments": true,
+      "supports_pdf_only": false,
+      "paper_followup_possible": true,
+      "notes": "Stub entry; verify state-specific attachment rules before production."
+    },
+    "capabilities": {
+      "supports_direct_file": false,
+      "supports_joint_return": true,
+      "supports_multi_state_credit": true,
+      "supports_local_jurisdictions": false
+    },
+    "notes": [
+      "Scaffold manifest only; not a production-certified state implementation.",
+      "Fill in actual schema bundle, validation bundles, and form catalog before launch."
+    ]
+  },
+  {
+    "plugin_manifest_id": "hi.ty2025.stub.v1",
+    "state_code": "HI",
+    "state_name": "Hawaii",
+    "tax_year": 2025,
+    "implementation_class": "income_tax_state_stub",
+    "version": "2025.stub.1",
+    "status": "stub",
+    "requires_federal_return": true,
+    "supports_return_kinds": [
+      "resident",
+      "part_year_resident",
+      "nonresident",
+      "extension_only"
+    ],
+    "starting_point_strategy": "custom",
+    "required_fact_namespaces": [
+      "HI.plugin_fact_bag"
+    ],
+    "form_catalog": [
+      {
+        "form_code": "HI_MAIN_RETURN",
+        "role": "main_return",
+        "xml_root_hint": "HIReturn",
+        "required": true
+      }
+    ],
+    "xml_package": {
+      "schema_bundle_id": "hi_ty2025_placeholder",
+      "serializer_module": "states.hi.serializer",
+      "attachment_naming_profile": "hi_default",
+      "partner_overrides_module": "states.hi.partner_overrides"
+    },
+    "validation_bundles": [
+      {
+        "bundle_id": "hi.precompute.stub",
+        "phase": "precompute",
+        "engine": "json_rules",
+        "description": "Placeholder precompute validations."
+      },
+      {
+        "bundle_id": "hi.prexml.stub",
+        "phase": "prexml",
+        "engine": "json_rules",
+        "description": "Placeholder XML-readiness validations."
+      }
+    ],
+    "attachments_policy": {
+      "supports_binary_attachments": true,
+      "supports_pdf_only": false,
+      "paper_followup_possible": true,
+      "notes": "Stub entry; verify state-specific attachment rules before production."
+    },
+    "capabilities": {
+      "supports_direct_file": false,
+      "supports_joint_return": true,
+      "supports_multi_state_credit": true,
+      "supports_local_jurisdictions": false
+    },
+    "notes": [
+      "Scaffold manifest only; not a production-certified state implementation.",
+      "Fill in actual schema bundle, validation bundles, and form catalog before launch."
+    ]
+  },
+  {
+    "plugin_manifest_id": "id.ty2025.stub.v1",
+    "state_code": "ID",
+    "state_name": "Idaho",
+    "tax_year": 2025,
+    "implementation_class": "income_tax_state_stub",
+    "version": "2025.stub.1",
+    "status": "stub",
+    "requires_federal_return": true,
+    "supports_return_kinds": [
+      "resident",
+      "part_year_resident",
+      "nonresident",
+      "extension_only"
+    ],
+    "starting_point_strategy": "custom",
+    "required_fact_namespaces": [
+      "ID.plugin_fact_bag"
+    ],
+    "form_catalog": [
+      {
+        "form_code": "ID_MAIN_RETURN",
+        "role": "main_return",
+        "xml_root_hint": "IDReturn",
+        "required": true
+      }
+    ],
+    "xml_package": {
+      "schema_bundle_id": "id_ty2025_placeholder",
+      "serializer_module": "states.id.serializer",
+      "attachment_naming_profile": "id_default",
+      "partner_overrides_module": "states.id.partner_overrides"
+    },
+    "validation_bundles": [
+      {
+        "bundle_id": "id.precompute.stub",
+        "phase": "precompute",
+        "engine": "json_rules",
+        "description": "Placeholder precompute validations."
+      },
+      {
+        "bundle_id": "id.prexml.stub",
+        "phase": "prexml",
+        "engine": "json_rules",
+        "description": "Placeholder XML-readiness validations."
+      }
+    ],
+    "attachments_policy": {
+      "supports_binary_attachments": true,
+      "supports_pdf_only": false,
+      "paper_followup_possible": true,
+      "notes": "Stub entry; verify state-specific attachment rules before production."
+    },
+    "capabilities": {
+      "supports_direct_file": false,
+      "supports_joint_return": true,
+      "supports_multi_state_credit": true,
+      "supports_local_jurisdictions": false
+    },
+    "notes": [
+      "Scaffold manifest only; not a production-certified state implementation.",
+      "Fill in actual schema bundle, validation bundles, and form catalog before launch."
+    ]
+  },
+  {
+    "plugin_manifest_id": "il.ty2025.stub.v1",
+    "state_code": "IL",
+    "state_name": "Illinois",
+    "tax_year": 2025,
+    "implementation_class": "income_tax_state_stub",
+    "version": "2025.stub.1",
+    "status": "stub",
+    "requires_federal_return": true,
+    "supports_return_kinds": [
+      "resident",
+      "part_year_resident",
+      "nonresident",
+      "extension_only"
+    ],
+    "starting_point_strategy": "custom",
+    "required_fact_namespaces": [
+      "IL.plugin_fact_bag"
+    ],
+    "form_catalog": [
+      {
+        "form_code": "IL_MAIN_RETURN",
+        "role": "main_return",
+        "xml_root_hint": "ILReturn",
+        "required": true
+      }
+    ],
+    "xml_package": {
+      "schema_bundle_id": "il_ty2025_placeholder",
+      "serializer_module": "states.il.serializer",
+      "attachment_naming_profile": "il_default",
+      "partner_overrides_module": "states.il.partner_overrides"
+    },
+    "validation_bundles": [
+      {
+        "bundle_id": "il.precompute.stub",
+        "phase": "precompute",
+        "engine": "json_rules",
+        "description": "Placeholder precompute validations."
+      },
+      {
+        "bundle_id": "il.prexml.stub",
+        "phase": "prexml",
+        "engine": "json_rules",
+        "description": "Placeholder XML-readiness validations."
+      }
+    ],
+    "attachments_policy": {
+      "supports_binary_attachments": true,
+      "supports_pdf_only": false,
+      "paper_followup_possible": true,
+      "notes": "Stub entry; verify state-specific attachment rules before production."
+    },
+    "capabilities": {
+      "supports_direct_file": false,
+      "supports_joint_return": true,
+      "supports_multi_state_credit": true,
+      "supports_local_jurisdictions": false
+    },
+    "notes": [
+      "Scaffold manifest only; not a production-certified state implementation.",
+      "Fill in actual schema bundle, validation bundles, and form catalog before launch."
+    ]
+  },
+  {
+    "plugin_manifest_id": "in.ty2025.stub.v1",
+    "state_code": "IN",
+    "state_name": "Indiana",
+    "tax_year": 2025,
+    "implementation_class": "income_tax_state_stub",
+    "version": "2025.stub.1",
+    "status": "stub",
+    "requires_federal_return": true,
+    "supports_return_kinds": [
+      "resident",
+      "part_year_resident",
+      "nonresident",
+      "extension_only"
+    ],
+    "starting_point_strategy": "custom",
+    "required_fact_namespaces": [
+      "IN.plugin_fact_bag"
+    ],
+    "form_catalog": [
+      {
+        "form_code": "IN_MAIN_RETURN",
+        "role": "main_return",
+        "xml_root_hint": "INReturn",
+        "required": true
+      }
+    ],
+    "xml_package": {
+      "schema_bundle_id": "in_ty2025_placeholder",
+      "serializer_module": "states.in.serializer",
+      "attachment_naming_profile": "in_default",
+      "partner_overrides_module": "states.in.partner_overrides"
+    },
+    "validation_bundles": [
+      {
+        "bundle_id": "in.precompute.stub",
+        "phase": "precompute",
+        "engine": "json_rules",
+        "description": "Placeholder precompute validations."
+      },
+      {
+        "bundle_id": "in.prexml.stub",
+        "phase": "prexml",
+        "engine": "json_rules",
+        "description": "Placeholder XML-readiness validations."
+      }
+    ],
+    "attachments_policy": {
+      "supports_binary_attachments": true,
+      "supports_pdf_only": false,
+      "paper_followup_possible": true,
+      "notes": "Stub entry; verify state-specific attachment rules before production."
+    },
+    "capabilities": {
+      "supports_direct_file": false,
+      "supports_joint_return": true,
+      "supports_multi_state_credit": true,
+      "supports_local_jurisdictions": true
+    },
+    "notes": [
+      "Scaffold manifest only; not a production-certified state implementation.",
+      "Fill in actual schema bundle, validation bundles, and form catalog before launch."
+    ]
+  },
+  {
+    "plugin_manifest_id": "ia.ty2025.stub.v1",
+    "state_code": "IA",
+    "state_name": "Iowa",
+    "tax_year": 2025,
+    "implementation_class": "income_tax_state_stub",
+    "version": "2025.stub.1",
+    "status": "stub",
+    "requires_federal_return": true,
+    "supports_return_kinds": [
+      "resident",
+      "part_year_resident",
+      "nonresident",
+      "extension_only"
+    ],
+    "starting_point_strategy": "custom",
+    "required_fact_namespaces": [
+      "IA.plugin_fact_bag"
+    ],
+    "form_catalog": [
+      {
+        "form_code": "IA_MAIN_RETURN",
+        "role": "main_return",
+        "xml_root_hint": "IAReturn",
+        "required": true
+      }
+    ],
+    "xml_package": {
+      "schema_bundle_id": "ia_ty2025_placeholder",
+      "serializer_module": "states.ia.serializer",
+      "attachment_naming_profile": "ia_default",
+      "partner_overrides_module": "states.ia.partner_overrides"
+    },
+    "validation_bundles": [
+      {
+        "bundle_id": "ia.precompute.stub",
+        "phase": "precompute",
+        "engine": "json_rules",
+        "description": "Placeholder precompute validations."
+      },
+      {
+        "bundle_id": "ia.prexml.stub",
+        "phase": "prexml",
+        "engine": "json_rules",
+        "description": "Placeholder XML-readiness validations."
+      }
+    ],
+    "attachments_policy": {
+      "supports_binary_attachments": true,
+      "supports_pdf_only": false,
+      "paper_followup_possible": true,
+      "notes": "Stub entry; verify state-specific attachment rules before production."
+    },
+    "capabilities": {
+      "supports_direct_file": false,
+      "supports_joint_return": true,
+      "supports_multi_state_credit": true,
+      "supports_local_jurisdictions": true
+    },
+    "notes": [
+      "Scaffold manifest only; not a production-certified state implementation.",
+      "Fill in actual schema bundle, validation bundles, and form catalog before launch."
+    ]
+  },
+  {
+    "plugin_manifest_id": "ks.ty2025.stub.v1",
+    "state_code": "KS",
+    "state_name": "Kansas",
+    "tax_year": 2025,
+    "implementation_class": "income_tax_state_stub",
+    "version": "2025.stub.1",
+    "status": "stub",
+    "requires_federal_return": true,
+    "supports_return_kinds": [
+      "resident",
+      "part_year_resident",
+      "nonresident",
+      "extension_only"
+    ],
+    "starting_point_strategy": "custom",
+    "required_fact_namespaces": [
+      "KS.plugin_fact_bag"
+    ],
+    "form_catalog": [
+      {
+        "form_code": "KS_MAIN_RETURN",
+        "role": "main_return",
+        "xml_root_hint": "KSReturn",
+        "required": true
+      }
+    ],
+    "xml_package": {
+      "schema_bundle_id": "ks_ty2025_placeholder",
+      "serializer_module": "states.ks.serializer",
+      "attachment_naming_profile": "ks_default",
+      "partner_overrides_module": "states.ks.partner_overrides"
+    },
+    "validation_bundles": [
+      {
+        "bundle_id": "ks.precompute.stub",
+        "phase": "precompute",
+        "engine": "json_rules",
+        "description": "Placeholder precompute validations."
+      },
+      {
+        "bundle_id": "ks.prexml.stub",
+        "phase": "prexml",
+        "engine": "json_rules",
+        "description": "Placeholder XML-readiness validations."
+      }
+    ],
+    "attachments_policy": {
+      "supports_binary_attachments": true,
+      "supports_pdf_only": false,
+      "paper_followup_possible": true,
+      "notes": "Stub entry; verify state-specific attachment rules before production."
+    },
+    "capabilities": {
+      "supports_direct_file": false,
+      "supports_joint_return": true,
+      "supports_multi_state_credit": true,
+      "supports_local_jurisdictions": false
+    },
+    "notes": [
+      "Scaffold manifest only; not a production-certified state implementation.",
+      "Fill in actual schema bundle, validation bundles, and form catalog before launch."
+    ]
+  },
+  {
+    "plugin_manifest_id": "ky.ty2025.stub.v1",
+    "state_code": "KY",
+    "state_name": "Kentucky",
+    "tax_year": 2025,
+    "implementation_class": "income_tax_state_stub",
+    "version": "2025.stub.1",
+    "status": "stub",
+    "requires_federal_return": true,
+    "supports_return_kinds": [
+      "resident",
+      "part_year_resident",
+      "nonresident",
+      "extension_only"
+    ],
+    "starting_point_strategy": "custom",
+    "required_fact_namespaces": [
+      "KY.plugin_fact_bag"
+    ],
+    "form_catalog": [
+      {
+        "form_code": "KY_MAIN_RETURN",
+        "role": "main_return",
+        "xml_root_hint": "KYReturn",
+        "required": true
+      }
+    ],
+    "xml_package": {
+      "schema_bundle_id": "ky_ty2025_placeholder",
+      "serializer_module": "states.ky.serializer",
+      "attachment_naming_profile": "ky_default",
+      "partner_overrides_module": "states.ky.partner_overrides"
+    },
+    "validation_bundles": [
+      {
+        "bundle_id": "ky.precompute.stub",
+        "phase": "precompute",
+        "engine": "json_rules",
+        "description": "Placeholder precompute validations."
+      },
+      {
+        "bundle_id": "ky.prexml.stub",
+        "phase": "prexml",
+        "engine": "json_rules",
+        "description": "Placeholder XML-readiness validations."
+      }
+    ],
+    "attachments_policy": {
+      "supports_binary_attachments": true,
+      "supports_pdf_only": false,
+      "paper_followup_possible": true,
+      "notes": "Stub entry; verify state-specific attachment rules before production."
+    },
+    "capabilities": {
+      "supports_direct_file": false,
+      "supports_joint_return": true,
+      "supports_multi_state_credit": true,
+      "supports_local_jurisdictions": true
+    },
+    "notes": [
+      "Scaffold manifest only; not a production-certified state implementation.",
+      "Fill in actual schema bundle, validation bundles, and form catalog before launch."
+    ]
+  },
+  {
+    "plugin_manifest_id": "la.ty2025.stub.v1",
+    "state_code": "LA",
+    "state_name": "Louisiana",
+    "tax_year": 2025,
+    "implementation_class": "income_tax_state_stub",
+    "version": "2025.stub.1",
+    "status": "stub",
+    "requires_federal_return": true,
+    "supports_return_kinds": [
+      "resident",
+      "part_year_resident",
+      "nonresident",
+      "extension_only"
+    ],
+    "starting_point_strategy": "custom",
+    "required_fact_namespaces": [
+      "LA.plugin_fact_bag"
+    ],
+    "form_catalog": [
+      {
+        "form_code": "LA_MAIN_RETURN",
+        "role": "main_return",
+        "xml_root_hint": "LAReturn",
+        "required": true
+      }
+    ],
+    "xml_package": {
+      "schema_bundle_id": "la_ty2025_placeholder",
+      "serializer_module": "states.la.serializer",
+      "attachment_naming_profile": "la_default",
+      "partner_overrides_module": "states.la.partner_overrides"
+    },
+    "validation_bundles": [
+      {
+        "bundle_id": "la.precompute.stub",
+        "phase": "precompute",
+        "engine": "json_rules",
+        "description": "Placeholder precompute validations."
+      },
+      {
+        "bundle_id": "la.prexml.stub",
+        "phase": "prexml",
+        "engine": "json_rules",
+        "description": "Placeholder XML-readiness validations."
+      }
+    ],
+    "attachments_policy": {
+      "supports_binary_attachments": true,
+      "supports_pdf_only": false,
+      "paper_followup_possible": true,
+      "notes": "Stub entry; verify state-specific attachment rules before production."
+    },
+    "capabilities": {
+      "supports_direct_file": false,
+      "supports_joint_return": true,
+      "supports_multi_state_credit": true,
+      "supports_local_jurisdictions": false
+    },
+    "notes": [
+      "Scaffold manifest only; not a production-certified state implementation.",
+      "Fill in actual schema bundle, validation bundles, and form catalog before launch."
+    ]
+  },
+  {
+    "plugin_manifest_id": "me.ty2025.stub.v1",
+    "state_code": "ME",
+    "state_name": "Maine",
+    "tax_year": 2025,
+    "implementation_class": "income_tax_state_stub",
+    "version": "2025.stub.1",
+    "status": "stub",
+    "requires_federal_return": true,
+    "supports_return_kinds": [
+      "resident",
+      "part_year_resident",
+      "nonresident",
+      "extension_only"
+    ],
+    "starting_point_strategy": "custom",
+    "required_fact_namespaces": [
+      "ME.plugin_fact_bag"
+    ],
+    "form_catalog": [
+      {
+        "form_code": "ME_MAIN_RETURN",
+        "role": "main_return",
+        "xml_root_hint": "MEReturn",
+        "required": true
+      }
+    ],
+    "xml_package": {
+      "schema_bundle_id": "me_ty2025_placeholder",
+      "serializer_module": "states.me.serializer",
+      "attachment_naming_profile": "me_default",
+      "partner_overrides_module": "states.me.partner_overrides"
+    },
+    "validation_bundles": [
+      {
+        "bundle_id": "me.precompute.stub",
+        "phase": "precompute",
+        "engine": "json_rules",
+        "description": "Placeholder precompute validations."
+      },
+      {
+        "bundle_id": "me.prexml.stub",
+        "phase": "prexml",
+        "engine": "json_rules",
+        "description": "Placeholder XML-readiness validations."
+      }
+    ],
+    "attachments_policy": {
+      "supports_binary_attachments": true,
+      "supports_pdf_only": false,
+      "paper_followup_possible": true,
+      "notes": "Stub entry; verify state-specific attachment rules before production."
+    },
+    "capabilities": {
+      "supports_direct_file": false,
+      "supports_joint_return": true,
+      "supports_multi_state_credit": true,
+      "supports_local_jurisdictions": false
+    },
+    "notes": [
+      "Scaffold manifest only; not a production-certified state implementation.",
+      "Fill in actual schema bundle, validation bundles, and form catalog before launch."
+    ]
+  },
+  {
+    "plugin_manifest_id": "md.ty2025.stub.v1",
+    "state_code": "MD",
+    "state_name": "Maryland",
+    "tax_year": 2025,
+    "implementation_class": "income_tax_state_stub",
+    "version": "2025.stub.1",
+    "status": "stub",
+    "requires_federal_return": true,
+    "supports_return_kinds": [
+      "resident",
+      "part_year_resident",
+      "nonresident",
+      "extension_only"
+    ],
+    "starting_point_strategy": "custom",
+    "required_fact_namespaces": [
+      "MD.plugin_fact_bag"
+    ],
+    "form_catalog": [
+      {
+        "form_code": "MD_MAIN_RETURN",
+        "role": "main_return",
+        "xml_root_hint": "MDReturn",
+        "required": true
+      }
+    ],
+    "xml_package": {
+      "schema_bundle_id": "md_ty2025_placeholder",
+      "serializer_module": "states.md.serializer",
+      "attachment_naming_profile": "md_default",
+      "partner_overrides_module": "states.md.partner_overrides"
+    },
+    "validation_bundles": [
+      {
+        "bundle_id": "md.precompute.stub",
+        "phase": "precompute",
+        "engine": "json_rules",
+        "description": "Placeholder precompute validations."
+      },
+      {
+        "bundle_id": "md.prexml.stub",
+        "phase": "prexml",
+        "engine": "json_rules",
+        "description": "Placeholder XML-readiness validations."
+      }
+    ],
+    "attachments_policy": {
+      "supports_binary_attachments": true,
+      "supports_pdf_only": false,
+      "paper_followup_possible": true,
+      "notes": "Stub entry; verify state-specific attachment rules before production."
+    },
+    "capabilities": {
+      "supports_direct_file": false,
+      "supports_joint_return": true,
+      "supports_multi_state_credit": true,
+      "supports_local_jurisdictions": true
+    },
+    "notes": [
+      "Scaffold manifest only; not a production-certified state implementation.",
+      "Fill in actual schema bundle, validation bundles, and form catalog before launch."
+    ]
+  },
+  {
+    "plugin_manifest_id": "ma.ty2025.stub.v1",
+    "state_code": "MA",
+    "state_name": "Massachusetts",
+    "tax_year": 2025,
+    "implementation_class": "income_tax_state_stub",
+    "version": "2025.stub.1",
+    "status": "stub",
+    "requires_federal_return": true,
+    "supports_return_kinds": [
+      "resident",
+      "part_year_resident",
+      "nonresident",
+      "extension_only"
+    ],
+    "starting_point_strategy": "custom",
+    "required_fact_namespaces": [
+      "MA.plugin_fact_bag"
+    ],
+    "form_catalog": [
+      {
+        "form_code": "MA_MAIN_RETURN",
+        "role": "main_return",
+        "xml_root_hint": "MAReturn",
+        "required": true
+      }
+    ],
+    "xml_package": {
+      "schema_bundle_id": "ma_ty2025_placeholder",
+      "serializer_module": "states.ma.serializer",
+      "attachment_naming_profile": "ma_default",
+      "partner_overrides_module": "states.ma.partner_overrides"
+    },
+    "validation_bundles": [
+      {
+        "bundle_id": "ma.precompute.stub",
+        "phase": "precompute",
+        "engine": "json_rules",
+        "description": "Placeholder precompute validations."
+      },
+      {
+        "bundle_id": "ma.prexml.stub",
+        "phase": "prexml",
+        "engine": "json_rules",
+        "description": "Placeholder XML-readiness validations."
+      }
+    ],
+    "attachments_policy": {
+      "supports_binary_attachments": true,
+      "supports_pdf_only": false,
+      "paper_followup_possible": true,
+      "notes": "Stub entry; verify state-specific attachment rules before production."
+    },
+    "capabilities": {
+      "supports_direct_file": false,
+      "supports_joint_return": true,
+      "supports_multi_state_credit": true,
+      "supports_local_jurisdictions": false
+    },
+    "notes": [
+      "Scaffold manifest only; not a production-certified state implementation.",
+      "Fill in actual schema bundle, validation bundles, and form catalog before launch."
+    ]
+  },
+  {
+    "plugin_manifest_id": "mi.ty2025.stub.v1",
+    "state_code": "MI",
+    "state_name": "Michigan",
+    "tax_year": 2025,
+    "implementation_class": "income_tax_state_stub",
+    "version": "2025.stub.1",
+    "status": "stub",
+    "requires_federal_return": true,
+    "supports_return_kinds": [
+      "resident",
+      "part_year_resident",
+      "nonresident",
+      "extension_only"
+    ],
+    "starting_point_strategy": "custom",
+    "required_fact_namespaces": [
+      "MI.plugin_fact_bag"
+    ],
+    "form_catalog": [
+      {
+        "form_code": "MI_MAIN_RETURN",
+        "role": "main_return",
+        "xml_root_hint": "MIReturn",
+        "required": true
+      }
+    ],
+    "xml_package": {
+      "schema_bundle_id": "mi_ty2025_placeholder",
+      "serializer_module": "states.mi.serializer",
+      "attachment_naming_profile": "mi_default",
+      "partner_overrides_module": "states.mi.partner_overrides"
+    },
+    "validation_bundles": [
+      {
+        "bundle_id": "mi.precompute.stub",
+        "phase": "precompute",
+        "engine": "json_rules",
+        "description": "Placeholder precompute validations."
+      },
+      {
+        "bundle_id": "mi.prexml.stub",
+        "phase": "prexml",
+        "engine": "json_rules",
+        "description": "Placeholder XML-readiness validations."
+      }
+    ],
+    "attachments_policy": {
+      "supports_binary_attachments": true,
+      "supports_pdf_only": false,
+      "paper_followup_possible": true,
+      "notes": "Stub entry; verify state-specific attachment rules before production."
+    },
+    "capabilities": {
+      "supports_direct_file": false,
+      "supports_joint_return": true,
+      "supports_multi_state_credit": true,
+      "supports_local_jurisdictions": true
+    },
+    "notes": [
+      "Scaffold manifest only; not a production-certified state implementation.",
+      "Fill in actual schema bundle, validation bundles, and form catalog before launch."
+    ]
+  },
+  {
+    "plugin_manifest_id": "mn.ty2025.stub.v1",
+    "state_code": "MN",
+    "state_name": "Minnesota",
+    "tax_year": 2025,
+    "implementation_class": "income_tax_state_stub",
+    "version": "2025.stub.1",
+    "status": "stub",
+    "requires_federal_return": true,
+    "supports_return_kinds": [
+      "resident",
+      "part_year_resident",
+      "nonresident",
+      "extension_only"
+    ],
+    "starting_point_strategy": "custom",
+    "required_fact_namespaces": [
+      "MN.plugin_fact_bag"
+    ],
+    "form_catalog": [
+      {
+        "form_code": "MN_MAIN_RETURN",
+        "role": "main_return",
+        "xml_root_hint": "MNReturn",
+        "required": true
+      }
+    ],
+    "xml_package": {
+      "schema_bundle_id": "mn_ty2025_placeholder",
+      "serializer_module": "states.mn.serializer",
+      "attachment_naming_profile": "mn_default",
+      "partner_overrides_module": "states.mn.partner_overrides"
+    },
+    "validation_bundles": [
+      {
+        "bundle_id": "mn.precompute.stub",
+        "phase": "precompute",
+        "engine": "json_rules",
+        "description": "Placeholder precompute validations."
+      },
+      {
+        "bundle_id": "mn.prexml.stub",
+        "phase": "prexml",
+        "engine": "json_rules",
+        "description": "Placeholder XML-readiness validations."
+      }
+    ],
+    "attachments_policy": {
+      "supports_binary_attachments": true,
+      "supports_pdf_only": false,
+      "paper_followup_possible": true,
+      "notes": "Stub entry; verify state-specific attachment rules before production."
+    },
+    "capabilities": {
+      "supports_direct_file": false,
+      "supports_joint_return": true,
+      "supports_multi_state_credit": true,
+      "supports_local_jurisdictions": false
+    },
+    "notes": [
+      "Scaffold manifest only; not a production-certified state implementation.",
+      "Fill in actual schema bundle, validation bundles, and form catalog before launch."
+    ]
+  },
+  {
+    "plugin_manifest_id": "ms.ty2025.stub.v1",
+    "state_code": "MS",
+    "state_name": "Mississippi",
+    "tax_year": 2025,
+    "implementation_class": "income_tax_state_stub",
+    "version": "2025.stub.1",
+    "status": "stub",
+    "requires_federal_return": true,
+    "supports_return_kinds": [
+      "resident",
+      "part_year_resident",
+      "nonresident",
+      "extension_only"
+    ],
+    "starting_point_strategy": "custom",
+    "required_fact_namespaces": [
+      "MS.plugin_fact_bag"
+    ],
+    "form_catalog": [
+      {
+        "form_code": "MS_MAIN_RETURN",
+        "role": "main_return",
+        "xml_root_hint": "MSReturn",
+        "required": true
+      }
+    ],
+    "xml_package": {
+      "schema_bundle_id": "ms_ty2025_placeholder",
+      "serializer_module": "states.ms.serializer",
+      "attachment_naming_profile": "ms_default",
+      "partner_overrides_module": "states.ms.partner_overrides"
+    },
+    "validation_bundles": [
+      {
+        "bundle_id": "ms.precompute.stub",
+        "phase": "precompute",
+        "engine": "json_rules",
+        "description": "Placeholder precompute validations."
+      },
+      {
+        "bundle_id": "ms.prexml.stub",
+        "phase": "prexml",
+        "engine": "json_rules",
+        "description": "Placeholder XML-readiness validations."
+      }
+    ],
+    "attachments_policy": {
+      "supports_binary_attachments": true,
+      "supports_pdf_only": false,
+      "paper_followup_possible": true,
+      "notes": "Stub entry; verify state-specific attachment rules before production."
+    },
+    "capabilities": {
+      "supports_direct_file": false,
+      "supports_joint_return": true,
+      "supports_multi_state_credit": true,
+      "supports_local_jurisdictions": false
+    },
+    "notes": [
+      "Scaffold manifest only; not a production-certified state implementation.",
+      "Fill in actual schema bundle, validation bundles, and form catalog before launch."
+    ]
+  },
+  {
+    "plugin_manifest_id": "mo.ty2025.stub.v1",
+    "state_code": "MO",
+    "state_name": "Missouri",
+    "tax_year": 2025,
+    "implementation_class": "income_tax_state_stub",
+    "version": "2025.stub.1",
+    "status": "stub",
+    "requires_federal_return": true,
+    "supports_return_kinds": [
+      "resident",
+      "part_year_resident",
+      "nonresident",
+      "extension_only"
+    ],
+    "starting_point_strategy": "custom",
+    "required_fact_namespaces": [
+      "MO.plugin_fact_bag"
+    ],
+    "form_catalog": [
+      {
+        "form_code": "MO_MAIN_RETURN",
+        "role": "main_return",
+        "xml_root_hint": "MOReturn",
+        "required": true
+      }
+    ],
+    "xml_package": {
+      "schema_bundle_id": "mo_ty2025_placeholder",
+      "serializer_module": "states.mo.serializer",
+      "attachment_naming_profile": "mo_default",
+      "partner_overrides_module": "states.mo.partner_overrides"
+    },
+    "validation_bundles": [
+      {
+        "bundle_id": "mo.precompute.stub",
+        "phase": "precompute",
+        "engine": "json_rules",
+        "description": "Placeholder precompute validations."
+      },
+      {
+        "bundle_id": "mo.prexml.stub",
+        "phase": "prexml",
+        "engine": "json_rules",
+        "description": "Placeholder XML-readiness validations."
+      }
+    ],
+    "attachments_policy": {
+      "supports_binary_attachments": true,
+      "supports_pdf_only": false,
+      "paper_followup_possible": true,
+      "notes": "Stub entry; verify state-specific attachment rules before production."
+    },
+    "capabilities": {
+      "supports_direct_file": false,
+      "supports_joint_return": true,
+      "supports_multi_state_credit": true,
+      "supports_local_jurisdictions": true
+    },
+    "notes": [
+      "Scaffold manifest only; not a production-certified state implementation.",
+      "Fill in actual schema bundle, validation bundles, and form catalog before launch."
+    ]
+  },
+  {
+    "plugin_manifest_id": "mt.ty2025.stub.v1",
+    "state_code": "MT",
+    "state_name": "Montana",
+    "tax_year": 2025,
+    "implementation_class": "income_tax_state_stub",
+    "version": "2025.stub.1",
+    "status": "stub",
+    "requires_federal_return": true,
+    "supports_return_kinds": [
+      "resident",
+      "part_year_resident",
+      "nonresident",
+      "extension_only"
+    ],
+    "starting_point_strategy": "custom",
+    "required_fact_namespaces": [
+      "MT.plugin_fact_bag"
+    ],
+    "form_catalog": [
+      {
+        "form_code": "MT_MAIN_RETURN",
+        "role": "main_return",
+        "xml_root_hint": "MTReturn",
+        "required": true
+      }
+    ],
+    "xml_package": {
+      "schema_bundle_id": "mt_ty2025_placeholder",
+      "serializer_module": "states.mt.serializer",
+      "attachment_naming_profile": "mt_default",
+      "partner_overrides_module": "states.mt.partner_overrides"
+    },
+    "validation_bundles": [
+      {
+        "bundle_id": "mt.precompute.stub",
+        "phase": "precompute",
+        "engine": "json_rules",
+        "description": "Placeholder precompute validations."
+      },
+      {
+        "bundle_id": "mt.prexml.stub",
+        "phase": "prexml",
+        "engine": "json_rules",
+        "description": "Placeholder XML-readiness validations."
+      }
+    ],
+    "attachments_policy": {
+      "supports_binary_attachments": true,
+      "supports_pdf_only": false,
+      "paper_followup_possible": true,
+      "notes": "Stub entry; verify state-specific attachment rules before production."
+    },
+    "capabilities": {
+      "supports_direct_file": false,
+      "supports_joint_return": true,
+      "supports_multi_state_credit": true,
+      "supports_local_jurisdictions": false
+    },
+    "notes": [
+      "Scaffold manifest only; not a production-certified state implementation.",
+      "Fill in actual schema bundle, validation bundles, and form catalog before launch."
+    ]
+  },
+  {
+    "plugin_manifest_id": "ne.ty2025.stub.v1",
+    "state_code": "NE",
+    "state_name": "Nebraska",
+    "tax_year": 2025,
+    "implementation_class": "income_tax_state_stub",
+    "version": "2025.stub.1",
+    "status": "stub",
+    "requires_federal_return": true,
+    "supports_return_kinds": [
+      "resident",
+      "part_year_resident",
+      "nonresident",
+      "extension_only"
+    ],
+    "starting_point_strategy": "custom",
+    "required_fact_namespaces": [
+      "NE.plugin_fact_bag"
+    ],
+    "form_catalog": [
+      {
+        "form_code": "NE_MAIN_RETURN",
+        "role": "main_return",
+        "xml_root_hint": "NEReturn",
+        "required": true
+      }
+    ],
+    "xml_package": {
+      "schema_bundle_id": "ne_ty2025_placeholder",
+      "serializer_module": "states.ne.serializer",
+      "attachment_naming_profile": "ne_default",
+      "partner_overrides_module": "states.ne.partner_overrides"
+    },
+    "validation_bundles": [
+      {
+        "bundle_id": "ne.precompute.stub",
+        "phase": "precompute",
+        "engine": "json_rules",
+        "description": "Placeholder precompute validations."
+      },
+      {
+        "bundle_id": "ne.prexml.stub",
+        "phase": "prexml",
+        "engine": "json_rules",
+        "description": "Placeholder XML-readiness validations."
+      }
+    ],
+    "attachments_policy": {
+      "supports_binary_attachments": true,
+      "supports_pdf_only": false,
+      "paper_followup_possible": true,
+      "notes": "Stub entry; verify state-specific attachment rules before production."
+    },
+    "capabilities": {
+      "supports_direct_file": false,
+      "supports_joint_return": true,
+      "supports_multi_state_credit": true,
+      "supports_local_jurisdictions": false
+    },
+    "notes": [
+      "Scaffold manifest only; not a production-certified state implementation.",
+      "Fill in actual schema bundle, validation bundles, and form catalog before launch."
+    ]
+  },
+  {
+    "plugin_manifest_id": "nv.ty2025.stub.v1",
+    "state_code": "NV",
+    "state_name": "Nevada",
+    "tax_year": 2025,
+    "implementation_class": "no_individual_income_tax",
+    "version": "2025.stub.1",
+    "status": "stub",
+    "requires_federal_return": false,
+    "supports_return_kinds": [
+      "no_return_required",
+      "informational_only"
+    ],
+    "starting_point_strategy": "none",
+    "required_fact_namespaces": [],
+    "form_catalog": [
+      {
+        "form_code": "NO_PIT_RETURN",
+        "role": "main_return",
+        "xml_root_hint": "none",
+        "required": false
+      }
+    ],
+    "xml_package": {
+      "schema_bundle_id": "nv_ty2025_placeholder",
+      "serializer_module": "states.nv.serializer",
+      "attachment_naming_profile": "nv_default",
+      "partner_overrides_module": "states.nv.partner_overrides"
+    },
+    "validation_bundles": [
+      {
+        "bundle_id": "nv.precompute.stub",
+        "phase": "precompute",
+        "engine": "json_rules",
+        "description": "Placeholder precompute validations."
+      },
+      {
+        "bundle_id": "nv.prexml.stub",
+        "phase": "prexml",
+        "engine": "json_rules",
+        "description": "Placeholder XML-readiness validations."
+      }
+    ],
+    "attachments_policy": {
+      "supports_binary_attachments": false,
+      "supports_pdf_only": false,
+      "paper_followup_possible": true,
+      "notes": "Stub entry; verify state-specific attachment rules before production."
+    },
+    "capabilities": {
+      "supports_direct_file": false,
+      "supports_joint_return": false,
+      "supports_multi_state_credit": false,
+      "supports_local_jurisdictions": false
+    },
+    "notes": [
+      "Scaffold manifest only; not a production-certified state implementation.",
+      "Fill in actual schema bundle, validation bundles, and form catalog before launch.",
+      "No broad state individual income tax expected for TY2025; verify local levies and special filings."
+    ]
+  },
+  {
+    "plugin_manifest_id": "nh.ty2025.stub.v1",
+    "state_code": "NH",
+    "state_name": "New Hampshire",
+    "tax_year": 2025,
+    "implementation_class": "no_individual_income_tax",
+    "version": "2025.stub.1",
+    "status": "stub",
+    "requires_federal_return": false,
+    "supports_return_kinds": [
+      "no_return_required",
+      "informational_only"
+    ],
+    "starting_point_strategy": "none",
+    "required_fact_namespaces": [],
+    "form_catalog": [
+      {
+        "form_code": "NO_PIT_RETURN",
+        "role": "main_return",
+        "xml_root_hint": "none",
+        "required": false
+      }
+    ],
+    "xml_package": {
+      "schema_bundle_id": "nh_ty2025_placeholder",
+      "serializer_module": "states.nh.serializer",
+      "attachment_naming_profile": "nh_default",
+      "partner_overrides_module": "states.nh.partner_overrides"
+    },
+    "validation_bundles": [
+      {
+        "bundle_id": "nh.precompute.stub",
+        "phase": "precompute",
+        "engine": "json_rules",
+        "description": "Placeholder precompute validations."
+      },
+      {
+        "bundle_id": "nh.prexml.stub",
+        "phase": "prexml",
+        "engine": "json_rules",
+        "description": "Placeholder XML-readiness validations."
+      }
+    ],
+    "attachments_policy": {
+      "supports_binary_attachments": false,
+      "supports_pdf_only": false,
+      "paper_followup_possible": true,
+      "notes": "Stub entry; verify state-specific attachment rules before production."
+    },
+    "capabilities": {
+      "supports_direct_file": false,
+      "supports_joint_return": false,
+      "supports_multi_state_credit": false,
+      "supports_local_jurisdictions": false
+    },
+    "notes": [
+      "Scaffold manifest only; not a production-certified state implementation.",
+      "Fill in actual schema bundle, validation bundles, and form catalog before launch.",
+      "No broad state individual income tax expected for TY2025; verify local levies and special filings."
+    ]
+  },
+  {
+    "plugin_manifest_id": "nj.ty2025.stub.v1",
+    "state_code": "NJ",
+    "state_name": "New Jersey",
+    "tax_year": 2025,
+    "implementation_class": "income_tax_state_stub",
+    "version": "2025.stub.1",
+    "status": "stub",
+    "requires_federal_return": true,
+    "supports_return_kinds": [
+      "resident",
+      "part_year_resident",
+      "nonresident",
+      "extension_only"
+    ],
+    "starting_point_strategy": "custom",
+    "required_fact_namespaces": [
+      "NJ.plugin_fact_bag"
+    ],
+    "form_catalog": [
+      {
+        "form_code": "NJ_MAIN_RETURN",
+        "role": "main_return",
+        "xml_root_hint": "NJReturn",
+        "required": true
+      }
+    ],
+    "xml_package": {
+      "schema_bundle_id": "nj_ty2025_placeholder",
+      "serializer_module": "states.nj.serializer",
+      "attachment_naming_profile": "nj_default",
+      "partner_overrides_module": "states.nj.partner_overrides"
+    },
+    "validation_bundles": [
+      {
+        "bundle_id": "nj.precompute.stub",
+        "phase": "precompute",
+        "engine": "json_rules",
+        "description": "Placeholder precompute validations."
+      },
+      {
+        "bundle_id": "nj.prexml.stub",
+        "phase": "prexml",
+        "engine": "json_rules",
+        "description": "Placeholder XML-readiness validations."
+      }
+    ],
+    "attachments_policy": {
+      "supports_binary_attachments": true,
+      "supports_pdf_only": false,
+      "paper_followup_possible": true,
+      "notes": "Stub entry; verify state-specific attachment rules before production."
+    },
+    "capabilities": {
+      "supports_direct_file": false,
+      "supports_joint_return": true,
+      "supports_multi_state_credit": true,
+      "supports_local_jurisdictions": true
+    },
+    "notes": [
+      "Scaffold manifest only; not a production-certified state implementation.",
+      "Fill in actual schema bundle, validation bundles, and form catalog before launch."
+    ]
+  },
+  {
+    "plugin_manifest_id": "nm.ty2025.stub.v1",
+    "state_code": "NM",
+    "state_name": "New Mexico",
+    "tax_year": 2025,
+    "implementation_class": "income_tax_state_stub",
+    "version": "2025.stub.1",
+    "status": "stub",
+    "requires_federal_return": true,
+    "supports_return_kinds": [
+      "resident",
+      "part_year_resident",
+      "nonresident",
+      "extension_only"
+    ],
+    "starting_point_strategy": "custom",
+    "required_fact_namespaces": [
+      "NM.plugin_fact_bag"
+    ],
+    "form_catalog": [
+      {
+        "form_code": "NM_MAIN_RETURN",
+        "role": "main_return",
+        "xml_root_hint": "NMReturn",
+        "required": true
+      }
+    ],
+    "xml_package": {
+      "schema_bundle_id": "nm_ty2025_placeholder",
+      "serializer_module": "states.nm.serializer",
+      "attachment_naming_profile": "nm_default",
+      "partner_overrides_module": "states.nm.partner_overrides"
+    },
+    "validation_bundles": [
+      {
+        "bundle_id": "nm.precompute.stub",
+        "phase": "precompute",
+        "engine": "json_rules",
+        "description": "Placeholder precompute validations."
+      },
+      {
+        "bundle_id": "nm.prexml.stub",
+        "phase": "prexml",
+        "engine": "json_rules",
+        "description": "Placeholder XML-readiness validations."
+      }
+    ],
+    "attachments_policy": {
+      "supports_binary_attachments": true,
+      "supports_pdf_only": false,
+      "paper_followup_possible": true,
+      "notes": "Stub entry; verify state-specific attachment rules before production."
+    },
+    "capabilities": {
+      "supports_direct_file": false,
+      "supports_joint_return": true,
+      "supports_multi_state_credit": true,
+      "supports_local_jurisdictions": false
+    },
+    "notes": [
+      "Scaffold manifest only; not a production-certified state implementation.",
+      "Fill in actual schema bundle, validation bundles, and form catalog before launch."
+    ]
+  },
+  {
+    "plugin_manifest_id": "ny.ty2025.stub.v1",
+    "state_code": "NY",
+    "state_name": "New York",
+    "tax_year": 2025,
+    "implementation_class": "income_tax_state_stub",
+    "version": "2025.stub.1",
+    "status": "stub",
+    "requires_federal_return": true,
+    "supports_return_kinds": [
+      "resident",
+      "part_year_resident",
+      "nonresident",
+      "extension_only"
+    ],
+    "starting_point_strategy": "custom",
+    "required_fact_namespaces": [
+      "NY.plugin_fact_bag"
+    ],
+    "form_catalog": [
+      {
+        "form_code": "NY_MAIN_RETURN",
+        "role": "main_return",
+        "xml_root_hint": "NYReturn",
+        "required": true
+      }
+    ],
+    "xml_package": {
+      "schema_bundle_id": "ny_ty2025_placeholder",
+      "serializer_module": "states.ny.serializer",
+      "attachment_naming_profile": "ny_default",
+      "partner_overrides_module": "states.ny.partner_overrides"
+    },
+    "validation_bundles": [
+      {
+        "bundle_id": "ny.precompute.stub",
+        "phase": "precompute",
+        "engine": "json_rules",
+        "description": "Placeholder precompute validations."
+      },
+      {
+        "bundle_id": "ny.prexml.stub",
+        "phase": "prexml",
+        "engine": "json_rules",
+        "description": "Placeholder XML-readiness validations."
+      }
+    ],
+    "attachments_policy": {
+      "supports_binary_attachments": true,
+      "supports_pdf_only": false,
+      "paper_followup_possible": true,
+      "notes": "Stub entry; verify state-specific attachment rules before production."
+    },
+    "capabilities": {
+      "supports_direct_file": false,
+      "supports_joint_return": true,
+      "supports_multi_state_credit": true,
+      "supports_local_jurisdictions": true
+    },
+    "notes": [
+      "Scaffold manifest only; not a production-certified state implementation.",
+      "Fill in actual schema bundle, validation bundles, and form catalog before launch."
+    ]
+  },
+  {
+    "plugin_manifest_id": "nc.ty2025.stub.v1",
+    "state_code": "NC",
+    "state_name": "North Carolina",
+    "tax_year": 2025,
+    "implementation_class": "income_tax_state_stub",
+    "version": "2025.stub.1",
+    "status": "stub",
+    "requires_federal_return": true,
+    "supports_return_kinds": [
+      "resident",
+      "part_year_resident",
+      "nonresident",
+      "extension_only"
+    ],
+    "starting_point_strategy": "custom",
+    "required_fact_namespaces": [
+      "NC.plugin_fact_bag"
+    ],
+    "form_catalog": [
+      {
+        "form_code": "NC_MAIN_RETURN",
+        "role": "main_return",
+        "xml_root_hint": "NCReturn",
+        "required": true
+      }
+    ],
+    "xml_package": {
+      "schema_bundle_id": "nc_ty2025_placeholder",
+      "serializer_module": "states.nc.serializer",
+      "attachment_naming_profile": "nc_default",
+      "partner_overrides_module": "states.nc.partner_overrides"
+    },
+    "validation_bundles": [
+      {
+        "bundle_id": "nc.precompute.stub",
+        "phase": "precompute",
+        "engine": "json_rules",
+        "description": "Placeholder precompute validations."
+      },
+      {
+        "bundle_id": "nc.prexml.stub",
+        "phase": "prexml",
+        "engine": "json_rules",
+        "description": "Placeholder XML-readiness validations."
+      }
+    ],
+    "attachments_policy": {
+      "supports_binary_attachments": true,
+      "supports_pdf_only": false,
+      "paper_followup_possible": true,
+      "notes": "Stub entry; verify state-specific attachment rules before production."
+    },
+    "capabilities": {
+      "supports_direct_file": false,
+      "supports_joint_return": true,
+      "supports_multi_state_credit": true,
+      "supports_local_jurisdictions": false
+    },
+    "notes": [
+      "Scaffold manifest only; not a production-certified state implementation.",
+      "Fill in actual schema bundle, validation bundles, and form catalog before launch."
+    ]
+  },
+  {
+    "plugin_manifest_id": "nd.ty2025.stub.v1",
+    "state_code": "ND",
+    "state_name": "North Dakota",
+    "tax_year": 2025,
+    "implementation_class": "income_tax_state_stub",
+    "version": "2025.stub.1",
+    "status": "stub",
+    "requires_federal_return": true,
+    "supports_return_kinds": [
+      "resident",
+      "part_year_resident",
+      "nonresident",
+      "extension_only"
+    ],
+    "starting_point_strategy": "custom",
+    "required_fact_namespaces": [
+      "ND.plugin_fact_bag"
+    ],
+    "form_catalog": [
+      {
+        "form_code": "ND_MAIN_RETURN",
+        "role": "main_return",
+        "xml_root_hint": "NDReturn",
+        "required": true
+      }
+    ],
+    "xml_package": {
+      "schema_bundle_id": "nd_ty2025_placeholder",
+      "serializer_module": "states.nd.serializer",
+      "attachment_naming_profile": "nd_default",
+      "partner_overrides_module": "states.nd.partner_overrides"
+    },
+    "validation_bundles": [
+      {
+        "bundle_id": "nd.precompute.stub",
+        "phase": "precompute",
+        "engine": "json_rules",
+        "description": "Placeholder precompute validations."
+      },
+      {
+        "bundle_id": "nd.prexml.stub",
+        "phase": "prexml",
+        "engine": "json_rules",
+        "description": "Placeholder XML-readiness validations."
+      }
+    ],
+    "attachments_policy": {
+      "supports_binary_attachments": true,
+      "supports_pdf_only": false,
+      "paper_followup_possible": true,
+      "notes": "Stub entry; verify state-specific attachment rules before production."
+    },
+    "capabilities": {
+      "supports_direct_file": false,
+      "supports_joint_return": true,
+      "supports_multi_state_credit": true,
+      "supports_local_jurisdictions": false
+    },
+    "notes": [
+      "Scaffold manifest only; not a production-certified state implementation.",
+      "Fill in actual schema bundle, validation bundles, and form catalog before launch."
+    ]
+  },
+  {
+    "plugin_manifest_id": "oh.ty2025.stub.v1",
+    "state_code": "OH",
+    "state_name": "Ohio",
+    "tax_year": 2025,
+    "implementation_class": "income_tax_state_stub",
+    "version": "2025.stub.1",
+    "status": "stub",
+    "requires_federal_return": true,
+    "supports_return_kinds": [
+      "resident",
+      "part_year_resident",
+      "nonresident",
+      "extension_only"
+    ],
+    "starting_point_strategy": "custom",
+    "required_fact_namespaces": [
+      "OH.plugin_fact_bag"
+    ],
+    "form_catalog": [
+      {
+        "form_code": "OH_MAIN_RETURN",
+        "role": "main_return",
+        "xml_root_hint": "OHReturn",
+        "required": true
+      }
+    ],
+    "xml_package": {
+      "schema_bundle_id": "oh_ty2025_placeholder",
+      "serializer_module": "states.oh.serializer",
+      "attachment_naming_profile": "oh_default",
+      "partner_overrides_module": "states.oh.partner_overrides"
+    },
+    "validation_bundles": [
+      {
+        "bundle_id": "oh.precompute.stub",
+        "phase": "precompute",
+        "engine": "json_rules",
+        "description": "Placeholder precompute validations."
+      },
+      {
+        "bundle_id": "oh.prexml.stub",
+        "phase": "prexml",
+        "engine": "json_rules",
+        "description": "Placeholder XML-readiness validations."
+      }
+    ],
+    "attachments_policy": {
+      "supports_binary_attachments": true,
+      "supports_pdf_only": false,
+      "paper_followup_possible": true,
+      "notes": "Stub entry; verify state-specific attachment rules before production."
+    },
+    "capabilities": {
+      "supports_direct_file": false,
+      "supports_joint_return": true,
+      "supports_multi_state_credit": true,
+      "supports_local_jurisdictions": true
+    },
+    "notes": [
+      "Scaffold manifest only; not a production-certified state implementation.",
+      "Fill in actual schema bundle, validation bundles, and form catalog before launch."
+    ]
+  },
+  {
+    "plugin_manifest_id": "ok.ty2025.stub.v1",
+    "state_code": "OK",
+    "state_name": "Oklahoma",
+    "tax_year": 2025,
+    "implementation_class": "income_tax_state_stub",
+    "version": "2025.stub.1",
+    "status": "stub",
+    "requires_federal_return": true,
+    "supports_return_kinds": [
+      "resident",
+      "part_year_resident",
+      "nonresident",
+      "extension_only"
+    ],
+    "starting_point_strategy": "custom",
+    "required_fact_namespaces": [
+      "OK.plugin_fact_bag"
+    ],
+    "form_catalog": [
+      {
+        "form_code": "OK_MAIN_RETURN",
+        "role": "main_return",
+        "xml_root_hint": "OKReturn",
+        "required": true
+      }
+    ],
+    "xml_package": {
+      "schema_bundle_id": "ok_ty2025_placeholder",
+      "serializer_module": "states.ok.serializer",
+      "attachment_naming_profile": "ok_default",
+      "partner_overrides_module": "states.ok.partner_overrides"
+    },
+    "validation_bundles": [
+      {
+        "bundle_id": "ok.precompute.stub",
+        "phase": "precompute",
+        "engine": "json_rules",
+        "description": "Placeholder precompute validations."
+      },
+      {
+        "bundle_id": "ok.prexml.stub",
+        "phase": "prexml",
+        "engine": "json_rules",
+        "description": "Placeholder XML-readiness validations."
+      }
+    ],
+    "attachments_policy": {
+      "supports_binary_attachments": true,
+      "supports_pdf_only": false,
+      "paper_followup_possible": true,
+      "notes": "Stub entry; verify state-specific attachment rules before production."
+    },
+    "capabilities": {
+      "supports_direct_file": false,
+      "supports_joint_return": true,
+      "supports_multi_state_credit": true,
+      "supports_local_jurisdictions": false
+    },
+    "notes": [
+      "Scaffold manifest only; not a production-certified state implementation.",
+      "Fill in actual schema bundle, validation bundles, and form catalog before launch."
+    ]
+  },
+  {
+    "plugin_manifest_id": "or.ty2025.stub.v1",
+    "state_code": "OR",
+    "state_name": "Oregon",
+    "tax_year": 2025,
+    "implementation_class": "income_tax_state_stub",
+    "version": "2025.stub.1",
+    "status": "stub",
+    "requires_federal_return": true,
+    "supports_return_kinds": [
+      "resident",
+      "part_year_resident",
+      "nonresident",
+      "extension_only"
+    ],
+    "starting_point_strategy": "custom",
+    "required_fact_namespaces": [
+      "OR.plugin_fact_bag"
+    ],
+    "form_catalog": [
+      {
+        "form_code": "OR_MAIN_RETURN",
+        "role": "main_return",
+        "xml_root_hint": "ORReturn",
+        "required": true
+      }
+    ],
+    "xml_package": {
+      "schema_bundle_id": "or_ty2025_placeholder",
+      "serializer_module": "states.or.serializer",
+      "attachment_naming_profile": "or_default",
+      "partner_overrides_module": "states.or.partner_overrides"
+    },
+    "validation_bundles": [
+      {
+        "bundle_id": "or.precompute.stub",
+        "phase": "precompute",
+        "engine": "json_rules",
+        "description": "Placeholder precompute validations."
+      },
+      {
+        "bundle_id": "or.prexml.stub",
+        "phase": "prexml",
+        "engine": "json_rules",
+        "description": "Placeholder XML-readiness validations."
+      }
+    ],
+    "attachments_policy": {
+      "supports_binary_attachments": true,
+      "supports_pdf_only": false,
+      "paper_followup_possible": true,
+      "notes": "Stub entry; verify state-specific attachment rules before production."
+    },
+    "capabilities": {
+      "supports_direct_file": false,
+      "supports_joint_return": true,
+      "supports_multi_state_credit": true,
+      "supports_local_jurisdictions": false
+    },
+    "notes": [
+      "Scaffold manifest only; not a production-certified state implementation.",
+      "Fill in actual schema bundle, validation bundles, and form catalog before launch."
+    ]
+  },
+  {
+    "plugin_manifest_id": "pa.ty2025.stub.v1",
+    "state_code": "PA",
+    "state_name": "Pennsylvania",
+    "tax_year": 2025,
+    "implementation_class": "income_tax_state_stub",
+    "version": "2025.stub.1",
+    "status": "stub",
+    "requires_federal_return": true,
+    "supports_return_kinds": [
+      "resident",
+      "part_year_resident",
+      "nonresident",
+      "extension_only"
+    ],
+    "starting_point_strategy": "custom",
+    "required_fact_namespaces": [
+      "PA.plugin_fact_bag"
+    ],
+    "form_catalog": [
+      {
+        "form_code": "PA_MAIN_RETURN",
+        "role": "main_return",
+        "xml_root_hint": "PAReturn",
+        "required": true
+      }
+    ],
+    "xml_package": {
+      "schema_bundle_id": "pa_ty2025_placeholder",
+      "serializer_module": "states.pa.serializer",
+      "attachment_naming_profile": "pa_default",
+      "partner_overrides_module": "states.pa.partner_overrides"
+    },
+    "validation_bundles": [
+      {
+        "bundle_id": "pa.precompute.stub",
+        "phase": "precompute",
+        "engine": "json_rules",
+        "description": "Placeholder precompute validations."
+      },
+      {
+        "bundle_id": "pa.prexml.stub",
+        "phase": "prexml",
+        "engine": "json_rules",
+        "description": "Placeholder XML-readiness validations."
+      }
+    ],
+    "attachments_policy": {
+      "supports_binary_attachments": true,
+      "supports_pdf_only": false,
+      "paper_followup_possible": true,
+      "notes": "Stub entry; verify state-specific attachment rules before production."
+    },
+    "capabilities": {
+      "supports_direct_file": false,
+      "supports_joint_return": true,
+      "supports_multi_state_credit": true,
+      "supports_local_jurisdictions": true
+    },
+    "notes": [
+      "Scaffold manifest only; not a production-certified state implementation.",
+      "Fill in actual schema bundle, validation bundles, and form catalog before launch."
+    ]
+  },
+  {
+    "plugin_manifest_id": "ri.ty2025.stub.v1",
+    "state_code": "RI",
+    "state_name": "Rhode Island",
+    "tax_year": 2025,
+    "implementation_class": "income_tax_state_stub",
+    "version": "2025.stub.1",
+    "status": "stub",
+    "requires_federal_return": true,
+    "supports_return_kinds": [
+      "resident",
+      "part_year_resident",
+      "nonresident",
+      "extension_only"
+    ],
+    "starting_point_strategy": "custom",
+    "required_fact_namespaces": [
+      "RI.plugin_fact_bag"
+    ],
+    "form_catalog": [
+      {
+        "form_code": "RI_MAIN_RETURN",
+        "role": "main_return",
+        "xml_root_hint": "RIReturn",
+        "required": true
+      }
+    ],
+    "xml_package": {
+      "schema_bundle_id": "ri_ty2025_placeholder",
+      "serializer_module": "states.ri.serializer",
+      "attachment_naming_profile": "ri_default",
+      "partner_overrides_module": "states.ri.partner_overrides"
+    },
+    "validation_bundles": [
+      {
+        "bundle_id": "ri.precompute.stub",
+        "phase": "precompute",
+        "engine": "json_rules",
+        "description": "Placeholder precompute validations."
+      },
+      {
+        "bundle_id": "ri.prexml.stub",
+        "phase": "prexml",
+        "engine": "json_rules",
+        "description": "Placeholder XML-readiness validations."
+      }
+    ],
+    "attachments_policy": {
+      "supports_binary_attachments": true,
+      "supports_pdf_only": false,
+      "paper_followup_possible": true,
+      "notes": "Stub entry; verify state-specific attachment rules before production."
+    },
+    "capabilities": {
+      "supports_direct_file": false,
+      "supports_joint_return": true,
+      "supports_multi_state_credit": true,
+      "supports_local_jurisdictions": false
+    },
+    "notes": [
+      "Scaffold manifest only; not a production-certified state implementation.",
+      "Fill in actual schema bundle, validation bundles, and form catalog before launch."
+    ]
+  },
+  {
+    "plugin_manifest_id": "sc.ty2025.stub.v1",
+    "state_code": "SC",
+    "state_name": "South Carolina",
+    "tax_year": 2025,
+    "implementation_class": "income_tax_state_stub",
+    "version": "2025.stub.1",
+    "status": "stub",
+    "requires_federal_return": true,
+    "supports_return_kinds": [
+      "resident",
+      "part_year_resident",
+      "nonresident",
+      "extension_only"
+    ],
+    "starting_point_strategy": "custom",
+    "required_fact_namespaces": [
+      "SC.plugin_fact_bag"
+    ],
+    "form_catalog": [
+      {
+        "form_code": "SC_MAIN_RETURN",
+        "role": "main_return",
+        "xml_root_hint": "SCReturn",
+        "required": true
+      }
+    ],
+    "xml_package": {
+      "schema_bundle_id": "sc_ty2025_placeholder",
+      "serializer_module": "states.sc.serializer",
+      "attachment_naming_profile": "sc_default",
+      "partner_overrides_module": "states.sc.partner_overrides"
+    },
+    "validation_bundles": [
+      {
+        "bundle_id": "sc.precompute.stub",
+        "phase": "precompute",
+        "engine": "json_rules",
+        "description": "Placeholder precompute validations."
+      },
+      {
+        "bundle_id": "sc.prexml.stub",
+        "phase": "prexml",
+        "engine": "json_rules",
+        "description": "Placeholder XML-readiness validations."
+      }
+    ],
+    "attachments_policy": {
+      "supports_binary_attachments": true,
+      "supports_pdf_only": false,
+      "paper_followup_possible": true,
+      "notes": "Stub entry; verify state-specific attachment rules before production."
+    },
+    "capabilities": {
+      "supports_direct_file": false,
+      "supports_joint_return": true,
+      "supports_multi_state_credit": true,
+      "supports_local_jurisdictions": false
+    },
+    "notes": [
+      "Scaffold manifest only; not a production-certified state implementation.",
+      "Fill in actual schema bundle, validation bundles, and form catalog before launch."
+    ]
+  },
+  {
+    "plugin_manifest_id": "sd.ty2025.stub.v1",
+    "state_code": "SD",
+    "state_name": "South Dakota",
+    "tax_year": 2025,
+    "implementation_class": "no_individual_income_tax",
+    "version": "2025.stub.1",
+    "status": "stub",
+    "requires_federal_return": false,
+    "supports_return_kinds": [
+      "no_return_required",
+      "informational_only"
+    ],
+    "starting_point_strategy": "none",
+    "required_fact_namespaces": [],
+    "form_catalog": [
+      {
+        "form_code": "NO_PIT_RETURN",
+        "role": "main_return",
+        "xml_root_hint": "none",
+        "required": false
+      }
+    ],
+    "xml_package": {
+      "schema_bundle_id": "sd_ty2025_placeholder",
+      "serializer_module": "states.sd.serializer",
+      "attachment_naming_profile": "sd_default",
+      "partner_overrides_module": "states.sd.partner_overrides"
+    },
+    "validation_bundles": [
+      {
+        "bundle_id": "sd.precompute.stub",
+        "phase": "precompute",
+        "engine": "json_rules",
+        "description": "Placeholder precompute validations."
+      },
+      {
+        "bundle_id": "sd.prexml.stub",
+        "phase": "prexml",
+        "engine": "json_rules",
+        "description": "Placeholder XML-readiness validations."
+      }
+    ],
+    "attachments_policy": {
+      "supports_binary_attachments": false,
+      "supports_pdf_only": false,
+      "paper_followup_possible": true,
+      "notes": "Stub entry; verify state-specific attachment rules before production."
+    },
+    "capabilities": {
+      "supports_direct_file": false,
+      "supports_joint_return": false,
+      "supports_multi_state_credit": false,
+      "supports_local_jurisdictions": false
+    },
+    "notes": [
+      "Scaffold manifest only; not a production-certified state implementation.",
+      "Fill in actual schema bundle, validation bundles, and form catalog before launch.",
+      "No broad state individual income tax expected for TY2025; verify local levies and special filings."
+    ]
+  },
+  {
+    "plugin_manifest_id": "tn.ty2025.stub.v1",
+    "state_code": "TN",
+    "state_name": "Tennessee",
+    "tax_year": 2025,
+    "implementation_class": "no_individual_income_tax",
+    "version": "2025.stub.1",
+    "status": "stub",
+    "requires_federal_return": false,
+    "supports_return_kinds": [
+      "no_return_required",
+      "informational_only"
+    ],
+    "starting_point_strategy": "none",
+    "required_fact_namespaces": [],
+    "form_catalog": [
+      {
+        "form_code": "NO_PIT_RETURN",
+        "role": "main_return",
+        "xml_root_hint": "none",
+        "required": false
+      }
+    ],
+    "xml_package": {
+      "schema_bundle_id": "tn_ty2025_placeholder",
+      "serializer_module": "states.tn.serializer",
+      "attachment_naming_profile": "tn_default",
+      "partner_overrides_module": "states.tn.partner_overrides"
+    },
+    "validation_bundles": [
+      {
+        "bundle_id": "tn.precompute.stub",
+        "phase": "precompute",
+        "engine": "json_rules",
+        "description": "Placeholder precompute validations."
+      },
+      {
+        "bundle_id": "tn.prexml.stub",
+        "phase": "prexml",
+        "engine": "json_rules",
+        "description": "Placeholder XML-readiness validations."
+      }
+    ],
+    "attachments_policy": {
+      "supports_binary_attachments": false,
+      "supports_pdf_only": false,
+      "paper_followup_possible": true,
+      "notes": "Stub entry; verify state-specific attachment rules before production."
+    },
+    "capabilities": {
+      "supports_direct_file": false,
+      "supports_joint_return": false,
+      "supports_multi_state_credit": false,
+      "supports_local_jurisdictions": false
+    },
+    "notes": [
+      "Scaffold manifest only; not a production-certified state implementation.",
+      "Fill in actual schema bundle, validation bundles, and form catalog before launch.",
+      "No broad state individual income tax expected for TY2025; verify local levies and special filings."
+    ]
+  },
+  {
+    "plugin_manifest_id": "tx.ty2025.stub.v1",
+    "state_code": "TX",
+    "state_name": "Texas",
+    "tax_year": 2025,
+    "implementation_class": "no_individual_income_tax",
+    "version": "2025.stub.1",
+    "status": "stub",
+    "requires_federal_return": false,
+    "supports_return_kinds": [
+      "no_return_required",
+      "informational_only"
+    ],
+    "starting_point_strategy": "none",
+    "required_fact_namespaces": [],
+    "form_catalog": [
+      {
+        "form_code": "NO_PIT_RETURN",
+        "role": "main_return",
+        "xml_root_hint": "none",
+        "required": false
+      }
+    ],
+    "xml_package": {
+      "schema_bundle_id": "tx_ty2025_placeholder",
+      "serializer_module": "states.tx.serializer",
+      "attachment_naming_profile": "tx_default",
+      "partner_overrides_module": "states.tx.partner_overrides"
+    },
+    "validation_bundles": [
+      {
+        "bundle_id": "tx.precompute.stub",
+        "phase": "precompute",
+        "engine": "json_rules",
+        "description": "Placeholder precompute validations."
+      },
+      {
+        "bundle_id": "tx.prexml.stub",
+        "phase": "prexml",
+        "engine": "json_rules",
+        "description": "Placeholder XML-readiness validations."
+      }
+    ],
+    "attachments_policy": {
+      "supports_binary_attachments": false,
+      "supports_pdf_only": false,
+      "paper_followup_possible": true,
+      "notes": "Stub entry; verify state-specific attachment rules before production."
+    },
+    "capabilities": {
+      "supports_direct_file": false,
+      "supports_joint_return": false,
+      "supports_multi_state_credit": false,
+      "supports_local_jurisdictions": false
+    },
+    "notes": [
+      "Scaffold manifest only; not a production-certified state implementation.",
+      "Fill in actual schema bundle, validation bundles, and form catalog before launch.",
+      "No broad state individual income tax expected for TY2025; verify local levies and special filings."
+    ]
+  },
+  {
+    "plugin_manifest_id": "ut.ty2025.stub.v1",
+    "state_code": "UT",
+    "state_name": "Utah",
+    "tax_year": 2025,
+    "implementation_class": "income_tax_state_stub",
+    "version": "2025.stub.1",
+    "status": "stub",
+    "requires_federal_return": true,
+    "supports_return_kinds": [
+      "resident",
+      "part_year_resident",
+      "nonresident",
+      "extension_only"
+    ],
+    "starting_point_strategy": "custom",
+    "required_fact_namespaces": [
+      "UT.plugin_fact_bag"
+    ],
+    "form_catalog": [
+      {
+        "form_code": "UT_MAIN_RETURN",
+        "role": "main_return",
+        "xml_root_hint": "UTReturn",
+        "required": true
+      }
+    ],
+    "xml_package": {
+      "schema_bundle_id": "ut_ty2025_placeholder",
+      "serializer_module": "states.ut.serializer",
+      "attachment_naming_profile": "ut_default",
+      "partner_overrides_module": "states.ut.partner_overrides"
+    },
+    "validation_bundles": [
+      {
+        "bundle_id": "ut.precompute.stub",
+        "phase": "precompute",
+        "engine": "json_rules",
+        "description": "Placeholder precompute validations."
+      },
+      {
+        "bundle_id": "ut.prexml.stub",
+        "phase": "prexml",
+        "engine": "json_rules",
+        "description": "Placeholder XML-readiness validations."
+      }
+    ],
+    "attachments_policy": {
+      "supports_binary_attachments": true,
+      "supports_pdf_only": false,
+      "paper_followup_possible": true,
+      "notes": "Stub entry; verify state-specific attachment rules before production."
+    },
+    "capabilities": {
+      "supports_direct_file": false,
+      "supports_joint_return": true,
+      "supports_multi_state_credit": true,
+      "supports_local_jurisdictions": false
+    },
+    "notes": [
+      "Scaffold manifest only; not a production-certified state implementation.",
+      "Fill in actual schema bundle, validation bundles, and form catalog before launch."
+    ]
+  },
+  {
+    "plugin_manifest_id": "vt.ty2025.stub.v1",
+    "state_code": "VT",
+    "state_name": "Vermont",
+    "tax_year": 2025,
+    "implementation_class": "income_tax_state_stub",
+    "version": "2025.stub.1",
+    "status": "stub",
+    "requires_federal_return": true,
+    "supports_return_kinds": [
+      "resident",
+      "part_year_resident",
+      "nonresident",
+      "extension_only"
+    ],
+    "starting_point_strategy": "custom",
+    "required_fact_namespaces": [
+      "VT.plugin_fact_bag"
+    ],
+    "form_catalog": [
+      {
+        "form_code": "VT_MAIN_RETURN",
+        "role": "main_return",
+        "xml_root_hint": "VTReturn",
+        "required": true
+      }
+    ],
+    "xml_package": {
+      "schema_bundle_id": "vt_ty2025_placeholder",
+      "serializer_module": "states.vt.serializer",
+      "attachment_naming_profile": "vt_default",
+      "partner_overrides_module": "states.vt.partner_overrides"
+    },
+    "validation_bundles": [
+      {
+        "bundle_id": "vt.precompute.stub",
+        "phase": "precompute",
+        "engine": "json_rules",
+        "description": "Placeholder precompute validations."
+      },
+      {
+        "bundle_id": "vt.prexml.stub",
+        "phase": "prexml",
+        "engine": "json_rules",
+        "description": "Placeholder XML-readiness validations."
+      }
+    ],
+    "attachments_policy": {
+      "supports_binary_attachments": true,
+      "supports_pdf_only": false,
+      "paper_followup_possible": true,
+      "notes": "Stub entry; verify state-specific attachment rules before production."
+    },
+    "capabilities": {
+      "supports_direct_file": false,
+      "supports_joint_return": true,
+      "supports_multi_state_credit": true,
+      "supports_local_jurisdictions": false
+    },
+    "notes": [
+      "Scaffold manifest only; not a production-certified state implementation.",
+      "Fill in actual schema bundle, validation bundles, and form catalog before launch."
+    ]
+  },
+  {
+    "plugin_manifest_id": "va.ty2025.stub.v1",
+    "state_code": "VA",
+    "state_name": "Virginia",
+    "tax_year": 2025,
+    "implementation_class": "income_tax_state_stub",
+    "version": "2025.stub.1",
+    "status": "stub",
+    "requires_federal_return": true,
+    "supports_return_kinds": [
+      "resident",
+      "part_year_resident",
+      "nonresident",
+      "extension_only"
+    ],
+    "starting_point_strategy": "custom",
+    "required_fact_namespaces": [
+      "VA.plugin_fact_bag"
+    ],
+    "form_catalog": [
+      {
+        "form_code": "VA_MAIN_RETURN",
+        "role": "main_return",
+        "xml_root_hint": "VAReturn",
+        "required": true
+      }
+    ],
+    "xml_package": {
+      "schema_bundle_id": "va_ty2025_placeholder",
+      "serializer_module": "states.va.serializer",
+      "attachment_naming_profile": "va_default",
+      "partner_overrides_module": "states.va.partner_overrides"
+    },
+    "validation_bundles": [
+      {
+        "bundle_id": "va.precompute.stub",
+        "phase": "precompute",
+        "engine": "json_rules",
+        "description": "Placeholder precompute validations."
+      },
+      {
+        "bundle_id": "va.prexml.stub",
+        "phase": "prexml",
+        "engine": "json_rules",
+        "description": "Placeholder XML-readiness validations."
+      }
+    ],
+    "attachments_policy": {
+      "supports_binary_attachments": true,
+      "supports_pdf_only": false,
+      "paper_followup_possible": true,
+      "notes": "Stub entry; verify state-specific attachment rules before production."
+    },
+    "capabilities": {
+      "supports_direct_file": false,
+      "supports_joint_return": true,
+      "supports_multi_state_credit": true,
+      "supports_local_jurisdictions": false
+    },
+    "notes": [
+      "Scaffold manifest only; not a production-certified state implementation.",
+      "Fill in actual schema bundle, validation bundles, and form catalog before launch."
+    ]
+  },
+  {
+    "plugin_manifest_id": "wa.ty2025.stub.v1",
+    "state_code": "WA",
+    "state_name": "Washington",
+    "tax_year": 2025,
+    "implementation_class": "no_individual_income_tax",
+    "version": "2025.stub.1",
+    "status": "stub",
+    "requires_federal_return": false,
+    "supports_return_kinds": [
+      "no_return_required",
+      "informational_only"
+    ],
+    "starting_point_strategy": "none",
+    "required_fact_namespaces": [],
+    "form_catalog": [
+      {
+        "form_code": "NO_PIT_RETURN",
+        "role": "main_return",
+        "xml_root_hint": "none",
+        "required": false
+      }
+    ],
+    "xml_package": {
+      "schema_bundle_id": "wa_ty2025_placeholder",
+      "serializer_module": "states.wa.serializer",
+      "attachment_naming_profile": "wa_default",
+      "partner_overrides_module": "states.wa.partner_overrides"
+    },
+    "validation_bundles": [
+      {
+        "bundle_id": "wa.precompute.stub",
+        "phase": "precompute",
+        "engine": "json_rules",
+        "description": "Placeholder precompute validations."
+      },
+      {
+        "bundle_id": "wa.prexml.stub",
+        "phase": "prexml",
+        "engine": "json_rules",
+        "description": "Placeholder XML-readiness validations."
+      }
+    ],
+    "attachments_policy": {
+      "supports_binary_attachments": false,
+      "supports_pdf_only": false,
+      "paper_followup_possible": true,
+      "notes": "Stub entry; verify state-specific attachment rules before production."
+    },
+    "capabilities": {
+      "supports_direct_file": false,
+      "supports_joint_return": false,
+      "supports_multi_state_credit": false,
+      "supports_local_jurisdictions": false
+    },
+    "notes": [
+      "Scaffold manifest only; not a production-certified state implementation.",
+      "Fill in actual schema bundle, validation bundles, and form catalog before launch.",
+      "No broad state individual income tax expected for TY2025; verify local levies and special filings."
+    ]
+  },
+  {
+    "plugin_manifest_id": "wv.ty2025.stub.v1",
+    "state_code": "WV",
+    "state_name": "West Virginia",
+    "tax_year": 2025,
+    "implementation_class": "income_tax_state_stub",
+    "version": "2025.stub.1",
+    "status": "stub",
+    "requires_federal_return": true,
+    "supports_return_kinds": [
+      "resident",
+      "part_year_resident",
+      "nonresident",
+      "extension_only"
+    ],
+    "starting_point_strategy": "custom",
+    "required_fact_namespaces": [
+      "WV.plugin_fact_bag"
+    ],
+    "form_catalog": [
+      {
+        "form_code": "WV_MAIN_RETURN",
+        "role": "main_return",
+        "xml_root_hint": "WVReturn",
+        "required": true
+      }
+    ],
+    "xml_package": {
+      "schema_bundle_id": "wv_ty2025_placeholder",
+      "serializer_module": "states.wv.serializer",
+      "attachment_naming_profile": "wv_default",
+      "partner_overrides_module": "states.wv.partner_overrides"
+    },
+    "validation_bundles": [
+      {
+        "bundle_id": "wv.precompute.stub",
+        "phase": "precompute",
+        "engine": "json_rules",
+        "description": "Placeholder precompute validations."
+      },
+      {
+        "bundle_id": "wv.prexml.stub",
+        "phase": "prexml",
+        "engine": "json_rules",
+        "description": "Placeholder XML-readiness validations."
+      }
+    ],
+    "attachments_policy": {
+      "supports_binary_attachments": true,
+      "supports_pdf_only": false,
+      "paper_followup_possible": true,
+      "notes": "Stub entry; verify state-specific attachment rules before production."
+    },
+    "capabilities": {
+      "supports_direct_file": false,
+      "supports_joint_return": true,
+      "supports_multi_state_credit": true,
+      "supports_local_jurisdictions": false
+    },
+    "notes": [
+      "Scaffold manifest only; not a production-certified state implementation.",
+      "Fill in actual schema bundle, validation bundles, and form catalog before launch."
+    ]
+  },
+  {
+    "plugin_manifest_id": "wi.ty2025.stub.v1",
+    "state_code": "WI",
+    "state_name": "Wisconsin",
+    "tax_year": 2025,
+    "implementation_class": "income_tax_state_stub",
+    "version": "2025.stub.1",
+    "status": "stub",
+    "requires_federal_return": true,
+    "supports_return_kinds": [
+      "resident",
+      "part_year_resident",
+      "nonresident",
+      "extension_only"
+    ],
+    "starting_point_strategy": "custom",
+    "required_fact_namespaces": [
+      "WI.plugin_fact_bag"
+    ],
+    "form_catalog": [
+      {
+        "form_code": "WI_MAIN_RETURN",
+        "role": "main_return",
+        "xml_root_hint": "WIReturn",
+        "required": true
+      }
+    ],
+    "xml_package": {
+      "schema_bundle_id": "wi_ty2025_placeholder",
+      "serializer_module": "states.wi.serializer",
+      "attachment_naming_profile": "wi_default",
+      "partner_overrides_module": "states.wi.partner_overrides"
+    },
+    "validation_bundles": [
+      {
+        "bundle_id": "wi.precompute.stub",
+        "phase": "precompute",
+        "engine": "json_rules",
+        "description": "Placeholder precompute validations."
+      },
+      {
+        "bundle_id": "wi.prexml.stub",
+        "phase": "prexml",
+        "engine": "json_rules",
+        "description": "Placeholder XML-readiness validations."
+      }
+    ],
+    "attachments_policy": {
+      "supports_binary_attachments": true,
+      "supports_pdf_only": false,
+      "paper_followup_possible": true,
+      "notes": "Stub entry; verify state-specific attachment rules before production."
+    },
+    "capabilities": {
+      "supports_direct_file": false,
+      "supports_joint_return": true,
+      "supports_multi_state_credit": true,
+      "supports_local_jurisdictions": false
+    },
+    "notes": [
+      "Scaffold manifest only; not a production-certified state implementation.",
+      "Fill in actual schema bundle, validation bundles, and form catalog before launch."
+    ]
+  },
+  {
+    "plugin_manifest_id": "wy.ty2025.stub.v1",
+    "state_code": "WY",
+    "state_name": "Wyoming",
+    "tax_year": 2025,
+    "implementation_class": "no_individual_income_tax",
+    "version": "2025.stub.1",
+    "status": "stub",
+    "requires_federal_return": false,
+    "supports_return_kinds": [
+      "no_return_required",
+      "informational_only"
+    ],
+    "starting_point_strategy": "none",
+    "required_fact_namespaces": [],
+    "form_catalog": [
+      {
+        "form_code": "NO_PIT_RETURN",
+        "role": "main_return",
+        "xml_root_hint": "none",
+        "required": false
+      }
+    ],
+    "xml_package": {
+      "schema_bundle_id": "wy_ty2025_placeholder",
+      "serializer_module": "states.wy.serializer",
+      "attachment_naming_profile": "wy_default",
+      "partner_overrides_module": "states.wy.partner_overrides"
+    },
+    "validation_bundles": [
+      {
+        "bundle_id": "wy.precompute.stub",
+        "phase": "precompute",
+        "engine": "json_rules",
+        "description": "Placeholder precompute validations."
+      },
+      {
+        "bundle_id": "wy.prexml.stub",
+        "phase": "prexml",
+        "engine": "json_rules",
+        "description": "Placeholder XML-readiness validations."
+      }
+    ],
+    "attachments_policy": {
+      "supports_binary_attachments": false,
+      "supports_pdf_only": false,
+      "paper_followup_possible": true,
+      "notes": "Stub entry; verify state-specific attachment rules before production."
+    },
+    "capabilities": {
+      "supports_direct_file": false,
+      "supports_joint_return": false,
+      "supports_multi_state_credit": false,
+      "supports_local_jurisdictions": false
+    },
+    "notes": [
+      "Scaffold manifest only; not a production-certified state implementation.",
+      "Fill in actual schema bundle, validation bundles, and form catalog before launch.",
+      "No broad state individual income tax expected for TY2025; verify local levies and special filings."
+    ]
+  }
+]

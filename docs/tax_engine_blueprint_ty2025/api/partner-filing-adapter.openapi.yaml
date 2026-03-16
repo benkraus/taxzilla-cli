@@ -1,0 +1,610 @@
+openapi: 3.1.0
+info:
+  title: Filing-Only Partner Adapter API
+  version: 1.0.0
+  summary: Adapter boundary for handing fully computed TY2025 filings to a filing-only transmission partner.
+  description: |
+    This API assumes the caller already owns:
+      - the canonical tax facts model,
+      - deterministic calculations,
+      - XML compilation,
+      - attachment selection,
+      - signing context.
+
+    The partner is used for validation overlays, transmission, acknowledgements, reject delivery,
+    and resubmission lifecycle management.
+
+servers:
+  - url: https://partner.example.com
+
+security:
+  - bearerAuth: []
+
+tags:
+  - name: capabilities
+  - name: validations
+  - name: submissions
+  - name: acknowledgements
+
+paths:
+  /v1/capabilities:
+    get:
+      tags: [capabilities]
+      summary: Get partner capability metadata
+      operationId: getCapabilities
+      responses:
+        '200':
+          description: Capability snapshot
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CapabilitiesResponse'
+
+  /v1/validations:
+    post:
+      tags: [validations]
+      summary: Preflight validation for a federal/state package before transmission
+      operationId: validatePackage
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ValidationRequest'
+      responses:
+        '200':
+          description: Validation result
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ValidationResponse'
+
+  /v1/submissions:
+    post:
+      tags: [submissions]
+      summary: Submit a transmission-ready filing package
+      operationId: createSubmission
+      parameters:
+        - in: header
+          name: Idempotency-Key
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SubmissionRequest'
+      responses:
+        '202':
+          description: Submission accepted for processing
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SubmissionAcceptedResponse'
+
+  /v1/submissions/{submissionId}:
+    get:
+      tags: [submissions]
+      summary: Get current submission status
+      operationId: getSubmission
+      parameters:
+        - $ref: '#/components/parameters/SubmissionId'
+      responses:
+        '200':
+          description: Submission status
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SubmissionStatusResponse'
+
+  /v1/submissions/{submissionId}/acknowledgements:
+    get:
+      tags: [acknowledgements]
+      summary: List acknowledgements and normalized reject details
+      operationId: listAcknowledgements
+      parameters:
+        - $ref: '#/components/parameters/SubmissionId'
+      responses:
+        '200':
+          description: Acknowledgements
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AcknowledgementListResponse'
+
+  /v1/submissions/{submissionId}/resubmissions:
+    post:
+      tags: [submissions]
+      summary: Resubmit a corrected package against an earlier submission
+      operationId: createResubmission
+      parameters:
+        - $ref: '#/components/parameters/SubmissionId'
+        - in: header
+          name: Idempotency-Key
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ResubmissionRequest'
+      responses:
+        '202':
+          description: Resubmission accepted for processing
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SubmissionAcceptedResponse'
+
+webhooks:
+  submission.received:
+    post:
+      summary: Partner accepted payload into its internal queue
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SubmissionStatusResponse'
+      responses:
+        '200':
+          description: OK
+
+  submission.accepted:
+    post:
+      summary: Jurisdiction accepted the filing
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Acknowledgement'
+      responses:
+        '200':
+          description: OK
+
+  submission.rejected:
+    post:
+      summary: Jurisdiction or partner rejected the filing
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Acknowledgement'
+      responses:
+        '200':
+          description: OK
+
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+
+  parameters:
+    SubmissionId:
+      in: path
+      name: submissionId
+      required: true
+      schema:
+        type: string
+
+  schemas:
+    CapabilitiesResponse:
+      type: object
+      required:
+        - partner_name
+        - environment
+        - supported_tax_years
+        - supported_signature_methods
+        - supported_submission_modes
+        - supported_states
+        - max_attachment_bytes
+      properties:
+        partner_name:
+          type: string
+        environment:
+          type: string
+          enum: [sandbox, production]
+        supported_tax_years:
+          type: array
+          items:
+            type: integer
+        supported_signature_methods:
+          type: array
+          items:
+            type: string
+            enum: [self_select_pin, practitioner_pin, paper]
+        supported_submission_modes:
+          type: array
+          items:
+            type: string
+            enum: [federal_only, state_only, federal_and_state_bundle]
+        supported_states:
+          type: array
+          items:
+            type: string
+            pattern: '^[A-Z]{2}$'
+        max_attachment_bytes:
+          type: integer
+        supports_webhooks:
+          type: boolean
+        supports_field_level_reject_mapping:
+          type: boolean
+        notes:
+          type: array
+          items:
+            type: string
+      additionalProperties: false
+
+    ValidationRequest:
+      type: object
+      required:
+        - package_id
+        - tax_year
+        - submission_mode
+        - federal
+      properties:
+        package_id:
+          type: string
+        tax_year:
+          type: integer
+          const: 2025
+        submission_mode:
+          type: string
+          enum: [federal_only, state_only, federal_and_state_bundle]
+        federal:
+          $ref: '#/components/schemas/FederalPayload'
+        states:
+          type: array
+          items:
+            $ref: '#/components/schemas/StatePayload'
+        adapter_metadata:
+          type: object
+          additionalProperties: true
+      additionalProperties: false
+
+    ValidationResponse:
+      type: object
+      required:
+        - package_id
+        - overall_status
+        - issues
+      properties:
+        package_id:
+          type: string
+        overall_status:
+          type: string
+          enum: [pass, fail, pass_with_warnings]
+        issues:
+          type: array
+          items:
+            $ref: '#/components/schemas/ValidationIssue'
+      additionalProperties: false
+
+    SubmissionRequest:
+      type: object
+      required:
+        - package_id
+        - tax_year
+        - submission_mode
+        - federal
+        - callback_url
+      properties:
+        package_id:
+          type: string
+        tax_year:
+          type: integer
+          const: 2025
+        submission_mode:
+          type: string
+          enum: [federal_only, state_only, federal_and_state_bundle]
+        federal:
+          $ref: '#/components/schemas/FederalPayload'
+        states:
+          type: array
+          items:
+            $ref: '#/components/schemas/StatePayload'
+        callback_url:
+          type: string
+          format: uri
+        idempotency_context:
+          type: object
+          additionalProperties: true
+        adapter_metadata:
+          type: object
+          additionalProperties: true
+      additionalProperties: false
+
+    ResubmissionRequest:
+      type: object
+      required:
+        - package_id
+        - correction_reason
+        - federal
+      properties:
+        package_id:
+          type: string
+        correction_reason:
+          type: string
+        federal:
+          $ref: '#/components/schemas/FederalPayload'
+        states:
+          type: array
+          items:
+            $ref: '#/components/schemas/StatePayload'
+        supersedes_acknowledgement_id:
+          type: string
+      additionalProperties: false
+
+    FederalPayload:
+      type: object
+      required:
+        - artifact_id
+        - xml_base64
+        - xml_version
+        - graph_snapshot_id
+        - signature_context
+        - attachments
+      properties:
+        artifact_id:
+          type: string
+        xml_base64:
+          type: string
+          description: Base64-encoded federal XML
+        xml_version:
+          type: string
+        graph_snapshot_id:
+          type: string
+        rendered_pdf_artifact_id:
+          type: string
+        signature_context:
+          $ref: '#/components/schemas/SignatureContext'
+        payment_context:
+          $ref: '#/components/schemas/PaymentContext'
+        attachments:
+          type: array
+          items:
+            $ref: '#/components/schemas/AttachmentDescriptor'
+        reverse_mapping_artifact_id:
+          type: string
+      additionalProperties: false
+
+    StatePayload:
+      type: object
+      required:
+        - state_code
+        - artifact_id
+        - xml_base64
+        - xml_version
+        - graph_snapshot_id
+        - attachments
+      properties:
+        state_code:
+          type: string
+          pattern: '^[A-Z]{2}$'
+        artifact_id:
+          type: string
+        xml_base64:
+          type: string
+        xml_version:
+          type: string
+        graph_snapshot_id:
+          type: string
+        rendered_pdf_artifact_id:
+          type: string
+        attachments:
+          type: array
+          items:
+            $ref: '#/components/schemas/AttachmentDescriptor'
+        reverse_mapping_artifact_id:
+          type: string
+      additionalProperties: false
+
+    SignatureContext:
+      type: object
+      required:
+        - method
+        - signers
+      properties:
+        method:
+          type: string
+          enum: [self_select_pin, practitioner_pin, paper]
+        signers:
+          type: array
+          items:
+            type: object
+            required:
+              - person_role
+            properties:
+              person_role:
+                type: string
+                enum: [taxpayer, spouse]
+              pin_token:
+                type: string
+              prior_year_agi:
+                type: number
+              signed_at:
+                type: string
+                format: date-time
+            additionalProperties: false
+        consent_artifact_id:
+          type: string
+      additionalProperties: false
+
+    PaymentContext:
+      type: object
+      properties:
+        refund_direct_deposit_artifact_id:
+          type: string
+        balance_due_direct_debit_artifact_id:
+          type: string
+      additionalProperties: false
+
+    AttachmentDescriptor:
+      type: object
+      required:
+        - attachment_id
+        - storage_uri
+        - content_type
+        - sha256
+      properties:
+        attachment_id:
+          type: string
+        related_form_code:
+          type: string
+        storage_uri:
+          type: string
+        content_type:
+          type: string
+        sha256:
+          type: string
+          pattern: '^[a-fA-F0-9]{64}$'
+        paper_followup_required:
+          type: boolean
+      additionalProperties: false
+
+    ValidationIssue:
+      type: object
+      required:
+        - code
+        - severity
+        - message
+      properties:
+        code:
+          type: string
+        severity:
+          type: string
+          enum: [error, warning, info]
+        message:
+          type: string
+        jurisdiction:
+          type: string
+          enum: [federal, state, local]
+        state_code:
+          type: string
+          pattern: '^[A-Z]{2}$'
+        field_pointer:
+          type: string
+          pattern: '^(/([^/~]|~0|~1)*)*$'
+        xml_path:
+          type: string
+        fix_hint:
+          type: string
+      additionalProperties: false
+
+    SubmissionAcceptedResponse:
+      type: object
+      required:
+        - submission_id
+        - partner_name
+        - package_id
+        - status
+      properties:
+        submission_id:
+          type: string
+        partner_name:
+          type: string
+        package_id:
+          type: string
+        status:
+          type: string
+          enum: [submitted, received]
+        received_at:
+          type: string
+          format: date-time
+      additionalProperties: false
+
+    SubmissionStatusResponse:
+      type: object
+      required:
+        - submission_id
+        - package_id
+        - status
+        - jurisdictions
+      properties:
+        submission_id:
+          type: string
+        package_id:
+          type: string
+        status:
+          type: string
+          enum: [draft, validated, submitted, received, accepted, rejected, resubmitted, voided]
+        jurisdictions:
+          type: array
+          items:
+            type: object
+            required:
+              - jurisdiction
+              - status
+            properties:
+              jurisdiction:
+                type: string
+                enum: [federal, state, local]
+              state_code:
+                type: string
+                pattern: '^[A-Z]{2}$'
+              status:
+                type: string
+                enum: [submitted, received, accepted, rejected]
+              last_status_at:
+                type: string
+                format: date-time
+            additionalProperties: false
+        latest_acknowledgement_id:
+          type: string
+      additionalProperties: false
+
+    AcknowledgementListResponse:
+      type: object
+      required:
+        - submission_id
+        - acknowledgements
+      properties:
+        submission_id:
+          type: string
+        acknowledgements:
+          type: array
+          items:
+            $ref: '#/components/schemas/Acknowledgement'
+      additionalProperties: false
+
+    Acknowledgement:
+      type: object
+      required:
+        - acknowledgement_id
+        - submission_id
+        - status
+        - jurisdiction
+        - received_at
+        - issues
+      properties:
+        acknowledgement_id:
+          type: string
+        submission_id:
+          type: string
+        status:
+          type: string
+          enum: [received, accepted, rejected]
+        jurisdiction:
+          type: string
+          enum: [federal, state, local]
+        state_code:
+          type: string
+          pattern: '^[A-Z]{2}$'
+        partner_reference:
+          type: string
+        received_at:
+          type: string
+          format: date-time
+        issues:
+          type: array
+          items:
+            $ref: '#/components/schemas/ValidationIssue'
+      additionalProperties: false

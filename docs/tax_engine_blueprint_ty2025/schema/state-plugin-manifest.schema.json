@@ -1,0 +1,300 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.com/schemas/state-plugin-manifest.schema.json",
+  "title": "State Plugin Manifest Schema",
+  "description": "Describes one state plugin's capabilities, input requirements, validation hooks, and XML mapping package for TY2025.",
+  "type": "object",
+  "required": [
+    "plugin_manifest_id",
+    "state_code",
+    "state_name",
+    "tax_year",
+    "implementation_class",
+    "version",
+    "status",
+    "requires_federal_return",
+    "supports_return_kinds",
+    "starting_point_strategy",
+    "required_fact_namespaces",
+    "form_catalog",
+    "xml_package",
+    "validation_bundles",
+    "attachments_policy",
+    "capabilities",
+    "notes"
+  ],
+  "properties": {
+    "plugin_manifest_id": {
+      "type": "string"
+    },
+    "state_code": {
+      "type": "string",
+      "enum": [
+        "AL",
+        "AK",
+        "AZ",
+        "AR",
+        "CA",
+        "CO",
+        "CT",
+        "DE",
+        "FL",
+        "GA",
+        "HI",
+        "ID",
+        "IL",
+        "IN",
+        "IA",
+        "KS",
+        "KY",
+        "LA",
+        "ME",
+        "MD",
+        "MA",
+        "MI",
+        "MN",
+        "MS",
+        "MO",
+        "MT",
+        "NE",
+        "NV",
+        "NH",
+        "NJ",
+        "NM",
+        "NY",
+        "NC",
+        "ND",
+        "OH",
+        "OK",
+        "OR",
+        "PA",
+        "RI",
+        "SC",
+        "SD",
+        "TN",
+        "TX",
+        "UT",
+        "VT",
+        "VA",
+        "WA",
+        "WV",
+        "WI",
+        "WY"
+      ]
+    },
+    "state_name": {
+      "type": "string"
+    },
+    "tax_year": {
+      "type": "integer",
+      "const": 2025
+    },
+    "implementation_class": {
+      "type": "string",
+      "enum": [
+        "income_tax_state_stub",
+        "no_individual_income_tax",
+        "extension_only",
+        "informational_only"
+      ]
+    },
+    "version": {
+      "type": "string"
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "stub",
+        "in_development",
+        "ready_for_internal_test",
+        "ats_ready",
+        "production_candidate"
+      ]
+    },
+    "requires_federal_return": {
+      "type": "boolean"
+    },
+    "supports_return_kinds": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "enum": [
+          "resident",
+          "part_year_resident",
+          "nonresident",
+          "extension_only",
+          "informational_only",
+          "no_return_required"
+        ]
+      },
+      "uniqueItems": true
+    },
+    "starting_point_strategy": {
+      "type": "string",
+      "enum": [
+        "federal_agi",
+        "federal_taxable_income",
+        "none",
+        "custom"
+      ]
+    },
+    "required_fact_namespaces": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "uniqueItems": true
+    },
+    "form_catalog": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "form_code",
+          "role",
+          "xml_root_hint"
+        ],
+        "properties": {
+          "form_code": {
+            "type": "string"
+          },
+          "role": {
+            "type": "string",
+            "enum": [
+              "main_return",
+              "schedule",
+              "worksheet",
+              "payment",
+              "extension",
+              "attachment_cover"
+            ]
+          },
+          "xml_root_hint": {
+            "type": "string"
+          },
+          "required": {
+            "type": "boolean"
+          }
+        },
+        "additionalProperties": false
+      }
+    },
+    "xml_package": {
+      "type": "object",
+      "required": [
+        "schema_bundle_id",
+        "serializer_module",
+        "attachment_naming_profile"
+      ],
+      "properties": {
+        "schema_bundle_id": {
+          "type": "string"
+        },
+        "serializer_module": {
+          "type": "string"
+        },
+        "attachment_naming_profile": {
+          "type": "string"
+        },
+        "partner_overrides_module": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false
+    },
+    "validation_bundles": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "bundle_id",
+          "phase",
+          "engine"
+        ],
+        "properties": {
+          "bundle_id": {
+            "type": "string"
+          },
+          "phase": {
+            "type": "string",
+            "enum": [
+              "precompute",
+              "postcompute",
+              "prexml",
+              "pretransmit",
+              "postack"
+            ]
+          },
+          "engine": {
+            "type": "string",
+            "enum": [
+              "json_rules",
+              "python",
+              "sql",
+              "partner_overlay",
+              "manual_review_gate"
+            ]
+          },
+          "description": {
+            "type": "string"
+          }
+        },
+        "additionalProperties": false
+      }
+    },
+    "attachments_policy": {
+      "type": "object",
+      "required": [
+        "supports_binary_attachments",
+        "supports_pdf_only",
+        "paper_followup_possible"
+      ],
+      "properties": {
+        "supports_binary_attachments": {
+          "type": "boolean"
+        },
+        "supports_pdf_only": {
+          "type": "boolean"
+        },
+        "paper_followup_possible": {
+          "type": "boolean"
+        },
+        "notes": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false
+    },
+    "capabilities": {
+      "type": "object",
+      "required": [
+        "supports_direct_file",
+        "supports_joint_return",
+        "supports_multi_state_credit",
+        "supports_local_jurisdictions"
+      ],
+      "properties": {
+        "supports_direct_file": {
+          "type": "boolean"
+        },
+        "supports_joint_return": {
+          "type": "boolean"
+        },
+        "supports_multi_state_credit": {
+          "type": "boolean"
+        },
+        "supports_local_jurisdictions": {
+          "type": "boolean"
+        }
+      },
+      "additionalProperties": false
+    },
+    "notes": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    }
+  },
+  "additionalProperties": false
+}

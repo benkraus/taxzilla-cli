@@ -1,0 +1,225 @@
+{
+  "graph_id": "graph_ty2025_sample_001",
+  "tax_year": 2025,
+  "created_at": "2026-03-12T10:00:00Z",
+  "jurisdictions": [
+    "federal",
+    "CA"
+  ],
+  "modules": [
+    {
+      "module_id": "federal.form1040.core",
+      "jurisdiction": "federal",
+      "module_type": "form",
+      "form_code": "1040",
+      "version": "2025.1",
+      "enabled": true
+    },
+    {
+      "module_id": "federal.schedule_b",
+      "jurisdiction": "federal",
+      "module_type": "schedule",
+      "form_code": "Schedule B",
+      "version": "2025.1",
+      "enabled": true
+    },
+    {
+      "module_id": "ca.plugin.stub",
+      "jurisdiction": "CA",
+      "module_type": "state_plugin",
+      "form_code": "CA-540",
+      "version": "2025.stub.1",
+      "enabled": true
+    }
+  ],
+  "nodes": [
+    {
+      "node_id": "input.w2.box1",
+      "node_type": "input",
+      "jurisdiction": "federal",
+      "module_id": "federal.form1040.core",
+      "form_code": "W-2",
+      "line_code": "box1",
+      "label": "W-2 wages",
+      "data_type": "money",
+      "value": 85000.0,
+      "source_json_pointers": [
+        "/facts/income/wages/0/wages_tips_other_compensation"
+      ]
+    },
+    {
+      "node_id": "input.1099int.box1",
+      "node_type": "input",
+      "jurisdiction": "federal",
+      "module_id": "federal.schedule_b",
+      "form_code": "1099-INT",
+      "line_code": "box1",
+      "label": "Taxable interest",
+      "data_type": "money",
+      "value": 45.32,
+      "source_json_pointers": [
+        "/facts/income/taxable_interest/0/interest_income"
+      ]
+    },
+    {
+      "node_id": "schedb.line2",
+      "node_type": "line",
+      "jurisdiction": "federal",
+      "module_id": "federal.schedule_b",
+      "form_code": "Schedule B",
+      "line_code": "2",
+      "label": "Taxable interest total",
+      "data_type": "money",
+      "value": 45.32,
+      "formula_ref": "sum(input.1099int.*)"
+    },
+    {
+      "node_id": "1040.line1a",
+      "node_type": "line",
+      "jurisdiction": "federal",
+      "module_id": "federal.form1040.core",
+      "form_code": "1040",
+      "line_code": "1a",
+      "label": "Wages, salaries, tips",
+      "data_type": "money",
+      "value": 85000.0,
+      "formula_ref": "sum(input.w2.*)"
+    },
+    {
+      "node_id": "1040.line2b",
+      "node_type": "line",
+      "jurisdiction": "federal",
+      "module_id": "federal.form1040.core",
+      "form_code": "1040",
+      "line_code": "2b",
+      "label": "Taxable interest",
+      "data_type": "money",
+      "value": 45.32,
+      "formula_ref": "schedb.line2"
+    },
+    {
+      "node_id": "1040.line9",
+      "node_type": "calculation",
+      "jurisdiction": "federal",
+      "module_id": "federal.form1040.core",
+      "form_code": "1040",
+      "line_code": "9",
+      "label": "Total income",
+      "data_type": "money",
+      "value": 85045.32,
+      "formula_ref": "1040.line1a + 1040.line2b"
+    },
+    {
+      "node_id": "1040.line11",
+      "node_type": "calculation",
+      "jurisdiction": "federal",
+      "module_id": "federal.form1040.core",
+      "form_code": "1040",
+      "line_code": "11",
+      "label": "Adjusted gross income",
+      "data_type": "money",
+      "value": 85045.32,
+      "formula_ref": "1040.line9 - adjustments.total"
+    },
+    {
+      "node_id": "bridge.ca.starting_point",
+      "node_type": "bridge",
+      "jurisdiction": "CA",
+      "module_id": "ca.plugin.stub",
+      "form_code": "CA-540",
+      "line_code": "start",
+      "label": "California starting point from federal AGI",
+      "data_type": "money",
+      "value": 85045.32,
+      "formula_ref": "1040.line11"
+    },
+    {
+      "node_id": "ca.summary.total_tax",
+      "node_type": "summary",
+      "jurisdiction": "CA",
+      "module_id": "ca.plugin.stub",
+      "form_code": "CA-540",
+      "line_code": "summary",
+      "label": "California total tax",
+      "data_type": "money",
+      "value": 0,
+      "formula_ref": "stub"
+    }
+  ],
+  "edges": [
+    {
+      "from_node_id": "input.1099int.box1",
+      "to_node_id": "schedb.line2",
+      "edge_type": "dependency"
+    },
+    {
+      "from_node_id": "input.w2.box1",
+      "to_node_id": "1040.line1a",
+      "edge_type": "dependency"
+    },
+    {
+      "from_node_id": "schedb.line2",
+      "to_node_id": "1040.line2b",
+      "edge_type": "derivation"
+    },
+    {
+      "from_node_id": "1040.line1a",
+      "to_node_id": "1040.line9",
+      "edge_type": "dependency"
+    },
+    {
+      "from_node_id": "1040.line2b",
+      "to_node_id": "1040.line9",
+      "edge_type": "dependency"
+    },
+    {
+      "from_node_id": "1040.line9",
+      "to_node_id": "1040.line11",
+      "edge_type": "dependency"
+    },
+    {
+      "from_node_id": "1040.line11",
+      "to_node_id": "bridge.ca.starting_point",
+      "edge_type": "carryforward"
+    },
+    {
+      "from_node_id": "bridge.ca.starting_point",
+      "to_node_id": "ca.summary.total_tax",
+      "edge_type": "dependency"
+    }
+  ],
+  "execution_order": [
+    "input.w2.box1",
+    "input.1099int.box1",
+    "schedb.line2",
+    "1040.line1a",
+    "1040.line2b",
+    "1040.line9",
+    "1040.line11",
+    "bridge.ca.starting_point",
+    "ca.summary.total_tax"
+  ],
+  "validation_results": [
+    {
+      "rule_id": "federal.identity.complete",
+      "severity": "error",
+      "status": "pass",
+      "message": "Required identity facts present.",
+      "node_ids": [
+        "1040.line1a"
+      ]
+    },
+    {
+      "rule_id": "federal.interest.schedule_b.threshold",
+      "severity": "info",
+      "status": "pass",
+      "message": "Schedule B activated due to interest input.",
+      "node_ids": [
+        "schedb.line2"
+      ]
+    }
+  ],
+  "materialized_outputs": {
+    "federal_summary_artifact_id": "artifact_fed_summary_1"
+  }
+}

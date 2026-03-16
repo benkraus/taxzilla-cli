@@ -1,0 +1,321 @@
+[
+  {
+    "module_id": "federal.form1040.core",
+    "form_code": "1040",
+    "support_tier": "core",
+    "purpose": "Primary individual return and summary lines.",
+    "driven_by_fact_namespaces": [
+      "household",
+      "facts.income",
+      "facts.adjustments",
+      "facts.credits",
+      "facts.payments",
+      "elections"
+    ],
+    "produces_lines": [
+      "1040.1a",
+      "1040.2b",
+      "1040.9",
+      "1040.11",
+      "1040.12",
+      "1040.15",
+      "1040.16",
+      "1040.24",
+      "1040.25d",
+      "1040.33",
+      "1040.34",
+      "1040.37"
+    ]
+  },
+  {
+    "module_id": "federal.schedule1",
+    "form_code": "Schedule 1",
+    "support_tier": "core",
+    "purpose": "Additional income and adjustments.",
+    "driven_by_fact_namespaces": [
+      "facts.income.other_income_items",
+      "facts.income.schedule_c_businesses",
+      "facts.adjustments"
+    ],
+    "produces_lines": [
+      "Sch1.PartI",
+      "Sch1.PartII"
+    ]
+  },
+  {
+    "module_id": "federal.schedule2",
+    "form_code": "Schedule 2",
+    "support_tier": "phase_2",
+    "purpose": "Additional taxes.",
+    "driven_by_fact_namespaces": [
+      "facts.income.schedule_c_businesses",
+      "facts.income.retirement_distributions",
+      "facts.credits",
+      "facts.state_specific_fact_bag"
+    ],
+    "produces_lines": [
+      "Sch2.PartI",
+      "Sch2.PartII"
+    ]
+  },
+  {
+    "module_id": "federal.schedule3",
+    "form_code": "Schedule 3",
+    "support_tier": "core",
+    "purpose": "Additional credits and payments.",
+    "driven_by_fact_namespaces": [
+      "facts.credits",
+      "facts.payments"
+    ],
+    "produces_lines": [
+      "Sch3.PartI",
+      "Sch3.PartII"
+    ]
+  },
+  {
+    "module_id": "federal.scheduleA",
+    "form_code": "Schedule A",
+    "support_tier": "core",
+    "purpose": "Itemized deductions.",
+    "driven_by_fact_namespaces": [
+      "facts.itemized_deductions"
+    ],
+    "produces_lines": [
+      "SchA.1",
+      "SchA.5e",
+      "SchA.8a",
+      "SchA.11",
+      "SchA.12",
+      "SchA.17"
+    ]
+  },
+  {
+    "module_id": "federal.scheduleB",
+    "form_code": "Schedule B",
+    "support_tier": "core",
+    "purpose": "Interest and ordinary dividends.",
+    "driven_by_fact_namespaces": [
+      "facts.income.taxable_interest",
+      "facts.income.dividends"
+    ],
+    "produces_lines": [
+      "SchB.2",
+      "SchB.4",
+      "SchB.6"
+    ]
+  },
+  {
+    "module_id": "federal.scheduleC",
+    "form_code": "Schedule C",
+    "support_tier": "core",
+    "purpose": "Profit or loss from business.",
+    "driven_by_fact_namespaces": [
+      "facts.income.schedule_c_businesses",
+      "facts.income.nonemployee_compensation",
+      "facts.income.miscellaneous_1099_income"
+    ],
+    "produces_lines": [
+      "SchC.1",
+      "SchC.7",
+      "SchC.28",
+      "SchC.31"
+    ]
+  },
+  {
+    "module_id": "federal.scheduleD",
+    "form_code": "Schedule D",
+    "support_tier": "core",
+    "purpose": "Capital gains and losses.",
+    "driven_by_fact_namespaces": [
+      "facts.income.capital_transactions",
+      "elections"
+    ],
+    "produces_lines": [
+      "SchD.1a",
+      "SchD.7",
+      "SchD.8a",
+      "SchD.15",
+      "SchD.16"
+    ]
+  },
+  {
+    "module_id": "federal.scheduleE",
+    "form_code": "Schedule E",
+    "support_tier": "phase_2",
+    "purpose": "Supplemental income from rentals and pass-through entities.",
+    "driven_by_fact_namespaces": [
+      "facts.income.schedule_e_activities"
+    ],
+    "produces_lines": [
+      "SchE.PartI",
+      "SchE.PartII",
+      "SchE.Total"
+    ]
+  },
+  {
+    "module_id": "federal.scheduleSE",
+    "form_code": "Schedule SE",
+    "support_tier": "core",
+    "purpose": "Self-employment tax.",
+    "driven_by_fact_namespaces": [
+      "facts.income.schedule_c_businesses",
+      "facts.income.schedule_e_activities"
+    ],
+    "produces_lines": [
+      "SchSE.4a",
+      "SchSE.6",
+      "SchSE.12"
+    ]
+  },
+  {
+    "module_id": "federal.form2441",
+    "form_code": "2441",
+    "support_tier": "core",
+    "purpose": "Child and dependent care expenses.",
+    "driven_by_fact_namespaces": [
+      "facts.credits.child_and_dependent_care"
+    ],
+    "produces_lines": [
+      "2441.PartI",
+      "2441.PartII",
+      "2441.PartIII"
+    ]
+  },
+  {
+    "module_id": "federal.form5695",
+    "form_code": "5695",
+    "support_tier": "phase_2",
+    "purpose": "Residential energy credits.",
+    "driven_by_fact_namespaces": [
+      "facts.credits.residential_clean_energy"
+    ],
+    "produces_lines": [
+      "5695.PartI",
+      "5695.PartII"
+    ]
+  },
+  {
+    "module_id": "federal.form8812",
+    "form_code": "8812",
+    "support_tier": "core",
+    "purpose": "Credits for qualifying children and other dependents.",
+    "driven_by_fact_namespaces": [
+      "household.dependents",
+      "facts.credits"
+    ],
+    "produces_lines": [
+      "8812.PartI",
+      "8812.PartII",
+      "8812.PartIII"
+    ]
+  },
+  {
+    "module_id": "federal.form8863",
+    "form_code": "8863",
+    "support_tier": "core",
+    "purpose": "Education credits.",
+    "driven_by_fact_namespaces": [
+      "facts.credits.education_credits"
+    ],
+    "produces_lines": [
+      "8863.PartI",
+      "8863.PartII",
+      "8863.PartIII"
+    ]
+  },
+  {
+    "module_id": "federal.form8889",
+    "form_code": "8889",
+    "support_tier": "core",
+    "purpose": "Health savings accounts.",
+    "driven_by_fact_namespaces": [
+      "facts.health_coverage",
+      "facts.adjustments",
+      "source_documents"
+    ],
+    "produces_lines": [
+      "8889.PartI",
+      "8889.PartII"
+    ]
+  },
+  {
+    "module_id": "federal.form8949",
+    "form_code": "8949",
+    "support_tier": "core",
+    "purpose": "Sales and other dispositions of capital assets.",
+    "driven_by_fact_namespaces": [
+      "facts.income.capital_transactions"
+    ],
+    "produces_lines": [
+      "8949.A",
+      "8949.B",
+      "8949.C",
+      "8949.D",
+      "8949.E",
+      "8949.F"
+    ]
+  },
+  {
+    "module_id": "federal.form8959",
+    "form_code": "8959",
+    "support_tier": "phase_2",
+    "purpose": "Additional Medicare Tax.",
+    "driven_by_fact_namespaces": [
+      "facts.income.wages",
+      "facts.income.nonemployee_compensation"
+    ],
+    "produces_lines": [
+      "8959.18",
+      "8959.24"
+    ]
+  },
+  {
+    "module_id": "federal.form8960",
+    "form_code": "8960",
+    "support_tier": "phase_2",
+    "purpose": "Net investment income tax.",
+    "driven_by_fact_namespaces": [
+      "facts.income.taxable_interest",
+      "facts.income.dividends",
+      "facts.income.capital_transactions",
+      "facts.income.schedule_e_activities"
+    ],
+    "produces_lines": [
+      "8960.1",
+      "8960.8",
+      "8960.17"
+    ]
+  },
+  {
+    "module_id": "federal.form8962",
+    "form_code": "8962",
+    "support_tier": "core",
+    "purpose": "Premium tax credit reconciliation.",
+    "driven_by_fact_namespaces": [
+      "facts.credits.premium_tax_credit",
+      "facts.health_coverage"
+    ],
+    "produces_lines": [
+      "8962.PartI",
+      "8962.PartII",
+      "8962.PartIII",
+      "8962.24",
+      "8962.26",
+      "8962.29"
+    ]
+  },
+  {
+    "module_id": "federal.form8995",
+    "form_code": "8995",
+    "support_tier": "phase_2",
+    "purpose": "Qualified business income deduction simplified computation.",
+    "driven_by_fact_namespaces": [
+      "facts.income.schedule_c_businesses",
+      "facts.income.schedule_e_activities"
+    ],
+    "produces_lines": [
+      "8995.2",
+      "8995.15"
+    ]
+  }
+]

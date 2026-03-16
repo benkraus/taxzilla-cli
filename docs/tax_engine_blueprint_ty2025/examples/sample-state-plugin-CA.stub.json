@@ -1,0 +1,64 @@
+{
+  "plugin_manifest_id": "ca.ty2025.stub.v1",
+  "state_code": "CA",
+  "state_name": "California",
+  "tax_year": 2025,
+  "implementation_class": "income_tax_state_stub",
+  "version": "2025.stub.1",
+  "status": "stub",
+  "requires_federal_return": true,
+  "supports_return_kinds": [
+    "resident",
+    "part_year_resident",
+    "nonresident",
+    "extension_only"
+  ],
+  "starting_point_strategy": "custom",
+  "required_fact_namespaces": [
+    "CA.plugin_fact_bag"
+  ],
+  "form_catalog": [
+    {
+      "form_code": "CA_MAIN_RETURN",
+      "role": "main_return",
+      "xml_root_hint": "CAReturn",
+      "required": true
+    }
+  ],
+  "xml_package": {
+    "schema_bundle_id": "ca_ty2025_placeholder",
+    "serializer_module": "states.ca.serializer",
+    "attachment_naming_profile": "ca_default",
+    "partner_overrides_module": "states.ca.partner_overrides"
+  },
+  "validation_bundles": [
+    {
+      "bundle_id": "ca.precompute.stub",
+      "phase": "precompute",
+      "engine": "json_rules",
+      "description": "Placeholder precompute validations."
+    },
+    {
+      "bundle_id": "ca.prexml.stub",
+      "phase": "prexml",
+      "engine": "json_rules",
+      "description": "Placeholder XML-readiness validations."
+    }
+  ],
+  "attachments_policy": {
+    "supports_binary_attachments": true,
+    "supports_pdf_only": false,
+    "paper_followup_possible": true,
+    "notes": "Stub entry; verify state-specific attachment rules before production."
+  },
+  "capabilities": {
+    "supports_direct_file": false,
+    "supports_joint_return": true,
+    "supports_multi_state_credit": true,
+    "supports_local_jurisdictions": false
+  },
+  "notes": [
+    "Scaffold manifest only; not a production-certified state implementation.",
+    "Fill in actual schema bundle, validation bundles, and form catalog before launch."
+  ]
+}

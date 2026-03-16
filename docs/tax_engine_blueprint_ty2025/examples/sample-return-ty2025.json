@@ -1,0 +1,619 @@
+{
+  "schema_version": "2025-1.0.0",
+  "tax_year": 2025,
+  "processing_year": 2026,
+  "return_id": "0d0be7ed-5618-4e6e-8d53-5d065eb8d4da",
+  "requested_jurisdictions": {
+    "federal": true,
+    "states": [
+      "CA"
+    ]
+  },
+  "lifecycle": {
+    "status": "computed",
+    "created_at": "2026-03-12T10:00:00Z",
+    "updated_at": "2026-03-12T10:00:00Z",
+    "locked_for_filing": false,
+    "current_computation_run_id": "run_20260312_001"
+  },
+  "household": {
+    "filing_status": "single",
+    "taxpayer": {
+      "person_id": "p_taxpayer",
+      "role": "taxpayer",
+      "name": {
+        "first": "Alex",
+        "last": "Rivera",
+        "full_legal_name": "Alex Rivera"
+      },
+      "date_of_birth": "1990-05-14",
+      "tax_id_token": "vault:ssn:taxpayer",
+      "last4_tax_id": "1234",
+      "citizenship_status": "us_citizen",
+      "is_blind": false,
+      "is_full_time_student": false,
+      "occupation": "Engineer",
+      "contact": {
+        "email": "alex@example.com",
+        "phone": "+1-555-555-1212"
+      }
+    },
+    "spouse": null,
+    "dependents": [],
+    "can_be_claimed_as_dependent": false,
+    "is_amended_return": false
+  },
+  "residency_and_nexus": {
+    "primary_home_address": {
+      "line1": "123 Main St",
+      "city": "San Francisco",
+      "state_code": "CA",
+      "postal_code": "94105",
+      "country_code": "US"
+    },
+    "mailing_address": null,
+    "residency_periods": [
+      {
+        "state_code": "CA",
+        "residency_type": "resident",
+        "taxpayer_or_spouse": "taxpayer",
+        "start_date": "2025-01-01",
+        "end_date": "2025-12-31"
+      }
+    ],
+    "moves_during_year": [],
+    "work_states": [
+      "CA"
+    ],
+    "military_service": {
+      "is_active_duty": false,
+      "legal_residence_state": null,
+      "spouse_relieved_by_msra": null
+    },
+    "foreign_residency_days": 0
+  },
+  "source_documents": [
+    {
+      "document_id": "doc_w2_acme",
+      "document_type": "FORM_W2",
+      "tax_year": 2025,
+      "issuer_name": "Acme Inc.",
+      "recipient_person_ids": [
+        "p_taxpayer"
+      ],
+      "source_file": {
+        "file_name": "w2-acme.pdf",
+        "mime_type": "application/pdf",
+        "storage_uri": "s3://bucket/w2-acme.pdf",
+        "uploaded_at": "2026-03-12T10:00:00Z",
+        "page_count": 1,
+        "sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+        "capture_method": "web_upload"
+      },
+      "parse_status": "reviewed",
+      "overall_confidence": 0.99,
+      "extracted_fields": [
+        {
+          "field_key": "box1",
+          "label": "Wages",
+          "raw_value": "85000.00",
+          "normalized_value": 85000.0,
+          "confidence": 0.99,
+          "page": 1,
+          "bounding_box": {
+            "x": 0.1,
+            "y": 0.1,
+            "width": 0.2,
+            "height": 0.05,
+            "page": 1
+          },
+          "review_status": "accepted",
+          "reviewed_by_person_id": "p_taxpayer",
+          "reviewed_at": "2026-03-12T10:00:00Z"
+        },
+        {
+          "field_key": "box2",
+          "label": "Federal withholding",
+          "raw_value": "9000.00",
+          "normalized_value": 9000.0,
+          "confidence": 0.99,
+          "page": 1,
+          "bounding_box": {
+            "x": 0.2,
+            "y": 0.1,
+            "width": 0.2,
+            "height": 0.05,
+            "page": 1
+          },
+          "review_status": "accepted",
+          "reviewed_by_person_id": "p_taxpayer",
+          "reviewed_at": "2026-03-12T10:00:00Z"
+        }
+      ],
+      "payload": {
+        "employee_ssn_last4": "1234",
+        "employee_name": {
+          "first": "Alex",
+          "last": "Rivera",
+          "full_legal_name": "Alex Rivera"
+        },
+        "employee_address": {
+          "line1": "123 Main St",
+          "city": "San Francisco",
+          "state_code": "CA",
+          "postal_code": "94105",
+          "country_code": "US"
+        },
+        "employer_name": "Acme Inc.",
+        "employer_ein": "12-3456789",
+        "employer_address": {
+          "line1": "1 Market St",
+          "city": "San Francisco",
+          "state_code": "CA",
+          "postal_code": "94105",
+          "country_code": "US"
+        },
+        "control_number": "CN123",
+        "wages_tips_other_compensation": 85000.0,
+        "federal_income_tax_withheld": 9000.0,
+        "social_security_wages": 85000.0,
+        "social_security_tax_withheld": 5270.0,
+        "medicare_wages_and_tips": 85000.0,
+        "medicare_tax_withheld": 1232.5,
+        "social_security_tips": 0,
+        "allocated_tips": 0,
+        "dependent_care_benefits": 0,
+        "nonqualified_plans": 0,
+        "box12": [
+          {
+            "code": "D",
+            "amount": 5000.0
+          }
+        ],
+        "statutory_employee": false,
+        "retirement_plan": true,
+        "third_party_sick_pay": false,
+        "box14": [
+          {
+            "description": "CASDI",
+            "amount": 1020.0
+          }
+        ],
+        "state_local_rows": [
+          {
+            "state_code": "CA",
+            "state_id_number": "CA-123",
+            "income_amount": 85000.0,
+            "withholding_amount": 4200.0,
+            "locality_name": "",
+            "local_income_amount": null,
+            "local_withholding_amount": null
+          }
+        ]
+      },
+      "raw_text_excerpt": "Sample W-2 text",
+      "notes": "Reviewed by taxpayer"
+    },
+    {
+      "document_id": "doc_1099int_bank",
+      "document_type": "FORM_1099_INT",
+      "tax_year": 2025,
+      "issuer_name": "Example Bank",
+      "recipient_person_ids": [
+        "p_taxpayer"
+      ],
+      "source_file": {
+        "file_name": "1099int-bank.pdf",
+        "mime_type": "application/pdf",
+        "storage_uri": "s3://bucket/1099int-bank.pdf",
+        "uploaded_at": "2026-03-12T10:00:00Z",
+        "page_count": 1,
+        "sha256": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+        "capture_method": "web_upload"
+      },
+      "parse_status": "reviewed",
+      "overall_confidence": 0.98,
+      "extracted_fields": [],
+      "payload": {
+        "payer_name": "Example Bank",
+        "payer_tin": "98-7654321",
+        "recipient_account_number": "****7890",
+        "interest_income": 45.32,
+        "early_withdrawal_penalty": 0,
+        "interest_on_us_savings_bonds_and_treasury_obligations": 0,
+        "federal_income_tax_withheld": 0,
+        "investment_expenses": 0,
+        "foreign_tax_paid": 0,
+        "foreign_country_or_us_possession": "",
+        "tax_exempt_interest": 0,
+        "specified_private_activity_bond_interest": 0,
+        "market_discount": 0,
+        "bond_premium": 0,
+        "bond_premium_on_treasury_obligations": 0,
+        "bond_premium_on_tax_exempt_bond": 0,
+        "tax_exempt_and_tax_credit_bond_cusip": "",
+        "state_local_rows": []
+      },
+      "raw_text_excerpt": "Sample 1099-INT text",
+      "notes": ""
+    }
+  ],
+  "facts": {
+    "income": {
+      "wages": [
+        {
+          "wage_id": "wage_1",
+          "person_id": "p_taxpayer",
+          "source_document_id": "doc_w2_acme",
+          "employer_name": "Acme Inc.",
+          "employer_ein": "12-3456789",
+          "wages_tips_other_compensation": 85000.0,
+          "federal_income_tax_withheld": 9000.0,
+          "social_security_wages": 85000.0,
+          "social_security_tax_withheld": 5270.0,
+          "medicare_wages_and_tips": 85000.0,
+          "medicare_tax_withheld": 1232.5,
+          "box12": [
+            {
+              "code": "D",
+              "amount": 5000.0
+            }
+          ],
+          "box14": [
+            {
+              "description": "CASDI",
+              "amount": 1020.0
+            }
+          ],
+          "state_local_rows": [
+            {
+              "state_code": "CA",
+              "state_id_number": "CA-123",
+              "income_amount": 85000.0,
+              "withholding_amount": 4200.0,
+              "locality_name": "",
+              "local_income_amount": null,
+              "local_withholding_amount": null
+            }
+          ],
+          "is_household_employee": false
+        }
+      ],
+      "taxable_interest": [
+        {
+          "interest_id": "int_1",
+          "person_id": "p_taxpayer",
+          "source_document_id": "doc_1099int_bank",
+          "payer_name": "Example Bank",
+          "interest_income": 45.32,
+          "tax_exempt_interest": 0,
+          "us_savings_bonds_and_treasury_interest": 0,
+          "federal_income_tax_withheld": 0,
+          "foreign_tax_paid": 0,
+          "state_local_rows": []
+        }
+      ],
+      "dividends": [],
+      "capital_transactions": [],
+      "retirement_distributions": [],
+      "unemployment_compensation": [],
+      "social_security_benefits": [],
+      "nonemployee_compensation": [],
+      "miscellaneous_1099_income": [],
+      "schedule_c_businesses": [],
+      "schedule_e_activities": [],
+      "other_income_items": []
+    },
+    "adjustments": {
+      "educator_expenses": 0,
+      "certain_business_expenses_of_reservists_performing_artists_and_fee_basis_officials": 0,
+      "health_savings_account_deduction": 0,
+      "moving_expenses_for_armed_forces": 0,
+      "deductible_part_of_self_employment_tax": 0,
+      "self_employed_sep_simple_and_qualified_plans": 0,
+      "self_employed_health_insurance": 0,
+      "penalty_on_early_withdrawal_of_savings": 0,
+      "alimony_paid_for_pre_2019_divorce": 0,
+      "ira_deduction": 0,
+      "student_loan_interest_deduction": 0,
+      "other_adjustments": []
+    },
+    "itemized_deductions": {
+      "medical_and_dental_expenses": 0,
+      "state_and_local_income_or_sales_taxes": 4200.0,
+      "real_estate_taxes": 0,
+      "personal_property_taxes": 0,
+      "other_taxes": 0,
+      "mortgage_interest_items": [],
+      "charitable_cash_contributions": 0,
+      "charitable_noncash_contributions": 0,
+      "casualty_and_theft_losses": 0,
+      "other_itemized_deductions": []
+    },
+    "credits": {
+      "candidate_child_tax_credit_dependent_ids": [],
+      "candidate_credit_for_other_dependent_ids": [],
+      "candidate_eitc_child_ids": [],
+      "child_and_dependent_care": {
+        "qualifying_person_ids": [],
+        "providers": [],
+        "expenses": []
+      },
+      "education_credits": {
+        "students": []
+      },
+      "premium_tax_credit": {
+        "policies": []
+      },
+      "residential_clean_energy": {
+        "projects": []
+      },
+      "clean_vehicle_credits": {
+        "vehicles": []
+      },
+      "retirement_savings_contributions_credit_candidate_person_ids": [],
+      "other_nonrefundable_credits": [],
+      "other_refundable_credits": []
+    },
+    "payments": {
+      "withholdings": [
+        {
+          "withholding_id": "wh_fed_1",
+          "person_id": "p_taxpayer",
+          "jurisdiction": "federal",
+          "state_code": null,
+          "locality_name": "",
+          "source_document_id": "doc_w2_acme",
+          "amount": 9000.0,
+          "description": "Federal withholding from W-2"
+        },
+        {
+          "withholding_id": "wh_ca_1",
+          "person_id": "p_taxpayer",
+          "jurisdiction": "state",
+          "state_code": "CA",
+          "locality_name": "",
+          "source_document_id": "doc_w2_acme",
+          "amount": 4200.0,
+          "description": "California withholding from W-2"
+        }
+      ],
+      "estimated_payments": [],
+      "extension_payments": [],
+      "prior_year_overpayment_applied_to_2025": 0,
+      "refund_direct_deposit": {
+        "vault_token": "vault:bank:refund",
+        "bank_name": "Example Bank",
+        "account_type": "checking",
+        "last4_account_number": "6789",
+        "last4_routing_number": "4321"
+      },
+      "balance_due_direct_debit": null
+    },
+    "health_coverage": {
+      "marketplace_policies": [],
+      "hsa_coverage_months": []
+    },
+    "state_specific_fact_bag": {
+      "CA": {
+        "mental_health_services_tax_candidate": false
+      }
+    }
+  },
+  "elections": {
+    "deduction_strategy_preference": "auto",
+    "capital_loss_carryforward_imported": false,
+    "self_select_pin_authorized": true,
+    "state_filing_opt_in_states": [
+      "CA"
+    ],
+    "other_elections": []
+  },
+  "state_returns": {
+    "CA": {
+      "state_code": "CA",
+      "enabled": true,
+      "return_kind": "resident",
+      "state_filing_status": "single",
+      "starting_point_strategy": "federal_agi",
+      "federal_reference_pointer": "/artifacts/federal_summary/adjusted_gross_income",
+      "residency_periods": [
+        {
+          "state_code": "CA",
+          "residency_type": "resident",
+          "taxpayer_or_spouse": "taxpayer",
+          "start_date": "2025-01-01",
+          "end_date": "2025-12-31"
+        }
+      ],
+      "additions": [],
+      "subtractions": [],
+      "state_specific_income_items": [],
+      "state_specific_deductions": [],
+      "state_specific_credits": [],
+      "state_payments": [
+        {
+          "description": "CA withholding",
+          "amount": 4200.0,
+          "currency": "USD",
+          "source_refs": [
+            {
+              "document_id": "doc_w2_acme"
+            }
+          ]
+        }
+      ],
+      "local_returns": [],
+      "plugin_manifest_id": "ca.ty2025.stub.v1",
+      "plugin_fact_bag": {
+        "schedule_ca": {
+          "additions": [],
+          "subtractions": []
+        }
+      },
+      "prepared_summary": {
+        "state_code": "CA",
+        "adjusted_gross_income_or_starting_point": 85045.32,
+        "taxable_income": 0,
+        "total_tax": 0,
+        "total_payments": 4200.0,
+        "refund_amount": 4200.0,
+        "amount_owed": 0
+      }
+    }
+  },
+  "efile": {
+    "signature_method": "self_select_pin",
+    "signers": [
+      {
+        "person_id": "p_taxpayer",
+        "pin_token": "vault:pin:taxpayer",
+        "prior_year_agi": 80000.0,
+        "prior_year_pin_token": null,
+        "signed_at": "2026-03-12T10:00:00Z"
+      }
+    ],
+    "partner": {
+      "partner_name": "Example Filing Partner",
+      "adapter_version": "1.0.0",
+      "environment": "sandbox",
+      "capabilities_snapshot": {
+        "federal": true,
+        "states": [
+          "CA"
+        ]
+      }
+    },
+    "submission_records": [
+      {
+        "submission_record_id": "sub_1",
+        "jurisdiction": "federal",
+        "state_code": null,
+        "partner_submission_id": "p_sub_fed_1",
+        "status": "validated",
+        "submitted_at": null,
+        "last_status_at": "2026-03-12T10:00:00Z",
+        "artifact_ref_ids": [],
+        "reject_details": []
+      },
+      {
+        "submission_record_id": "sub_2",
+        "jurisdiction": "state",
+        "state_code": "CA",
+        "partner_submission_id": "p_sub_ca_1",
+        "status": "validated",
+        "submitted_at": null,
+        "last_status_at": "2026-03-12T10:00:00Z",
+        "artifact_ref_ids": [],
+        "reject_details": []
+      }
+    ]
+  },
+  "artifacts": {
+    "federal_summary": {
+      "adjusted_gross_income": 85045.32,
+      "taxable_income": 70445.32,
+      "total_tax": 11000.0,
+      "total_payments": 9000.0,
+      "refund_amount": 0,
+      "amount_owed": 2000.0
+    },
+    "state_summaries": [
+      {
+        "state_code": "CA",
+        "adjusted_gross_income_or_starting_point": 85045.32,
+        "taxable_income": 0,
+        "total_tax": 0,
+        "total_payments": 4200.0,
+        "refund_amount": 4200.0,
+        "amount_owed": 0
+      }
+    ],
+    "artifact_refs": []
+  },
+  "provenance_index": {
+    "/facts/income/wages/0/wages_tips_other_compensation": [
+      {
+        "json_pointer": "/facts/income/wages/0/wages_tips_other_compensation",
+        "document_id": "doc_w2_acme",
+        "field_key": "box1",
+        "source_page": 1,
+        "bounding_box": {
+          "x": 0.1,
+          "y": 0.1,
+          "width": 0.2,
+          "height": 0.05,
+          "page": 1
+        },
+        "acquisition_method": "ocr",
+        "confidence": 0.99,
+        "confirmed_by_user": true,
+        "confirmed_at": "2026-03-12T10:00:00Z"
+      }
+    ],
+    "/facts/payments/withholdings/0/amount": [
+      {
+        "json_pointer": "/facts/payments/withholdings/0/amount",
+        "document_id": "doc_w2_acme",
+        "field_key": "box2",
+        "source_page": 1,
+        "bounding_box": {
+          "x": 0.2,
+          "y": 0.1,
+          "width": 0.2,
+          "height": 0.05,
+          "page": 1
+        },
+        "acquisition_method": "ocr",
+        "confidence": 0.99,
+        "confirmed_by_user": true,
+        "confirmed_at": "2026-03-12T10:00:00Z"
+      }
+    ]
+  },
+  "evidence_log": [
+    {
+      "event_id": "evt_1",
+      "timestamp": "2026-03-12T10:00:00Z",
+      "event_type": "DOCUMENT_UPLOADED",
+      "actor": {
+        "actor_type": "user",
+        "actor_id": "p_taxpayer",
+        "display_name": "Alex"
+      },
+      "target_json_pointer": "/source_documents/0",
+      "summary": "Uploaded W-2 from Acme.",
+      "before": null,
+      "after": {
+        "document_id": "doc_w2_acme"
+      },
+      "source_document_ids": [
+        "doc_w2_acme"
+      ],
+      "computation_run_id": "run_20260312_001",
+      "previous_event_hash": "0000000000000000000000000000000000000000000000000000000000000000",
+      "event_hash": "1111111111111111111111111111111111111111111111111111111111111111"
+    },
+    {
+      "event_id": "evt_2",
+      "timestamp": "2026-03-12T10:00:00Z",
+      "event_type": "FIELD_CONFIRMED",
+      "actor": {
+        "actor_type": "user",
+        "actor_id": "p_taxpayer",
+        "display_name": "Alex"
+      },
+      "target_json_pointer": "/facts/income/wages/0/wages_tips_other_compensation",
+      "summary": "Confirmed W-2 wages.",
+      "before": null,
+      "after": 85000.0,
+      "source_document_ids": [
+        "doc_w2_acme"
+      ],
+      "computation_run_id": "run_20260312_001",
+      "previous_event_hash": "1111111111111111111111111111111111111111111111111111111111111111",
+      "event_hash": "2222222222222222222222222222222222222222222222222222222222222222"
+    }
+  ],
+  "extensions": {}
+}
