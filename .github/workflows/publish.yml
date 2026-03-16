@@ -43,6 +43,13 @@ jobs:
           node-version: 24
           registry-url: https://registry.npmjs.org
 
+      - name: Configure npm token fallback
+        if: ${{ secrets.NPM_TOKEN != '' }}
+        env:
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+        run: |
+          printf "//registry.npmjs.org/:_authToken=%s\n" "$NPM_TOKEN" > "$NPM_CONFIG_USERCONFIG"
+
       - name: Validate release metadata
         run: |
           node --input-type=module <<'EOF'

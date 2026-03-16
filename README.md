@@ -270,7 +270,7 @@ This README does NOT claim that those are all wired through the public CLI as po
 - `apps/cli` publishes as `@taxzilla/cli`.
 - Bump package versions in both workspace `package.json` files before a release.
 - Push `main`, then run `.github/workflows/publish.yml` from GitHub Actions.
-- THE PUBLISH WORKFLOW ASSUMES NPM TRUSTED PUBLISHING IS CONFIGURED FOR THIS REPO AND THIS EXACT WORKFLOW FILE.
+- Configure npm trusted publishing for this repo and this exact workflow file, or add an `NPM_TOKEN` GitHub Actions secret as a fallback.
 
 ## What This Repo Does NOT Promise
 
