@@ -27,6 +27,7 @@ jobs:
     runs-on: ubuntu-latest
     env:
       NX_DAEMON: "false"
+      NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
 
     steps:
       - name: Check out repo
@@ -44,9 +45,7 @@ jobs:
           registry-url: https://registry.npmjs.org
 
       - name: Configure npm token fallback
-        if: ${{ secrets.NPM_TOKEN != '' }}
-        env:
-          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+        if: ${{ env.NPM_TOKEN != '' }}
         run: |
           printf "//registry.npmjs.org/:_authToken=%s\n" "$NPM_TOKEN" > "$NPM_CONFIG_USERCONFIG"
 
