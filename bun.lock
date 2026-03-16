@@ -2,7 +2,7 @@
   "lockfileVersion": 1,
   "workspaces": {
     "": {
-      "name": "taxzilla",
+      "name": "taxzilla-cli-workspace",
       "devDependencies": {
         "@types/node": "^25.3.0",
         "@types/react": "^19.2.2",
@@ -16,14 +16,14 @@
     },
     "apps/cli": {
       "name": "@taxzilla/cli",
-      "version": "0.0.0",
+      "version": "0.1.0",
       "bin": {
         "taxzilla": "./src/index.tsx",
       },
       "dependencies": {
         "@opentui/core": "^0.1.87",
         "@opentui/react": "^0.1.87",
-        "@taxzilla/tax-engine": "workspace:*",
+        "@taxzilla/tax-engine": "^0.1.0",
         "effect": "^3.19.19",
         "react": "^19.2.4",
       },
@@ -35,7 +35,7 @@
     },
     "packages/tax-engine": {
       "name": "@taxzilla/tax-engine",
-      "version": "0.0.0",
+      "version": "0.1.0",
       "dependencies": {
         "effect": "^3.19.19",
       },

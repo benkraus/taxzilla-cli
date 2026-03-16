@@ -1,8 +1,11 @@
 {
-  "name": "taxzilla-open",
-  "version": "0.0.0",
+  "name": "taxzilla-cli-workspace",
+  "version": "0.1.0",
   "private": true,
   "packageManager": "bun@1.2.12",
+  "engines": {
+    "bun": ">=1.2.12"
+  },
   "workspaces": [
     "apps/*",
     "packages/*"
@@ -16,7 +19,10 @@
     "cli": "bun run --cwd apps/cli src/index.tsx",
     "graph": "nx graph",
     "test": "vitest run",
-    "test:coverage": "bun run --cwd packages/tax-engine test:coverage"
+    "test:coverage": "bun run --cwd packages/tax-engine test:coverage",
+    "pack:tax-engine": "npm pack --dry-run --workspace packages/tax-engine",
+    "pack:cli": "npm pack --dry-run --workspace apps/cli",
+    "release:check": "bun run lint && bun run typecheck && bun run test && bun run pack:tax-engine && bun run pack:cli"
   },
   "devDependencies": {
     "@types/node": "^25.3.0",

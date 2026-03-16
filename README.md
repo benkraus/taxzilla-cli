@@ -42,7 +42,7 @@ If you use this repository with real taxpayer data or for a real filing decision
 
 - `apps/cli`: the Bun/OpenTUI terminal application.
 - `packages/tax-engine`: the TY2025 tax engine library.
-- `docs/tax_engine_blueprint_ty2025`: the blueprint bundle, schemas, examples, and reference docs that the engine imports and builds from.
+- `packages/tax-engine/docs/tax_engine_blueprint_ty2025`: the package-local blueprint bundle, schemas, examples, and reference docs that the engine imports and publishes with.
 - `docs/tax-engine-cli-plan.md`: CLI planning notes.
 
 ## Quick Start
@@ -263,6 +263,14 @@ This README does NOT claim that those are all wired through the public CLI as po
 - Some Schedule D special cases require explicit extension values before you should rely on the output.
 - The blueprint bundle itself says it is a strong starting point, NOT a production certification package.
 - Tests exercise a lot of behavior, but tests are not legal review, compliance review, or tax professional sign-off.
+
+## Publishing
+
+- `packages/tax-engine` publishes as `@taxzilla/tax-engine`.
+- `apps/cli` publishes as `@taxzilla/cli`.
+- Bump package versions in both workspace `package.json` files before a release.
+- Push `main`, then run `.github/workflows/publish.yml` from GitHub Actions.
+- THE PUBLISH WORKFLOW ASSUMES NPM TRUSTED PUBLISHING IS CONFIGURED FOR THIS REPO AND THIS EXACT WORKFLOW FILE.
 
 ## What This Repo Does NOT Promise
 
