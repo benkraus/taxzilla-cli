@@ -1,0 +1,113 @@
+name: Publish npm packages
+
+on:
+  workflow_dispatch:
+    inputs:
+      publish_tax_engine:
+        description: Publish @taxzilla/tax-engine
+        required: true
+        default: true
+        type: boolean
+      publish_cli:
+        description: Publish @taxzilla/cli
+        required: true
+        default: true
+        type: boolean
+
+permissions:
+  contents: read
+  id-token: write
+
+concurrency:
+  group: npm-publish
+  cancel-in-progress: false
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    env:
+      NX_DAEMON: "false"
+
+    steps:
+      - name: Check out repo
+        uses: actions/checkout@v6
+
+      - name: Set up Bun
+        uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: 1.2.12
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v6
+        with:
+          node-version: 24
+          registry-url: https://registry.npmjs.org
+
+      - name: Validate release metadata
+        run: |
+          node --input-type=module <<'EOF'
+          import { readFileSync } from "node:fs";
+
+          const cli = JSON.parse(readFileSync("apps/cli/package.json", "utf8"));
+          const engine = JSON.parse(readFileSync("packages/tax-engine/package.json", "utf8"));
+          const problems = [];
+
+          if (cli.private) problems.push("@taxzilla/cli is still marked private.");
+          if (engine.private) problems.push("@taxzilla/tax-engine is still marked private.");
+          if (cli.version === "0.0.0") problems.push("@taxzilla/cli version must be bumped before publish.");
+          if (engine.version === "0.0.0") problems.push("@taxzilla/tax-engine version must be bumped before publish.");
+
+          const expectedEngineRange = `^${engine.version}`;
+          if (cli.dependencies?.["@taxzilla/tax-engine"] !== expectedEngineRange) {
+            problems.push(
+              `apps/cli depends on ${cli.dependencies?.["@taxzilla/tax-engine"] ?? "<missing>"} but expected ${expectedEngineRange}.`,
+            );
+          }
+
+          if (problems.length > 0) {
+            for (const problem of problems) {
+              console.error(`- ${problem}`);
+            }
+            process.exit(1);
+          }
+          EOF
+
+      - name: Install dependencies
+        run: bun install --frozen-lockfile
+
+      - name: Run release checks
+        run: bun run release:check
+
+      - name: Publish @taxzilla/tax-engine
+        if: ${{ inputs.publish_tax_engine }}
+        run: |
+          VERSION=$(node -p "require('./packages/tax-engine/package.json').version")
+          if npm view "@taxzilla/tax-engine@$VERSION" version >/dev/null 2>&1; then
+            echo "@taxzilla/tax-engine@$VERSION is already published. Skipping."
+          else
+            npm publish --workspace packages/tax-engine --access public
+          fi
+
+      - name: Verify @taxzilla/tax-engine exists before CLI publish
+        if: ${{ inputs.publish_cli }}
+        run: |
+          ENGINE_VERSION=$(node -p "require('./packages/tax-engine/package.json').version")
+          if [ "${{ inputs.publish_tax_engine }}" = "true" ]; then
+            echo "@taxzilla/tax-engine@$ENGINE_VERSION will be published in this run."
+          elif npm view "@taxzilla/tax-engine@$ENGINE_VERSION" version >/dev/null 2>&1; then
+            echo "@taxzilla/tax-engine@$ENGINE_VERSION already exists on npm."
+          else
+            echo "@taxzilla/tax-engine@$ENGINE_VERSION is not published."
+            echo "Enable publish_tax_engine or publish that version first."
+            exit 1
+          fi
+
+      - name: Publish @taxzilla/cli
+        if: ${{ inputs.publish_cli }}
+        run: |
+          VERSION=$(node -p "require('./apps/cli/package.json').version")
+          if npm view "@taxzilla/cli@$VERSION" version >/dev/null 2>&1; then
+            echo "@taxzilla/cli@$VERSION is already published. Skipping."
+          else
+            npm publish --workspace apps/cli --access public
+          fi
