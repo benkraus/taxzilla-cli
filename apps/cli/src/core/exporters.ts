@@ -68,9 +68,9 @@ export async function writeArtifacts(options: {
 export function artifactFileName(format: CliExportFormat): string {
   switch (format) {
     case "summary-json":
-      return "federal-summary.json";
+      return "tax-summary.json";
     case "line-csv":
-      return "federal-lines.csv";
+      return "tax-lines.csv";
     case "canonical-json":
       return "canonical-return.json";
     case "return-ir-json":
@@ -87,10 +87,30 @@ export function artifactFileName(format: CliExportFormat): string {
 function buildSummaryJson(payload: CliExportPayload) {
   const federalReturn = payload.pipelineResult.return_ir.federal_return;
   const federalSummary = payload.pipelineResult.core_engine.federal_summary;
+  const stateSummaries = payload.pipelineResult.core_engine.state_summaries.map((stateSummary) => ({
+    state_code: stateSummary.state_code,
+    plugin_manifest_id: stateSummary.plugin_manifest_id,
+    return_kind: stateSummary.return_kind ?? null,
+    starting_point_strategy: stateSummary.starting_point_strategy ?? null,
+    adjusted_gross_income_or_starting_point:
+      stateSummary.adjusted_gross_income_or_starting_point,
+    taxable_income: stateSummary.taxable_income,
+    resident_taxable_income: stateSummary.resident_taxable_income ?? null,
+    nonresident_source_income: stateSummary.nonresident_source_income ?? null,
+    allocation_ratio: stateSummary.allocation_ratio ?? null,
+    total_tax: stateSummary.total_tax,
+    local_total_tax: stateSummary.local_total_tax ?? null,
+    other_state_credit_total: stateSummary.other_state_credit_total ?? null,
+    total_payments: stateSummary.total_payments,
+    refund_amount: stateSummary.refund_amount,
+    amount_owed: stateSummary.amount_owed,
+    manual_review_flags: stateSummary.manual_review_flags ?? [],
+  }));
 
   return {
     return_id: payload.canonicalReturn.return_id,
     tax_year: payload.canonicalReturn.tax_year,
+    requested_jurisdictions: payload.canonicalReturn.requested_jurisdictions,
     filing_status: federalReturn.filing_status,
     activated_module_ids: payload.pipelineResult.core_engine.activated_module_ids,
     forms: federalReturn.forms.map((form) => form.form_code),
@@ -102,6 +122,13 @@ function buildSummaryJson(payload: CliExportPayload) {
       total_payments: federalSummary.line33_total_payments,
       refund_amount: federalSummary.line34_refund_amount,
       amount_owed: federalSummary.line37_amount_owed,
+    },
+    state_summaries: stateSummaries,
+    submission_package: {
+      submission_mode: payload.pipelineResult.return_ir.submission_package.submission_mode,
+      requested_state_codes:
+        payload.pipelineResult.return_ir.submission_package.partner_metadata.requested_state_codes,
+      state_return_count: payload.pipelineResult.return_ir.state_returns.length,
     },
   };
 }
@@ -118,9 +145,7 @@ function renderLineCsv(payload: CliExportPayload): string {
     "data_type",
     "source_json_pointers",
   ];
-  const rows = payload.pipelineResult.core_engine.graph.nodes
-    .filter((node) => node.jurisdiction === "federal")
-    .map((node) => nodeToCsvRow(node));
+  const rows = payload.pipelineResult.core_engine.graph.nodes.map((node) => nodeToCsvRow(node));
 
   return [headers, ...rows].map((row) => row.map(escapeCsvCell).join(",")).join("\n").concat("\n");
 }

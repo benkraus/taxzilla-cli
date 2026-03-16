@@ -1,4 +1,1 @@
-export * from "./income-amounts";
-export * from "./income-capital";
-export * from "./income-rollups";
-export * from "./income-source-documents";
+export * from "./federal/ty2025/income";

@@ -8,6 +8,7 @@ import {
 } from "../core/types";
 import { renderArtifact, writeArtifacts } from "../core/exporters";
 import { runPipelineForPath, validateCanonicalReturnPath } from "../core/run-pipeline";
+import { formatRequestedStateCodes } from "../core/state-support";
 import {
   buildDefaultSessionDir,
   canonicalReturnFileName,
@@ -72,10 +73,12 @@ async function handleValidate(
 
   io.stdout(
     [
-      `Validated federal return ${result.summary.returnId}`,
+      `Validated return ${result.summary.returnId}`,
       `tax year: ${result.summary.taxYear}`,
       `filing status: ${result.summary.filingStatus ?? "unknown"}`,
       `source documents: ${result.summary.sourceDocumentCount}`,
+      `requested states: ${formatRequestedStateCodes(result.summary.requestedStates)}`,
+      `state return payloads: ${result.summary.stateReturnCount}`,
     ].join("\n") + "\n",
   );
   return 0;
@@ -93,6 +96,7 @@ async function handleInit(
     taxYear: command.taxYear,
     filingStatus: command.filingStatus,
     createdAt,
+    requestedStateCodes: command.stateCodes,
   });
   const sessionDir = command.outputPath == null
     ? (command.sessionDir ?? buildDefaultSessionDir(runtime.cwd, returnId))
@@ -101,7 +105,11 @@ async function handleInit(
 
   await writeJsonFile(canonicalPath, canonicalReturn);
 
-  const lines = [`Initialized federal return ${returnId}`, `canonical return: ${canonicalPath}`];
+  const lines = [
+    `Initialized return ${returnId}`,
+    `canonical return: ${canonicalPath}`,
+    `requested states: ${formatRequestedStateCodes(canonicalReturn.requested_jurisdictions.states)}`,
+  ];
 
   if (sessionDir != null) {
     lines.push(`session directory: ${sessionDir}`);
@@ -230,7 +238,7 @@ function renderHelpText(): string {
     "",
     "Commands:",
     "  taxzilla tui [--input <path>]",
-    "  taxzilla init [--session-dir <dir> | --output <file>] [--filing-status <status>] [--tax-year 2025]",
+    "  taxzilla init [--session-dir <dir> | --output <file>] [--filing-status <status>] [--state <code> ...] [--tax-year 2025]",
     "  taxzilla validate --input <path> [--json]",
     "  taxzilla run --input <path> [--output-dir <dir>] [--format <format> ...]",
     "  taxzilla export --input <path> [--output-dir <dir>] [--format <format> ...]",
@@ -242,6 +250,7 @@ function renderHelpText(): string {
     "  return-ir-json",
     "  package-json",
     "",
+    "Repeat --state or pass comma-separated USPS state codes to seed state filing payloads.",
     "Input paths can point to either a canonical JSON file or a session directory.",
   ].join("\n");
 }

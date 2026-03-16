@@ -10,8 +10,8 @@ import {
   CliCanonicalValidationError,
   CliFileReadError,
   CliJsonParseError,
-  CliUnsupportedStateDataError,
 } from "./errors";
+import { buildStarterStateReturns } from "./state-support";
 import type { SupportedFilingStatus } from "./types";
 
 export async function loadCanonicalReturnFromFile(path: string): Promise<CanonicalReturnEnvelope> {
@@ -26,30 +26,7 @@ export async function loadCanonicalReturnFromFile(path: string): Promise<Canonic
     });
   }
 
-  return ensureFederalOnly(decoded.right);
-}
-
-export function ensureFederalOnly(
-  canonicalReturn: CanonicalReturnEnvelope,
-): CanonicalReturnEnvelope {
-  const stateCodes = canonicalReturn.requested_jurisdictions.states;
-  const stateReturnKeys = Object.keys(canonicalReturn.state_returns);
-
-  if (stateCodes.length > 0 || stateReturnKeys.length > 0) {
-    throw new CliUnsupportedStateDataError({
-      stateCodes,
-      stateReturnKeys,
-    });
-  }
-
-  return {
-    ...structuredClone(canonicalReturn),
-    requested_jurisdictions: {
-      federal: true,
-      states: [],
-    },
-    state_returns: {},
-  };
+  return structuredClone(decoded.right);
 }
 
 export function createStarterReturn(args: {
@@ -57,12 +34,14 @@ export function createStarterReturn(args: {
   readonly taxYear: 2025;
   readonly filingStatus: SupportedFilingStatus;
   readonly createdAt: string;
+  readonly requestedStateCodes?: ReadonlyArray<string>;
 }): CanonicalReturnEnvelope {
   const template = structuredClone(sampleReturnTy2025) as CanonicalReturnEnvelope;
   const blankFacts = blankValue(template.facts);
   const blankElections = blankValue(template.elections);
   const blankResidency = blankValue(template.residency_and_nexus) as Record<string, unknown>;
   const blankArtifacts = blankValue(template.artifacts);
+  const requestedStateCodes = [...(args.requestedStateCodes ?? [])];
 
   return {
     ...template,
@@ -71,7 +50,7 @@ export function createStarterReturn(args: {
     processing_year: args.taxYear + 1,
     requested_jurisdictions: {
       federal: true,
-      states: [],
+      states: requestedStateCodes,
     },
     lifecycle: {
       status: "intake",
@@ -111,7 +90,7 @@ export function createStarterReturn(args: {
       primary_home_address: {
         line1: "",
         city: "",
-        state_code: "",
+        state_code: requestedStateCodes.length === 1 ? requestedStateCodes[0]! : "",
         postal_code: "",
         country_code: "US",
       },
@@ -129,7 +108,10 @@ export function createStarterReturn(args: {
     source_documents: [],
     facts: blankFacts,
     elections: blankElections,
-    state_returns: {},
+    state_returns: buildStarterStateReturns({
+      filingStatus: args.filingStatus,
+      requestedStateCodes,
+    }),
     efile: {
       signature_method: null,
       signers: [],

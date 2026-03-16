@@ -17,6 +17,8 @@ export type ValidatedCanonicalReturn = {
     readonly taxYear: number;
     readonly filingStatus: string | null;
     readonly sourceDocumentCount: number;
+    readonly requestedStates: ReadonlyArray<string>;
+    readonly stateReturnCount: number;
   };
 };
 
@@ -38,6 +40,8 @@ export async function validateCanonicalReturnPath(path: string): Promise<Validat
       taxYear: canonicalReturn.tax_year,
       filingStatus: asString(asRecord(canonicalReturn.household)?.filing_status),
       sourceDocumentCount: asArray(canonicalReturn.source_documents).length,
+      requestedStates: [...canonicalReturn.requested_jurisdictions.states],
+      stateReturnCount: Object.keys(canonicalReturn.state_returns).length,
     },
   };
 }

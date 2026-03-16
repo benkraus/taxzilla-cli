@@ -25,7 +25,7 @@ Bun-powered local-first terminal interface for the TaxZilla TY2025 federal tax e
 
 ```bash
 bunx @taxzilla/cli help
-bunx @taxzilla/cli init --session-dir ./.taxzilla/returns/demo
+bunx @taxzilla/cli init --session-dir ./.taxzilla/returns/demo --state CA
 bunx @taxzilla/cli validate --input ./.taxzilla/returns/demo
 bunx @taxzilla/cli run --input ./.taxzilla/returns/demo
 bunx @taxzilla/cli export --input ./.taxzilla/returns/demo
@@ -43,17 +43,19 @@ taxzilla help
 - Return data is stored locally on disk.
 - By default, sessions live under `.taxzilla/returns/<returnId>/`.
 - The source of truth is `canonical-return.json`.
-- `run` and `export` write local artifacts next to the canonical return, including `federal-summary.json`, `federal-lines.csv`, `return-ir.json`, `submission-package.json`, and `export-manifest.json`.
+- `run` and `export` write local artifacts next to the canonical return, including `tax-summary.json`, `tax-lines.csv`, `return-ir.json`, `submission-package.json`, and `export-manifest.json`.
 - THIS PACKAGE DOES NOT PROVIDE CLOUD STORAGE, SYNC, BACKUP, OR ENCRYPTION FOR YOUR LOCAL FILES.
 - DO NOT COMMIT REAL TAXPAYER DATA.
 
 ## Current Scope
 
-- Federal only.
+- Federal plus state-aware TY2025 sessions.
 - TY2025 only.
 - Supported commands: `tui`, `help`, `init`, `validate`, `run`, `export`.
 - Supported filing statuses: `single`, `married_filing_jointly`, `married_filing_separately`, `head_of_household`, `qualifying_surviving_spouse`.
-- The CLI rejects canonical returns that already contain state requests or state return payloads.
+- `init` accepts repeated or comma-separated `--state` USPS codes to seed requested state payloads.
+- `validate` reports requested states and state return payload counts.
+- `run` and `export` include state-aware summaries and graph artifacts when state returns are present.
 - There is no `submit`, `upload`, `efile`, or `transmit` command.
 
 For the broader engine/library caveats and blueprint coverage, see the repo root README and `@taxzilla/tax-engine`.

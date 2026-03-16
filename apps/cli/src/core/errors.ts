@@ -24,11 +24,6 @@ export class CliCanonicalValidationError extends Data.TaggedError("CliCanonicalV
   readonly parseError: unknown;
 }> {}
 
-export class CliUnsupportedStateDataError extends Data.TaggedError("CliUnsupportedStateDataError")<{
-  readonly stateCodes: ReadonlyArray<string>;
-  readonly stateReturnKeys: ReadonlyArray<string>;
-}> {}
-
 export class CliExportFormatError extends Data.TaggedError("CliExportFormatError")<{
   readonly format: string;
 }> {}
@@ -58,8 +53,6 @@ export function formatCliError(error: unknown): string {
       return `Invalid JSON in ${String(tagged.path)}`;
     case "CliCanonicalValidationError":
       return `Canonical return failed validation for ${String(tagged.path)}`;
-    case "CliUnsupportedStateDataError":
-      return formatUnsupportedStateError(tagged);
     case "CliExportFormatError":
       return `Unsupported export format: ${String(tagged.format)}`;
     case "CliInteractiveValidationError":
@@ -85,20 +78,4 @@ function asTaggedError(error: unknown): TaggedErrorLike | null {
   }
 
   return error as TaggedErrorLike;
-}
-
-function formatUnsupportedStateError(error: TaggedErrorLike): string {
-  const stateCodes = Array.isArray(error.stateCodes)
-    ? error.stateCodes.map((value) => String(value))
-    : [];
-  const stateReturnKeys = Array.isArray(error.stateReturnKeys)
-    ? error.stateReturnKeys.map((value) => String(value))
-    : [];
-  const states = [...stateCodes, ...stateReturnKeys];
-
-  if (states.length === 0) {
-    return "State data is not supported by the federal-only CLI yet.";
-  }
-
-  return `State data is not supported by the federal-only CLI yet: ${states.join(", ")}`;
 }

@@ -1,6 +1,7 @@
 import { parseArgs } from "node:util";
 
 import { CliUsageError } from "../core/errors";
+import { parseRequestedStateCodes } from "../core/state-support";
 import {
   type CliCommandName,
   isCliExportFormat,
@@ -17,6 +18,7 @@ export type ParsedCliCommand =
       readonly outputPath: string | null;
       readonly sessionDir: string | null;
       readonly filingStatus: SupportedFilingStatus;
+      readonly stateCodes: ReadonlyArray<string>;
       readonly taxYear: 2025;
     }
   | { readonly command: "validate"; readonly input: string; readonly json: boolean }
@@ -44,6 +46,7 @@ export function parseCliArgs(argv: ReadonlyArray<string>): ParsedCliCommand {
       "session-dir": { type: "string" },
       format: { type: "string", short: "f", multiple: true },
       "filing-status": { type: "string" },
+      state: { type: "string", multiple: true },
       "tax-year": { type: "string" },
       json: { type: "boolean" },
       help: { type: "boolean", short: "h" },
@@ -69,6 +72,7 @@ export function parseCliArgs(argv: ReadonlyArray<string>): ParsedCliCommand {
         outputPath: parsed.values.output ?? null,
         sessionDir: parsed.values["session-dir"] ?? null,
         filingStatus: parseFilingStatus(parsed.values["filing-status"]),
+        stateCodes: parseRequestedStateCodes(parsed.values.state ?? []),
         taxYear: parseTaxYear(parsed.values["tax-year"]),
       };
     case "validate":

@@ -160,6 +160,7 @@ export type ExportPresetId = (typeof exportPresetOptions)[number]["id"];
 
 export async function createInteractiveSession(options: {
   readonly filingStatus: SupportedFilingStatus;
+  readonly requestedStateCodes?: ReadonlyArray<string>;
   readonly runtime: CliRuntime;
   readonly sessionDir?: string | null;
 }): Promise<InteractiveSession> {
@@ -169,6 +170,7 @@ export async function createInteractiveSession(options: {
     taxYear: 2025,
     filingStatus: options.filingStatus,
     createdAt: options.runtime.now().toISOString(),
+    requestedStateCodes: options.requestedStateCodes,
   });
   const sessionDir =
     options.sessionDir ?? buildDefaultSessionDir(options.runtime.cwd, returnId);

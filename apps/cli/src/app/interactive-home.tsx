@@ -4,6 +4,10 @@ import { startTransition, useEffect, useState } from "react";
 
 import { formatCliError } from "../core/errors";
 import type { CliRuntime } from "../core/runtime";
+import {
+  formatRequestedStateCodes,
+  parseRequestedStateCodes,
+} from "../core/state-support";
 import { supportedFilingStatuses, type SupportedFilingStatus } from "../core/types";
 import {
   type ExportPresetId,
@@ -127,6 +131,7 @@ export function InteractiveHome(props: {
   const [focusIndex, setFocusIndex] = useState(0);
   const [pathInput, setPathInput] = useState(props.initialInputPath ?? "");
   const [createFilingStatus, setCreateFilingStatus] = useState<SupportedFilingStatus>("single");
+  const [createRequestedStatesInput, setCreateRequestedStatesInput] = useState("");
   const [session, setSession] = useState<InteractiveSession | null>(null);
   const [householdDraft, setHouseholdDraft] = useState<HouseholdDraft | null>(null);
   const [incomeDraft, setIncomeDraft] = useState<IncomeDraft | null>(null);
@@ -358,6 +363,9 @@ export function InteractiveHome(props: {
         setSelectedFederalOverrideIndex(0);
         setSelectedOtherElectionIndex(0);
         setPathInput(openedSession.sessionDir);
+        setCreateRequestedStatesInput(
+          openedSession.canonicalReturn.requested_jurisdictions.states.join(", "),
+        );
         setExportOutputDir(openedSession.sessionDir);
         setDirty(false);
         setActiveStepIndex(1);
@@ -376,8 +384,10 @@ export function InteractiveHome(props: {
     setBusyLabel("Creating session");
 
     try {
+      const requestedStateCodes = parseRequestedStateCodes([createRequestedStatesInput]);
       const createdSession = await createInteractiveSession({
         filingStatus: createFilingStatus,
+        requestedStateCodes,
         runtime: props.runtime,
         sessionDir: pathInput.trim().length > 0 ? pathInput.trim() : null,
       });
@@ -425,6 +435,9 @@ export function InteractiveHome(props: {
         setSelectedFederalOverrideIndex(0);
         setSelectedOtherElectionIndex(0);
         setPathInput(createdSession.sessionDir);
+        setCreateRequestedStatesInput(
+          createdSession.canonicalReturn.requested_jurisdictions.states.join(", "),
+        );
         setExportOutputDir(createdSession.sessionDir);
         setDirty(false);
         setActiveStepIndex(1);
@@ -446,7 +459,7 @@ export function InteractiveHome(props: {
       return;
     }
 
-    setBusyLabel("Running federal calculation");
+    setBusyLabel("Running tax calculation");
     startTransition(() => {
       setResultState({ status: "running" });
       setActiveStepIndex(stepIds.indexOf("results"));
@@ -462,7 +475,7 @@ export function InteractiveHome(props: {
           payload,
         });
       });
-      setStatus("success", "Federal calculation complete.");
+      setStatus("success", "Tax calculation complete.");
     } catch (error) {
       startTransition(() => {
         setResultState({
@@ -2087,6 +2100,7 @@ export function InteractiveHome(props: {
           {renderStep({
             activeStep,
             createFilingStatus,
+            createRequestedStatesInput,
             creditsPanel,
             deductionsPanel,
             documentsPanel,
@@ -2139,6 +2153,7 @@ export function InteractiveHome(props: {
             selectedW2Index,
             session,
             setCreateFilingStatus,
+            setCreateRequestedStatesInput,
             setCreditsPanel,
             setDeductionsPanel,
             setDocumentsPanel,
@@ -2203,6 +2218,7 @@ export function InteractiveHome(props: {
 function renderStep(options: {
   readonly activeStep: StepId;
   readonly createFilingStatus: SupportedFilingStatus;
+  readonly createRequestedStatesInput: string;
   readonly creditsPanel:
     | "candidates"
     | "care_providers"
@@ -2275,6 +2291,7 @@ function renderStep(options: {
   readonly selectedW2Index: number;
   readonly session: InteractiveSession | null;
   readonly setCreateFilingStatus: (value: SupportedFilingStatus) => void;
+  readonly setCreateRequestedStatesInput: (value: string) => void;
   readonly setCreditsPanel: (
     value:
       | "candidates"
@@ -2355,9 +2372,11 @@ function renderStep(options: {
       return (
         <SessionStep
           createFilingStatus={options.createFilingStatus}
+          createRequestedStatesInput={options.createRequestedStatesInput}
           focusIndex={options.focusIndex}
           pathInput={options.pathInput}
           setCreateFilingStatus={options.setCreateFilingStatus}
+          setCreateRequestedStatesInput={options.setCreateRequestedStatesInput}
           setPathInput={options.setPathInput}
           session={options.session}
         />
@@ -2621,6 +2640,11 @@ function SessionSummary(props: {
         Loaded: {props.session == null ? "none" : truncateMiddle(props.session.sessionDir, 40)}
       </text>
       <text>
+        Requested states: {props.session == null
+          ? "none"
+          : formatRequestedStateCodes(props.session.canonicalReturn.requested_jurisdictions.states)}
+      </text>
+      <text>
         Forms: W-2 {props.incomeDraft?.w2s.length ?? 0} / INT {props.incomeDraft?.interests.length ?? 0} / DIV {props.incomeDraft?.dividends?.length ?? 0} / 1099-R {props.incomeDraft?.retirements?.length ?? 0}
       </text>
       <text>
@@ -2643,9 +2667,11 @@ function SessionSummary(props: {
 
 function SessionStep(props: {
   readonly createFilingStatus: SupportedFilingStatus;
+  readonly createRequestedStatesInput: string;
   readonly focusIndex: number;
   readonly pathInput: string;
   readonly setCreateFilingStatus: (value: SupportedFilingStatus) => void;
+  readonly setCreateRequestedStatesInput: (value: string) => void;
   readonly setPathInput: (value: string) => void;
   readonly session: InteractiveSession | null;
 }) {
@@ -2681,6 +2707,17 @@ function SessionStep(props: {
         />
       </box>
 
+      <box border padding={1} flexDirection="column" gap={1}>
+        <text>New-session requested states</text>
+        <input
+          value={props.createRequestedStatesInput}
+          onChange={props.setCreateRequestedStatesInput}
+          focused={props.focusIndex === 2}
+          placeholder="optional USPS codes, e.g. CA, NY"
+          width="100%"
+        />
+      </box>
+
       {props.session == null ? (
         <box border padding={1}>
           <text>No session loaded yet.</text>
@@ -2689,6 +2726,11 @@ function SessionStep(props: {
         <box border padding={1} flexDirection="column">
           <text>Return ID: {props.session.canonicalReturn.return_id}</text>
           <text>Canonical: {truncateMiddle(props.session.canonicalPath, 56)}</text>
+          <text>
+            Requested states: {formatRequestedStateCodes(
+              props.session.canonicalReturn.requested_jurisdictions.states,
+            )}
+          </text>
         </box>
       )}
     </box>
@@ -6202,13 +6244,13 @@ function ResultsStep(props: {
     case "idle":
       return (
         <box border padding={1}>
-          <text>Press `ctrl+r` to run the federal calculation.</text>
+          <text>Press `ctrl+r` to run the tax calculation.</text>
         </box>
       );
     case "running":
       return (
         <box border padding={1}>
-          <text>Running the federal pipeline...</text>
+          <text>Running the tax pipeline...</text>
         </box>
       );
     case "error":
@@ -6219,6 +6261,7 @@ function ResultsStep(props: {
       );
     case "ready": {
       const summary = props.resultState.payload.core_engine.federal_summary;
+      const stateSummaries = props.resultState.payload.core_engine.state_summaries;
 
       return (
         <box flexDirection="column" gap={1}>
@@ -6236,6 +6279,23 @@ function ResultsStep(props: {
             {props.resultState.payload.core_engine.activated_module_ids.map((moduleId) => (
               <text key={moduleId}>- {moduleId}</text>
             ))}
+          </box>
+
+          <box border padding={1} flexDirection="column">
+            <text>State summaries</text>
+            {stateSummaries.length === 0 ? (
+              <text>No state summaries produced.</text>
+            ) : (
+              stateSummaries.map((stateSummary) => (
+                <text key={stateSummary.state_code}>
+                  {stateSummary.state_code} {stateSummary.return_kind ?? "unknown"}: start{" "}
+                  {stateSummary.adjusted_gross_income_or_starting_point} / taxable{" "}
+                  {stateSummary.taxable_income ?? "n/a"} / tax {stateSummary.total_tax} / payments{" "}
+                  {stateSummary.total_payments} / refund {stateSummary.refund_amount} / owed{" "}
+                  {stateSummary.amount_owed}
+                </text>
+              ))
+            )}
           </box>
         </box>
       );
@@ -6633,7 +6693,7 @@ function resolveMaxFocusIndex(options: {
 }): number {
   switch (options.activeStep) {
     case "session":
-      return 2;
+      return 3;
     case "household":
       return 6;
     case "family": {

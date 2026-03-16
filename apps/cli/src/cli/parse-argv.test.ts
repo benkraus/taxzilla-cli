@@ -16,4 +16,27 @@ describe("parseCliArgs", () => {
       inputPath: "./demo-session",
     });
   });
+
+  it("parses requested states for init", () => {
+    expect(
+      parseCliArgs([
+        "init",
+        "--session-dir",
+        "./demo-session",
+        "--filing-status",
+        "single",
+        "--state",
+        "ca",
+        "--state",
+        "ny,nj",
+      ]),
+    ).toEqual({
+      command: "init",
+      outputPath: null,
+      sessionDir: "./demo-session",
+      filingStatus: "single",
+      stateCodes: ["CA", "NY", "NJ"],
+      taxYear: 2025,
+    });
+  });
 });

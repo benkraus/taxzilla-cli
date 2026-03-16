@@ -85,8 +85,8 @@ Important command behavior:
 
 CLI export artifacts:
 
-- `federal-summary.json`
-- `federal-lines.csv`
+- `tax-summary.json`
+- `tax-lines.csv`
 - `canonical-return.json`
 - `return-ir.json`
 - `submission-package.json`
@@ -96,9 +96,11 @@ CLI export artifacts:
 
 ## HARD BOUNDARIES OF THE CURRENT CLI
 
-- FEDERAL ONLY.
+- FEDERAL AND STATE-AWARE TY2025 SESSIONS ONLY.
 - TY2025 ONLY.
-- The CLI explicitly rejects canonical returns that already contain state requests or state return payloads.
+- `init` accepts repeated or comma-separated `--state` USPS codes to seed requested state payloads.
+- `validate` reports requested states and state return payload counts.
+- `run` and `export` include state-aware summaries and graph artifacts when state returns are present.
 - There is no `submit`, `upload`, `efile`, or `transmit` command.
 - There is no outbound HTTP or cloud transport path in the CLI execution path.
 - There is no PDF OCR or scan ingestion command in the public CLI.
@@ -234,7 +236,7 @@ The engine library contains state artifact builders for all 50 states:
 
 Important caveat:
 
-- THE PUBLIC CLI DOES NOT EXPOSE STATE PREPARATION. IT REJECTS STATE DATA AND FORCES FEDERAL-ONLY INPUTS.
+- THE PUBLIC CLI CAN SEED, VALIDATE, RUN, AND EXPORT STATE-AWARE TY2025 SESSIONS, BUT IT IS STILL A LOCAL COMPUTATION TOOL.
 - The presence of state builders in the library is NOT a representation of professional review, legal sign-off, production readiness, or filing readiness.
 - District of Columbia and U.S. territories are not part of that state builder list.
 
@@ -294,7 +296,7 @@ This README does NOT claim that those are all wired through the public CLI as po
 - Use scrubbed or synthetic data first.
 - Keep this checkout on a machine and disk you trust.
 - Read `canonical-return.json` directly.
-- Review `federal-summary.json`, `federal-lines.csv`, and `return-ir.json` before trusting anything.
+- Review `tax-summary.json`, `tax-lines.csv`, and `return-ir.json` before trusting anything.
 - Treat warnings and failed validation messages as blockers, not decoration.
 - Assume you need independent review before relying on any output for a real person or a real filing.
 

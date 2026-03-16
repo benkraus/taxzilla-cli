@@ -50,6 +50,24 @@ describe("interactive workflow", () => {
     expect(reopened.householdDraft.filingStatus).toBe("single");
   });
 
+  it("creates and reopens a session directory with requested states", async () => {
+    const runtime = await createRuntime();
+    const sessionDir = join(runtime.cwd, "tui-state-session");
+
+    const session = await createInteractiveSession({
+      filingStatus: "single",
+      requestedStateCodes: ["CA", "NY"],
+      runtime,
+      sessionDir,
+    });
+    const reopened = await openInteractiveSession(sessionDir);
+
+    expect(session.canonicalReturn.requested_jurisdictions.states).toEqual(["CA", "NY"]);
+    expect(Object.keys(session.canonicalReturn.state_returns)).toEqual(["CA", "NY"]);
+    expect(reopened.canonicalReturn.requested_jurisdictions.states).toEqual(["CA", "NY"]);
+    expect(Object.keys(reopened.canonicalReturn.state_returns)).toEqual(["CA", "NY"]);
+  });
+
   it("applies and saves household edits", async () => {
     const runtime = await createRuntime();
     const session = await createInteractiveSession({

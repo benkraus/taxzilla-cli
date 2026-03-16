@@ -27,15 +27,16 @@ describe("runCli", () => {
 
     expect(exitCode).toBe(0);
     expect(io.stderr).toEqual("");
-    expect(io.stdout).toContain("Validated federal return");
+    expect(io.stdout).toContain("Validated return");
     expect(io.stdout).toContain("filing status: single");
+    expect(io.stdout).toContain("requested states: none");
   });
 
-  it("runs the pipeline and writes selected artifacts", async () => {
+  it("runs the pipeline and writes selected artifacts with state summaries", async () => {
     const directory = await makeTempDir();
     const inputPath = join(directory, "return.json");
     const outputDir = join(directory, "out");
-    await writeCanonicalReturn(inputPath, makeFederalOnlyReturn());
+    await writeCanonicalReturn(inputPath, sampleReturnTy2025);
 
     const io = createMemoryIo();
     const exitCode = await runCli(
@@ -57,22 +58,31 @@ describe("runCli", () => {
 
     expect(exitCode).toBe(0);
     expect(io.stdout).toContain("run wrote 3 artifact(s):");
-    expect(await readFile(join(outputDir, "federal-summary.json"), "utf8")).toContain(
+    expect(await readFile(join(outputDir, "tax-summary.json"), "utf8")).toContain(
       '"adjusted_gross_income": 85045.32',
     );
-    expect(await readFile(join(outputDir, "federal-lines.csv"), "utf8")).toContain(
+    expect(await readFile(join(outputDir, "tax-summary.json"), "utf8")).toContain(
+      '"state_summaries"',
+    );
+    expect(await readFile(join(outputDir, "tax-lines.csv"), "utf8")).toContain(
       "1040.line11",
+    );
+    expect(await readFile(join(outputDir, "tax-lines.csv"), "utf8")).toContain(
+      "CA",
     );
     expect(await readFile(join(outputDir, "return-ir.json"), "utf8")).toContain(
       '"submission_package"',
     );
+    expect(await readFile(join(outputDir, "return-ir.json"), "utf8")).toContain(
+      '"state_returns"',
+    );
   });
 
-  it("exports the default machine artifacts", async () => {
+  it("exports the default machine artifacts for a stateful return", async () => {
     const directory = await makeTempDir();
     const inputPath = join(directory, "return.json");
     const outputDir = join(directory, "exports");
-    await writeCanonicalReturn(inputPath, makeFederalOnlyReturn());
+    await writeCanonicalReturn(inputPath, sampleReturnTy2025);
 
     const io = createMemoryIo();
     const exitCode = await runCli(
@@ -88,17 +98,30 @@ describe("runCli", () => {
       '"command": "export"',
     );
     expect(await readFile(join(outputDir, "submission-package.json"), "utf8")).toContain(
-      '"submission_mode": "federal_only"',
+      '"submission_mode": "federal_and_state_bundle"',
+    );
+    expect(await readFile(join(outputDir, "submission-package.json"), "utf8")).toContain(
+      '"requested_state_codes": [',
     );
   });
 
-  it("initializes a starter session directory and can use it as command input", async () => {
+  it("initializes a starter session directory with requested states and can use it as command input", async () => {
     const directory = await makeTempDir();
     const sessionDir = join(directory, "session");
     const io = createMemoryIo();
 
     const initExitCode = await runCli(
-      ["init", "--session-dir", sessionDir, "--filing-status", "head_of_household"],
+      [
+        "init",
+        "--session-dir",
+        sessionDir,
+        "--filing-status",
+        "head_of_household",
+        "--state",
+        "ca",
+        "--state",
+        "ny",
+      ],
       io.io,
       {
         cwd: directory,
@@ -111,32 +134,43 @@ describe("runCli", () => {
     expect(await readFile(join(sessionDir, "canonical-return.json"), "utf8")).toContain(
       '"filing_status": "head_of_household"',
     );
+    expect(await readFile(join(sessionDir, "canonical-return.json"), "utf8")).toContain(
+      '"states": [',
+    );
+    expect(await readFile(join(sessionDir, "canonical-return.json"), "utf8")).toContain(
+      '"CA"',
+    );
+    expect(await readFile(join(sessionDir, "canonical-return.json"), "utf8")).toContain(
+      '"NY"',
+    );
+    expect(io.stdout).toContain("requested states: CA, NY");
 
     const validateIo = createMemoryIo();
     const validateExitCode = await runCli(["validate", "--input", sessionDir], validateIo.io);
 
     expect(validateExitCode).toBe(0);
     expect(validateIo.stdout).toContain("return_cli_init");
+    expect(validateIo.stdout).toContain("requested states: CA, NY");
   });
 
   it("writes run artifacts into the session directory when no output dir is provided", async () => {
     const directory = await makeTempDir();
     const sessionDir = join(directory, "session");
-    await writeCanonicalReturn(join(sessionDir, "canonical-return.json"), makeFederalOnlyReturn());
+    await writeCanonicalReturn(join(sessionDir, "canonical-return.json"), sampleReturnTy2025);
 
     const io = createMemoryIo();
     const exitCode = await runCli(["run", "--input", sessionDir], io.io);
 
     expect(exitCode).toBe(0);
-    expect(await readFile(join(sessionDir, "federal-summary.json"), "utf8")).toContain(
-      '"amount_owed": 1158.97',
+    expect(await readFile(join(sessionDir, "tax-summary.json"), "utf8")).toContain(
+      '"state_summaries"',
     );
     expect(await readFile(join(sessionDir, "export-manifest.json"), "utf8")).toContain(
       '"command": "run"',
     );
   });
 
-  it("rejects state-return payloads in federal-only mode", async () => {
+  it("validates and reports state-return payloads", async () => {
     const directory = await makeTempDir();
     const inputPath = join(directory, "return.json");
     await writeCanonicalReturn(inputPath, sampleReturnTy2025);
@@ -144,8 +178,10 @@ describe("runCli", () => {
     const io = createMemoryIo();
     const exitCode = await runCli(["validate", "--input", inputPath], io.io);
 
-    expect(exitCode).toBe(1);
-    expect(io.stderr).toContain("State data is not supported");
+    expect(exitCode).toBe(0);
+    expect(io.stderr).toBe("");
+    expect(io.stdout).toContain("requested states: CA");
+    expect(io.stdout).toContain("state return payloads: 1");
   });
 
   async function makeTempDir(): Promise<string> {
