@@ -1,13 +1,13 @@
 import { Schema } from "effect";
 
-import federalModuleCatalogTy2025Json from "../../../docs/tax_engine_blueprint_ty2025/catalog/federal-module-catalog-ty2025.json" with { type: "json" };
-import sampleFormsGraphTy2025Json from "../../../docs/tax_engine_blueprint_ty2025/examples/sample-forms-graph-ty2025.json" with { type: "json" };
-import sampleReturnTy2025Json from "../../../docs/tax_engine_blueprint_ty2025/examples/sample-return-ty2025.json" with { type: "json" };
-import sampleStatePluginCaTy2025Json from "../../../docs/tax_engine_blueprint_ty2025/examples/sample-state-plugin-CA.stub.json" with { type: "json" };
-import statesRegistryTy2025Json from "../../../docs/tax_engine_blueprint_ty2025/registry/states-registry-ty2025.json" with { type: "json" };
-import formsGraphSnapshotTy2025JsonSchema from "../../../docs/tax_engine_blueprint_ty2025/schema/forms-graph.snapshot.schema.json" with { type: "json" };
-import statePluginManifestTy2025JsonSchema from "../../../docs/tax_engine_blueprint_ty2025/schema/state-plugin-manifest.schema.json" with { type: "json" };
-import taxfactsTy2025JsonSchema from "../../../docs/tax_engine_blueprint_ty2025/schema/taxfacts-ty2025.schema.json" with { type: "json" };
+import federalModuleCatalogTy2025Json from "../docs/tax_engine_blueprint_ty2025/catalog/federal-module-catalog-ty2025.json" with { type: "json" };
+import sampleFormsGraphTy2025Json from "../docs/tax_engine_blueprint_ty2025/examples/sample-forms-graph-ty2025.json" with { type: "json" };
+import sampleReturnTy2025Json from "../docs/tax_engine_blueprint_ty2025/examples/sample-return-ty2025.json" with { type: "json" };
+import sampleStatePluginCaTy2025Json from "../docs/tax_engine_blueprint_ty2025/examples/sample-state-plugin-CA.stub.json" with { type: "json" };
+import statesRegistryTy2025Json from "../docs/tax_engine_blueprint_ty2025/registry/states-registry-ty2025.json" with { type: "json" };
+import formsGraphSnapshotTy2025JsonSchema from "../docs/tax_engine_blueprint_ty2025/schema/forms-graph.snapshot.schema.json" with { type: "json" };
+import statePluginManifestTy2025JsonSchema from "../docs/tax_engine_blueprint_ty2025/schema/state-plugin-manifest.schema.json" with { type: "json" };
+import taxfactsTy2025JsonSchema from "../docs/tax_engine_blueprint_ty2025/schema/taxfacts-ty2025.schema.json" with { type: "json" };
 
 export const taxEngineBlueprintRootPath = "docs/tax_engine_blueprint_ty2025" as const;
 
